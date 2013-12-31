@@ -1,19 +1,7 @@
 package;
 
 
-import flash.display.Sprite;
+class Main {
 
-
-class Main extends Sprite {
-	
-	
-	public function new () {
-		
-		super ();
-		
-		
-		
-	}
-	
-	
+	public function new () {}
 }
