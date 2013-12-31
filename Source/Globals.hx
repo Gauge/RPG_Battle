@@ -3,17 +3,23 @@ package;
 class Globals {
 
 	// item constants
-	public static HEAD = 0;
-	public static BODY = 1;
-	public static ARMS = 2;
-	public static LEGS = 3;
-	public static ONHAND = 4;
-	public static OFFHAND = 5;
+	public static var ITEM_HEAD = 0;
+	public static var ITEM_BODY = 1;
+	public static var ITEM_ARMS = 2;
+	public static var ITEM_LEGS = 3;
+	public static var ITEM_ONHAND = 4;
+	public static var ITEM_OFFHAND = 5;
 
 	// class constants
-	public static MELE = 0;
-	public static RANGED = 1;
-	public static MAGIC = 2;
-	public static SUPPORT = 3;
+	public static var CLASS_MELE = 0;
+	public static var CLASS_RANGED = 1;
+	public static var CLASS_MAGIC = 2;
+	public static var CLASS_SUPPORT = 3;
+
+	// actions
+	public static var ACTION_ATTACK = 0;
+	public static var ACTION_ABILITY = 1;
+	public static var ACTION_ITEM = 2;
+	public static var ACTION_DEFEND = 3;
 
 }
