@@ -13,8 +13,9 @@ class Game {
 	var player1LockedIn:Bool;
 	var player2LockedIn:Bool;
 
-	function new() {
+	public function new() {
 		gamestate = Globals.GAME_INIT;
+		trace("Initalizing game...");
 		// create a new team of characters
 		team1 = [new Character(), new Character(), new Character(), new Character()];
 		team2 = [new Character(), new Character(), new Character(), new Character()];
@@ -23,7 +24,8 @@ class Game {
 		player1LockedIn = false;
 		player2LockedIn = false;
 
-		gamestate = Globals.Game_TURN;
+		gamestate = Globals.GAME_TURN;
+		trace("started game, turn 1");
 	}
 
 	// toggles the locked in state of the player that calls it
@@ -31,9 +33,11 @@ class Game {
 	public function lockin(player:Int) {
 		if (player == Globals.PLAYER_ONE){
 			player1LockedIn = !player1LockedIn;
+			trace((player1LockedIn) ? "player one locked in" : "player one unlocked");
 		
 		} else if (player == Globals.PLAYER_TWO) {
 			player2LockedIn = !player2LockedIn;
+			trace((player2LockedIn) ? "player two locked in" : "player two unlocked");
 		}
 
 		if (player1LockedIn && player2LockedIn) {
@@ -54,5 +58,6 @@ class Game {
 		player1LockedIn = false;
 		player2LockedIn = false;
 		turn++;
+		trace("Turn: " + turn);
 	}
 }
