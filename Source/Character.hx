@@ -1,6 +1,7 @@
 package;
 
 class Character {
+<<<<<<< HEAD
 
 	var vitality:Int; 
 	
@@ -22,6 +23,16 @@ class Character {
 	// set up a new character
 	// NOTE: later we will create an over loaded method that can
 	// 		 load a new character based on the data provided 
+=======
+	public var level:Int;
+	public var currentXp:Int;
+	public var health:Int;
+	public var healthMax:Int;
+	public var physicalPower:Int;
+	public var armor:Int;
+	public var statusEffects:Array <Dynamic>;
+	
+>>>>>>> 5629c916324a3eb74159bf4a585f0a650293a686
 	function new() {}
 
 	// looks through all the items the character has equipped and returns the accumulated vitality number
