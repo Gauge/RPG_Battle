@@ -23,8 +23,8 @@ class Globals {
 	public static var ACTION_DEFEND = 3;
 
 	// players
-	public static var PLAYER_ONE = 0;
-	public static var PLAYER_TWO = 1;
+	public static var PLAYER_ONE = 1;
+	public static var PLAYER_TWO = 2;
 
 	// gamestate
 	public static var GAME_INIT = 0;
@@ -32,4 +32,8 @@ class Globals {
 	public static var GAME_UPDATE = 2;
 	public static var GAME_OVER = 3;
 
+	public static var CHARACTER_1 = 0;
+	public static var CHARACTER_2 = 1;
+	public static var CHARACTER_3 = 2;
+	public static var CHARACTER_4 = 3;
 }
