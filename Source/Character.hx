@@ -2,7 +2,8 @@ package;
 
 class Character {
 
-	private var vitality:Int; 
+	private var vitality:Int;
+	private var isdead:Bool;
 	
 	//private lvl_mele:Int;
 	//private lvl_ranged:Int;
@@ -25,6 +26,11 @@ class Character {
 	public function new() {
 		equipItem(new Item(Globals.ITEM_ONHAND, 10, 200, 0, 0, 0, 200));
 		vitality = getMaxVitality();
+		isdead = false;
+	}
+
+	public function isDead() {
+		return isdead;
 	}
 
 	public function getVitality():Int {

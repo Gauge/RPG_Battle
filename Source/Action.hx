@@ -2,31 +2,37 @@ package;
 
 class Action {
 
-	private var preformer:Int;
+	private var selectedPlayer:Int;
+	private var selectedCharacter:Int;
 	private var action:Int;
-	private var player:Int;
-	private var recipiant:Int;
+	private var targetPlayer:Int;
+	private var targetCharacter:Int;
 	
-	public function new (p:Int, a:Int, p:Int, r:Int) {
-		preformer = p;
-		action = a;
-		player = p;
-		recipiant = r;
+	public function new (selPlayer:Int, selCharacter:Int, act:Int, targPlayer:Int, targCharacter:Int) {
+		selectedPlayer = selPlayer;
+		selectedCharacter = selCharacter;
+		action = act;
+		targetPlayer = targPlayer;
+		targetCharacter = targCharacter;
 	}
 
-	public function getPreformer() {
-		return preformer;
+	public function getSelectedPlayer() {
+		return selectedPlayer;
+	}
+
+	public function getSelectedCharacter() {
+		return selectedCharacter;
 	}
 
 	public function getAction() {
 		return action;
 	}
 
-	public function getPlayer() {
-		return player;
+	public function getTargetPlayer() {
+		return targetPlayer;
 	}
 
-	public function getRecipiant() {
-		return recipiant;
+	public function getTargetCharacter() {
+		return targetCharacter;
 	}
 }

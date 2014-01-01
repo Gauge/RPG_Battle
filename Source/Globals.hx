@@ -31,4 +31,9 @@ class Globals {
 	public static var GAME_TURN = 1;
 	public static var GAME_UPDATE = 2;
 	public static var GAME_OVER = 3;
+
+	public static var CHARACTER_1 = 0;
+	public static var CHARACTER_2 = 1;
+	public static var CHARACTER_3 = 2;
+	public static var CHARACTER_4 = 3;
 }

@@ -13,8 +13,8 @@ class Game {
 		trace("Initalizing game...");
 		
 		turn = 1;
-		player1 = new Player();
-		player2 = new Player();
+		player1 = new Player(Globals.PLAYER_ONE);
+		player2 = new Player(Globals.PLAYER_TWO);
 
 		gamestate = Globals.GAME_TURN;
 		trace("started game, turn 1");
@@ -56,6 +56,22 @@ class Game {
 		else if (player == Globals.PLAYER_TWO) { 
 			player2.selected = characterID; 
 			trace("player 2 selected character " + (characterID+1));
+		}
+	}
+
+	public function selectAction(selectedPlayer:Int, action:Int, targetPlayer:Int, targetCharacter:Int) {
+		if (gamestate != Globals.GAME_TURN){
+			return;
+		}
+
+		if (selectedPlayer == Globals.PLAYER_ONE) {
+			player1.setAction(action, targetPlayer, targetCharacter);
+			trace(player1.actions);
+		}
+
+		else if (selectedPlayer == Globals.PLAYER_TWO){
+			player2.setAction(action, targetPlayer, targetCharacter);
+			trace(player2.actions);
 		}
 	}
 
