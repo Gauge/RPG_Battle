@@ -2,27 +2,19 @@ package;
 
 class Game {
 
-	// four character per team
-	var team1:Array <Character>;
-	var team2:Array <Character>;
-
-	// counts the number of turns the game has been going on for
 	var turn:Int;
 	var gamestate:Int;
 
-	var player1LockedIn:Bool;
-	var player2LockedIn:Bool;
+	var player1:Player;
+	var player2:Player;
 
 	public function new() {
 		gamestate = Globals.GAME_INIT;
 		trace("Initalizing game...");
-		// create a new team of characters
-		team1 = [new Character(), new Character(), new Character(), new Character()];
-		team2 = [new Character(), new Character(), new Character(), new Character()];
-
+		
 		turn = 1;
-		player1LockedIn = false;
-		player2LockedIn = false;
+		player1 = new Player();
+		player2 = new Player();
 
 		gamestate = Globals.GAME_TURN;
 		trace("started game, turn 1");
@@ -31,19 +23,42 @@ class Game {
 	// toggles the locked in state of the player that calls it
 	// it also proforms the check to move to the next turn
 	public function lockin(player:Int) {
-		if (player == Globals.PLAYER_ONE){
-			player1LockedIn = !player1LockedIn;
-			trace((player1LockedIn) ? "player one locked in" : "player one unlocked");
+		if (gamestate != Globals.GAME_TURN) {
+			return;
+		}
 		
-		} else if (player == Globals.PLAYER_TWO) {
-			player2LockedIn = !player2LockedIn;
-			trace((player2LockedIn) ? "player two locked in" : "player two unlocked");
+		if (player == Globals.PLAYER_ONE){
+			player1.toggleLockedIn();
+			trace((player1.isLockedIn()) ? "player one locked in" : "player one unlocked");
+		} 
+
+		else if (player == Globals.PLAYER_TWO) {
+			player2.toggleLockedIn();
+			trace((player2.isLockedIn()) ? "player two locked in" : "player two unlocked");
 		}
 
-		if (player1LockedIn && player2LockedIn) {
+		if (player1.isLockedIn() && player2.isLockedIn()) {
 			updateGame();
 		}
 	}
+
+	// highlights a character to apply an action to
+	public function selectCharacter(player:Int, characterID:Int) {
+		if (gamestate != Globals.GAME_TURN){
+			return; 
+		}
+
+		if (player == Globals.PLAYER_ONE) { 
+			player1.selected = characterID;
+			trace("player 1 selected character " + (characterID+1));
+		}
+
+		else if (player == Globals.PLAYER_TWO) { 
+			player2.selected = characterID; 
+			trace("player 2 selected character " + (characterID+1));
+		}
+	}
+
 
 	// this is where all the calculations for battle will happen
 	// and all the after math will be updated
@@ -54,10 +69,12 @@ class Game {
 		newTurn();
 	}
 
+	// sets everything up for the next turn
 	private function newTurn() {
-		player1LockedIn = false;
-		player2LockedIn = false;
+		player1.newTurn();
+		player2.newTurn();
 		turn++;
+		gamestate = Globals.GAME_TURN;
 		trace("Turn: " + turn);
 	}
 }
