@@ -22,4 +22,14 @@ class Globals {
 	public static var ACTION_ITEM = 2;
 	public static var ACTION_DEFEND = 3;
 
+	// players
+	public static var PLAYER_ONE = 0;
+	public static var PLAYER_TWO = 1;
+
+	// gamestate
+	public static var GAME_INIT = 0;
+	public static var GAME_TURN = 1;
+	public static var GAME_UPDATE = 2;
+	public static var GAME_OVER = 3;
+
 }
