@@ -1,3 +1,8 @@
-<data>
-	here is some data
-</data>
+<character name="Test" bitmap="assets/testsprite">
+	<animation name="waiting" loop="true">
+		<frame id="0" duration="3">
+			<offset x="0" y="0" />
+			<geometry x="0" y="0" width="26" height="35" />
+		</frame>
+	</animation>
+</character>

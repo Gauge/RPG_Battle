@@ -4,8 +4,19 @@ import flash.Lib;
 import openfl.Assets;
 
 class FileLoader {
-	public function loadXmlFile( fileSource : String) : Void {
+	private static var DATAFOLDER = "assets/";
+	public static function loadXmlFile( fileSource : String , fileType : Filetype ) : Array {
 		var file = Assets.getText(fileSource);
-		trace(file); 
+		var xml = Xml.parse(file);
+		
+
+		trace(file);
 	}
+}
+
+class Filetype {
+
+	public var name:String;
+	public var dataStructure:Array <Dynamic>;
+
 }
