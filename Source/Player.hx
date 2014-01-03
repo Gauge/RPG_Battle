@@ -9,13 +9,20 @@ class Player {
 	public var selected:Int;
 	// this is the four character under the players command
 	public var team:Array <Character>;
-	public var actions:Array <Action>;
 
 
 	public function new(id:Int) {
 		playerID = id;
 		team = [new Character(), new Character(), new Character(), new Character()];
 		newTurn();
+	}
+
+	public function newTurn() {
+		selected = -1;
+		islockedin = false;
+		for (i in 0...team.length) {
+			team[i].resetAction();
+		}
 	}
 
 	public function getPlayerID() {
@@ -30,17 +37,22 @@ class Player {
 		return islockedin;
 	}
 
-	public function newTurn() {
-		selected = -1;
-		islockedin = false;
-		actions = [null, null, null, null];
-	}
-
 	public function setAction(action:Int, targetPlayer:Int, targetCharacter:Int) {
 		if (selected == -1){
 			return;
 		}
 
-		actions[selected] = new Action(playerID, selected, action, targetPlayer, targetCharacter);
+		team[selected].setAction(new Action(playerID, selected, action, targetPlayer, targetCharacter));
+	}
+
+	public function getActionList():Array <Action> {
+		var actions = [];
+		for (i in 0...team.length) {
+			var a = team[i].getAction();
+			if (a != null){
+				actions.push(a);
+			}
+		}
+		return actions;
 	}
 }
