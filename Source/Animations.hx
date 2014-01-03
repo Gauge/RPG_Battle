@@ -5,10 +5,12 @@ import flash.display.BitmapData;
 import flash.display.Bitmap;
 import flash.geom.Rectangle;
 import flash.geom.Point;
+import openfl.display.Tilesheet;
 
 class CharacterSprite {
 	public var position : Int;
-	public var Direction : Int;
+	public var direction : Int;
+	public var tilesheet : Tilesheet;
 	public var animationList : Array <Animation>;
 	public var currentAnimation : Animation;
 	public function new (){};
@@ -17,10 +19,11 @@ class CharacterSprite {
 
 class Animation {
 	public var name : String;
-	public var bitmap : BitmapData;
 	public var frameList : Array <Frame>;
-	public var currentFrame : Frame;
+	public var currentFrameId : Int;
 	public var loop : Bool;
+	public var nextAnimation : Int;
+	public var timer : Int;
 	public function new () {};	
 }
 
@@ -40,7 +43,7 @@ class Graphic {
 }
 
 class Frame {
-	public var geometry : Rectangle;
+	public var tileId : Int;
 	public var duration : Int;
 	public var offset : Point;
 	public function new(){};

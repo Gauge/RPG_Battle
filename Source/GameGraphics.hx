@@ -40,6 +40,8 @@ class  GameGraphics extends Sprite {
 
 		loadCharacterData();
 
+		//FileLoader.loadXmlFile('assets/dataTest.xml');
+
 		gameStage.addEventListener(Event.ENTER_FRAME, renderLoop);
 
 	}
@@ -80,24 +82,43 @@ class  GameGraphics extends Sprite {
 
 	private function loadCharacterData() : Void {
 
-		characterList[0] = new CharacterSprite(); // this method is for testing purposes only
+		var character = new CharacterSprite(); // this method is for testing purposes only
 		
-		characterList[0].Direction = LEFT;
+		character.direction = LEFT;
+		character.tilesheet = loadTilesheet(Assets.getBitmapData('assets/testsprite.png'));
+		character.animationList = loadAnimationData();
+		character.currentAnimation = character.animationList[0];
 
-		characterList[0].animationList = loadAnimationData();
-		characterList[0].currentAnimation = characterList[0].animationList[0];
+		characterList[0] = character;
+	}
 
+	private function loadTilesheet( bitmap : BitmapData ) : Tilesheet {
+		var tilesheet = new Tilesheet(bitmap);
+		tilesheet.addTileRect(new Rectangle(2,5,26,35));
+		tilesheet.addTileRect(new Rectangle(32,5,26,35));
+		tilesheet.addTileRect(new Rectangle(62,6,26,35));
+		tilesheet.addTileRect(new Rectangle(90,6,26,35));
+		tilesheet.addTileRect(new Rectangle(118,6,26,35));
+		tilesheet.addTileRect(new Rectangle(145,6,26,35));
+		tilesheet.addTileRect(new Rectangle(171,6,26,35));
+		tilesheet.addTileRect(new Rectangle(201,6,26,35));
+		tilesheet.addTileRect(new Rectangle(231,6,26,35));
+		tilesheet.addTileRect(new Rectangle(260,6,26,35));		
+		return tilesheet;
 	}
 
 	private function loadAnimationData() : Array <Animation> {
 
 		var animationlist = new Array(); // this method is for testing purposes only
 
-		animationlist[0] = new Animation();
-		animationlist[0].name = "waiting";
-		animationlist[0].bitmap = Assets.getBitmapData('assets/basicCharacter.png');
-		animationlist[0].frameList = loadFrameData();
-		animationlist[0].currentFrame = animationlist[0].frameList[0];
+		var animation = new Animation();
+		animation.name = "waiting";
+		animation.frameList = loadFrameData();
+		animation.currentFrameId = 0;
+		animation.timer = 0;
+		animation.loop = true;
+
+		animationlist[0] = animation;
 		return animationlist;
 
 	}
@@ -105,25 +126,42 @@ class  GameGraphics extends Sprite {
 	private function loadFrameData() : Array <Frame> {
 
 		var framelist = new Array(); // this method is for testing purposes only
+		for (j in 0...9) {
+		framelist[j] = new Frame();
+		framelist[j].tileId = j;
+		framelist[j].duration = 2;
+		}
 
-		framelist[0] = new Frame();
-		framelist[0].geometry = new Rectangle(0,0,30,31);
 
 		return framelist;
-	}
+	} 
 
 	private function loadAnimations(){
 
 	}
 
 	private function renderLoop( event:Event ) : Void {
-
-		for (i in 0...characterList.length){
+		displayContainer.graphics.clear();
+		for ( i in 0...characterList.length ){
 			var animation = characterList[i].currentAnimation; // this method is for testing purposes only
-			var frame = animation.currentFrame;
-			var tilesheet = new Tilesheet(animation.bitmap);
-			var tile = tilesheet.addTileRect(frame.geometry, new Point(0,0));
-			tilesheet.drawTiles(displayContainer.graphics, [650, 300, tile, 3], Tilesheet.TILE_SCALE);
+			var frameId = animation.currentFrameId;
+			var frame = animation.frameList[frameId];
+
+			if( frame.duration == animation.timer ) {
+				if( frameId < animation.frameList.length - 1 ) {
+					frame = animation.frameList[frameId + 1];
+					characterList[i].currentAnimation.currentFrameId = frameId + 1;
+				}
+				else{
+					frame = animation.frameList[0];
+					characterList[i].currentAnimation.currentFrameId = 0;
+				}
+				characterList[i].currentAnimation.timer = 0;
+			}
+			else {
+				characterList[i].currentAnimation.timer++;
+			}
+			characterList[i].tilesheet.drawTiles(displayContainer.graphics, [650, 300, frameId, 3], Tilesheet.TILE_SCALE);
 		}
 
 	}
