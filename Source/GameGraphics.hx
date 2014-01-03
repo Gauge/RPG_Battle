@@ -9,6 +9,7 @@ import flash.events.Event;
 import openfl.Assets;
 import flash.Lib;
 import Animations;
+import FileLoader;
 import openfl.display.Tilesheet;
 
 
@@ -17,7 +18,26 @@ class  GameGraphics extends Sprite {
 	static var LEFT = 0;
 	static var RIGHT = 1;
 
+	static var CHAR_NAME = 0;
+	static var CHAR_BITMAP_LOC = 1;
+	static var ANIM_LIST_START = 2;
+
+	static var ANIM_NAME = 0;
+	static var ANIM_LOOP = 1;
+	static var FRAME_LIST_START = 2;
+
+	static var FRAME_DURATION = 0;
+	static var FRAME_X = 1;
+	static var FRAME_Y = 2;
+
+	static var FRAME_WIDTH = 3;
+	static var FRAME_HEIGHT = 4;
+	static var FRAME_REF_X = 5;
+	static var FRAME_REF_Y = 6;
+	static var FRAME_ID = 7;
+
 	public var characterList:Array <CharacterSprite>;
+	public var characterData:Array <Dynamic>;
 	public var displayContainer:Sprite;
 
 	public var screenWidth:Float;
@@ -34,7 +54,7 @@ class  GameGraphics extends Sprite {
 	public function init(){
 		gameStage = Lib.current.stage;
 		characterList = new Array();
-
+		characterData = FileLoader.loadData('assets/dataTest.xml');
 		getScreenDimentions();
 		loadBackdrop();
 
@@ -81,63 +101,66 @@ class  GameGraphics extends Sprite {
 	}
 
 	private function loadCharacterData() : Void {
+		for( c in 0...characterData.length ) {
+			var character = new CharacterSprite(); 
 
-		var character = new CharacterSprite(); // this method is for testing purposes only
-		
-		character.direction = LEFT;
-		character.tilesheet = loadTilesheet(Assets.getBitmapData('assets/testsprite.png'));
-		character.animationList = loadAnimationData();
-		character.currentAnimation = character.animationList[0];
+			character.direction = LEFT;
+			character.tilesheet = loadTilesheet(Assets.getBitmapData(characterData[c][CHAR_BITMAP_LOC]), characterData[c]);
+			character.animationList = loadAnimations( characterData[c] );
+			character.currentAnimation = character.animationList[0];
 
-		characterList[0] = character;
+			characterList.push(character);
+		}
 	}
 
-	private function loadTilesheet( bitmap : BitmapData ) : Tilesheet {
+	private function loadTilesheet( bitmap : BitmapData, characterData : Array <Dynamic> ) : Tilesheet {
 		var tilesheet = new Tilesheet(bitmap);
-		tilesheet.addTileRect(new Rectangle(2,5,26,35));
-		tilesheet.addTileRect(new Rectangle(32,5,26,35));
-		tilesheet.addTileRect(new Rectangle(62,6,26,35));
-		tilesheet.addTileRect(new Rectangle(90,6,26,35));
-		tilesheet.addTileRect(new Rectangle(118,6,26,35));
-		tilesheet.addTileRect(new Rectangle(145,6,26,35));
-		tilesheet.addTileRect(new Rectangle(171,6,26,35));
-		tilesheet.addTileRect(new Rectangle(201,6,26,35));
-		tilesheet.addTileRect(new Rectangle(231,6,26,35));
-		tilesheet.addTileRect(new Rectangle(260,6,26,35));		
+
+		for( animations in ANIM_LIST_START...characterData.length ) {
+			for( frames in FRAME_LIST_START...characterData[animations].length ) {
+
+				var frame = characterData[animations][frames];
+				var geometry = new Rectangle(frame[FRAME_X], frame[FRAME_Y], frame[FRAME_WIDTH], frame[FRAME_HEIGHT]);
+				var reference = new Point(frame[FRAME_REF_X], frame[FRAME_REF_Y]);
+
+				tilesheet.addTileRect(geometry, reference);
+			}
+		}
+		
 		return tilesheet;
 	}
 
-	private function loadAnimationData() : Array <Animation> {
+	private function loadAnimations( data : Array <Dynamic> ) : Array <Animation> {
+  		var animationlist = new Array(); 
 
-		var animationlist = new Array(); // this method is for testing purposes only
+		for(a in ANIM_LIST_START...data.length){
+			var animation = new Animation();
+			animation.name = data[a][ANIM_NAME];
+			animation.loop = data[a][ANIM_LOOP];
+			animation.frameList = loadFrameData(data[a]);
 
-		var animation = new Animation();
-		animation.name = "waiting";
-		animation.frameList = loadFrameData();
-		animation.currentFrameId = 0;
-		animation.timer = 0;
-		animation.loop = true;
+			animation.currentFrameId = 0;
+			animation.timer = 0;
+			
+			animationlist.push(animation);
+		}
 
-		animationlist[0] = animation;
 		return animationlist;
-
 	}
 
-	private function loadFrameData() : Array <Frame> {
+	private function loadFrameData( data : Array <Dynamic> ) : Array <Frame> {
+		var framelist = new Array();
 
-		var framelist = new Array(); // this method is for testing purposes only
-		for (j in 0...9) {
-		framelist[j] = new Frame();
-		framelist[j].tileId = j;
-		framelist[j].duration = 2;
+		for (f in FRAME_LIST_START...data.length) {
+			var frame = new Frame();
+			frame.tileId = data[f][FRAME_ID];
+			frame.duration = data[f][FRAME_DURATION];
+
+			framelist.push(frame);
 		}
 
 
 		return framelist;
-	} 
-
-	private function loadAnimations(){
-
 	}
 
 	private function renderLoop( event:Event ) : Void {
@@ -163,6 +186,6 @@ class  GameGraphics extends Sprite {
 			}
 			characterList[i].tilesheet.drawTiles(displayContainer.graphics, [650, 300, frameId, 3], Tilesheet.TILE_SCALE);
 		}
-
 	}
+
 }
