@@ -66,12 +66,10 @@ class Game {
 
 		if (selectedPlayer == Globals.PLAYER_ONE) {
 			player1.setAction(action, targetPlayer, targetCharacter);
-			trace(player1.actions);
 		}
 
 		else if (selectedPlayer == Globals.PLAYER_TWO){
 			player2.setAction(action, targetPlayer, targetCharacter);
-			trace(player2.actions);
 		}
 	}
 
@@ -81,8 +79,67 @@ class Game {
 	private function updateGame() {
 		gamestate = Globals.GAME_UPDATE;
 
+		var actions = getSortedActions();
+
+		for (i in 0...actions.length){
+			var action = actions[i];
+			var splayer = getPlayerOffId(action.getSelectedPlayer());
+			var tplayer = getPlayerOffId(action.getTargetPlayer());
+			var schar = splayer.team[action.getSelectedCharacter()];
+			var tchar = tplayer.team[action.getTargetCharacter()];
+
+			if (action.getAction() == Globals.ACTION_ATTACK) {
+				schar.getAction().report.damage_dealt = tchar.takeDamage(schar.getAttackPower());
+			}
+		}
+
+		// after log
+		actions = getSortedActions();
+		for (i in 0...actions.length){
+			trace("player " + actions[i].getSelectedPlayer() + " character " + (actions[i].getSelectedCharacter()+1) + 
+				"\'s attack did " + actions[i].report.damage_dealt + " damage to player " + actions[i].getTargetPlayer() + 
+				" character " + (actions[i].getTargetPlayer()+1));
+		}
 		
 		newTurn();
+	}
+
+	private function getPlayerOffId(id:Int) {
+		if (id == Globals.PLAYER_ONE) {
+			return player1;
+		} else {
+			return player2;
+		}
+	}
+
+	public function getSortedActions() {
+				// sort actions by attack speed
+		var actions = [];
+
+		// connect lists into one
+		var list = player1.getActionList();
+		var temp = player2.getActionList();
+		for (i in 0...temp.length) {
+			list.push(temp[i]);
+		}
+
+		actions.push(list[0]);
+
+		for (i in 1...list.length) {
+			for (i2 in 0...actions.length) {
+				
+				if (list[i].report.attack_speed < actions[i2].report.attack_speed){
+					actions.insert(i2, list[i]);
+					break;
+				} 
+
+				else if (i2 == list.length-1) {
+					actions.push(list[i]);
+				}
+			}
+		}
+
+		return actions;
 	}
 
 	// sets everything up for the next turn
@@ -92,5 +149,15 @@ class Game {
 		turn++;
 		gamestate = Globals.GAME_TURN;
 		trace("Turn: " + turn);
+		// list players
+		trace("player 1");
+		for(i in 0...player1.team.length){
+			trace("Character " + (i+1) + " Vitality " + player1.team[i].getVitality());
+		}
+
+		trace("player 2");
+		for(i in 0...player2.team.length){
+			trace("Character " + (i+1) + " Vitality " + player2.team[i].getVitality());
+		}
 	}
 }

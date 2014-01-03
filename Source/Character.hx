@@ -9,6 +9,7 @@ class Character {
 	//private lvl_ranged:Int;
 	//private lvl_magic:Int;
 	//private lvl_support:Int;
+	//private statusEffects:Array;
 
 	private var head:Item;
 	private var body:Item;
@@ -17,19 +18,19 @@ class Character {
 	private var onhand:Item;
 	private var offhand:Item;
 
-	//private statusEffects:Array;
-
+	private var action:Action;
 	
 	// set up a new character
 	// NOTE: later we will create an over loaded method that can
 	// 		 load a new character based on the data provided 
-	public function new() {
-		equipItem(new Item(Globals.ITEM_ONHAND, 10, 200, 0, 0, 0, 200));
+	public function new():Void {
+		equipItem(new Item(Globals.ITEM_ONHAND, 10, 200, 0, 0, 0, Math.round(Math.random()*500)));
 		vitality = getMaxVitality();
+		action = null;
 		isdead = false;
 	}
 
-	public function isDead() {
+	public function isDead():Bool {
 		return isdead;
 	}
 
@@ -42,14 +43,14 @@ class Character {
 		var items = [head, body, arms, legs, onhand, offhand];
 		var vit = 1;
 
-		for (i in 0...items.length){
+		for (i in 0...items.length) {
 			vit += (items[i] != null) ? items[i].getVitality() : 0;
 		}
 		return vit;
 	}
 
 	// looks through all the items the character has equipped and returns the accumulated attack power from all the items.
-	public function getAttackPower() {
+	public function getAttackPower():Int {
 		var items = [head, body, arms, legs, onhand, offhand];
 		var attack_power = 0;
 
@@ -60,7 +61,7 @@ class Character {
 	}
 
 	// looks through all the items the character has equipped and returns the accumulated magic power.
-	public function getMagicPower() {
+	public function getMagicPower():Int {
 		var items = [head, body, arms, legs, onhand, offhand];
 		var magic_power = 0;
 
@@ -71,7 +72,7 @@ class Character {
 	}
 
 	// looks through all the items the character has equipped and returns the accumulated Physical Resist.
-	public function getPysicalRes() {
+	public function getPhysicalRes():Int {
 		var items = [head, body, arms, legs, onhand, offhand];
 		var physical_res = 0;
 
@@ -82,7 +83,7 @@ class Character {
 	}
 
 	// looks through all the items the character has equipped and returns the accumulated Magic Resist.
-	public function getMagicRes() {
+	public function getMagicRes():Int {
 		var items = [head, body, arms, legs, onhand, offhand];
 		var magic_res = 0;
 
@@ -92,7 +93,7 @@ class Character {
 		return magic_res;
 	}
 
-	public function getAttackSpeed() {
+	public function getAttackSpeed():Int {
 		var items = [head, body, arms, legs, onhand, offhand];
 		var attack_speed = 0;
 
@@ -131,10 +132,10 @@ class Character {
 	//look at item i’s type
 	//place item i in appropriate slot
 	// if there is an item already in that slot replace return the old item otherwise return null
-	public function equipItem(i:Item) {
+	public function equipItem(i:Item):Item {
 		var oldItem = null;
 
-		switch (i.getType) {
+		switch (i.getType()) {
 			case Globals.ITEM_HEAD:
 				oldItem = head;
 				head = i;
@@ -164,7 +165,7 @@ class Character {
 	}
 
 	// requires the item type and replaces it with nothing
-	public function unequipItem(type:Int) {
+	public function unequipItem(type:Int):Void {
 
 		switch (type) {
 			case Globals.ITEM_HEAD:
@@ -185,5 +186,30 @@ class Character {
 			case Globals.ITEM_OFFHAND:
 				offhand = null;
 		}
+	}
+
+	// this is used when a new turn happens
+	public function resetAction():Void {
+		action = null;
+	}
+
+	// sets the new action and calculates the 
+	// pre attack variables
+	public function setAction(a:Action):Void {
+		action = a;
+
+		action.report.attack_speed = getAttackSpeed();
+	}
+
+	public function getAction():Action {
+		return action;
+	}
+
+	// applies damage to this character and returns
+	// total damage dealt
+	public function takeDamage(physicalDamage:Int) {
+		var damageDealt = physicalDamage-getPhysicalRes();
+		vitality -= damageDealt;
+		return damageDealt;
 	}
 }
