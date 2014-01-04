@@ -1,5 +1,7 @@
 package;
 
+import actions.Action;
+
 class Character {
 
 	private var vitality:Int;
@@ -197,10 +199,20 @@ class Character {
 		return action;
 	}
 
+	public function attack():Int {
+		var damageToDo = getAttackPower();
+		damageToDo = action.attack(damageToDo);
+		return damageToDo;
+	} 
+
 	// applies damage to this character and returns
-	// total damage dealt
-	public function takeDamage(physicalDamage:Int) {
-		var damageDealt = physicalDamage-getPhysicalRes();
+	public function defend(physicalDamage:Int):Int {
+		
+		var damageDealt = (physicalDamage-getPhysicalRes() < 0) ? 0 : physicalDamage-getPhysicalRes();
+		if (action != null){
+			damageDealt = action.defend(damageDealt);
+		}
+		
 		if (vitality <= damageDealt){
 			vitality = 0;
 			isdead = true;

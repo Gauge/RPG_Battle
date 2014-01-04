@@ -8,7 +8,6 @@ import flash.events.KeyboardEvent;
 import flash.ui.Keyboard;
 import flash.system.System;
 
-
 class Main extends Sprite {
 
 	var game:Game;
@@ -58,13 +57,13 @@ class Main extends Sprite {
 				game.selectAction(Globals.PLAYER_ONE, Globals.ACTION_ATTACK, Globals.PLAYER_TWO, Globals.CHARACTER_3);
 
 			case Keyboard.P:
-				game.selectAction(Globals.PLAYER_ONE, Globals.ACTION_DEFEND, -1, -1);
+				game.selectAction(Globals.PLAYER_ONE, Globals.ACTION_DEFEND, Globals.PLAYER_ONE, Globals.CHARACTER_1);
 
 			case Keyboard.A:
 				game.selectAction(Globals.PLAYER_TWO, Globals.ACTION_ATTACK, Globals.PLAYER_ONE, Globals.CHARACTER_3);
 
 			case Keyboard.S:
-				game.selectAction(Globals.PLAYER_TWO, Globals.ACTION_DEFEND, -1, -1);
+				game.selectAction(Globals.PLAYER_TWO, Globals.ACTION_DEFEND, Globals.PLAYER_ONE, Globals.CHARACTER_1);
 
 			case Keyboard.ESCAPE:
 				trace("quiting program");
