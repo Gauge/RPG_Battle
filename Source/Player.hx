@@ -1,5 +1,7 @@
 package;
 
+import actions.Action;
+
 class Player {
 
 	private var playerID:Int;
@@ -52,7 +54,7 @@ class Player {
 			return;
 		}
 
-		team[selected].setAction(new Action(playerID, selected, action, targetPlayer, targetCharacter));
+		team[selected].setAction(Action.createAction(action, playerID, selected, targetPlayer, targetCharacter));
 	}
 
 	public function getActionList():Array <Action> {

@@ -53,7 +53,7 @@ class Game {
 
 		var player = getPlayerById(selectedPlayer);
 		player.setAction(action, targetPlayer, targetCharacter);
-		trace("player " + selectedPlayer + " selected: " + (action == Globals.ACTION_ATTACK ? "ATTACK" : "OTHER") + 
+		trace("player " + selectedPlayer + " selected: " + (action == Globals.ACTION_ATTACK ? "ATTACK" : (action == Globals.ACTION_DEFEND ? "DEFEND" : "OTHER")) + 
 			" for Character " + (player.getSelected() == -1 ? "UNSELECTED" : (player.getSelected()+1)+""));
 	}
 
@@ -69,10 +69,20 @@ class Game {
 			var action = actions[i];
 			var splayer = getPlayerById(action.getSelectedPlayer());
 			var tplayer = getPlayerById(action.getTargetPlayer());
+			
 			var schar = splayer.team[action.getSelectedCharacter()];
 			var tchar = tplayer.team[action.getTargetCharacter()];
-			if (action.getAction() == Globals.ACTION_ATTACK) {
-				schar.getAction().report.damage_dealt = tchar.takeDamage(schar.getAttackPower());
+			
+			if (tchar.isDead()) {
+				for(newTarget in 0...tplayer.team.length) {
+					if (!tplayer.team[newTarget].isDead()){
+						tchar = tplayer.team[newTarget];
+					}
+				}
+			}
+			
+			if (action.getAction() != Globals.ACTION_DEFEND){
+				schar.getAction().report.damage_dealt = tchar.defend(schar.attack());
 			}
 		}
 
@@ -96,17 +106,17 @@ class Game {
 	}
 
 	public function getSortedActions() {
-				// sort actions by attack speed
+		// sort actions by attack speed
 		var actions = [];
 
 		// connect lists into one
 		var list = player1.getActionList();
 		var temp = player2.getActionList();
-
 		for (i in 0...temp.length) {
 			list.push(temp[i]);
 		}
 
+		// adds the first list item to the sorted list if one exists
 		if (list.length > 0) actions.push(list[0]);
 
 		for (i in 1...list.length) {
@@ -123,7 +133,7 @@ class Game {
 				actions.push(list[i]);
 			}
 		}
-		
+
 		return actions;
 	}
 
