@@ -49,13 +49,15 @@ class Game {
 		}
 
 		if (player == Globals.PLAYER_ONE) { 
-			player1.selected = characterID;
-			trace("player 1 selected character " + (characterID+1));
+			player1.setSelected(characterID);
+			trace("player 1 selected character " + (player1.getSelected()+1));
+			trace("plaer 1 locked in: " + player1.isLockedIn());
 		}
 
 		else if (player == Globals.PLAYER_TWO) { 
-			player2.selected = characterID; 
-			trace("player 2 selected character " + (characterID+1));
+			player2.setSelected(characterID);
+			trace("player 2 selected character " + (player2.getSelected()+1));
+			trace("plaer 2 locked in: " + player2.isLockedIn());
 		}
 	}
 

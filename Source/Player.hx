@@ -6,7 +6,7 @@ class Player {
 	private var islockedin:Bool;
 	// this is the index of the currently selected character
 	// nagative one stands for nothing selected
-	public var selected:Int;
+	private var selected:Int;
 	// this is the four character under the players command
 	public var team:Array <Character>;
 
@@ -17,7 +17,7 @@ class Player {
 		newTurn();
 	}
 
-	public function newTurn() {
+	public function newTurn():Void {
 		selected = -1;
 		islockedin = false;
 		for (i in 0...team.length) {
@@ -25,19 +25,29 @@ class Player {
 		}
 	}
 
-	public function getPlayerID() {
+	public function getPlayerID():Int {
 		return playerID;
 	}
 
-	public function toggleLockedIn() {
+	public function toggleLockedIn():Void {
 		islockedin = !islockedin;
+		selected = (islockedin) ? -1 : selected;
 	}
 
-	public function isLockedIn() {
+	public function isLockedIn():Bool {
 		return islockedin;
 	}
 
-	public function setAction(action:Int, targetPlayer:Int, targetCharacter:Int) {
+	public function setSelected(id:Int):Void {
+		selected = id;
+		islockedin = false;
+	}
+
+	public function getSelected():Int {
+		return selected;
+	}
+
+	public function setAction(action:Int, targetPlayer:Int, targetCharacter:Int):Void {
 		if (selected == -1){
 			return;
 		}
