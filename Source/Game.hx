@@ -12,30 +12,23 @@ class Game {
 		gamestate = Globals.GAME_INIT;
 		trace("Initalizing game...");
 		
-		turn = 1;
+		turn = 0;
 		player1 = new Player(Globals.PLAYER_ONE);
 		player2 = new Player(Globals.PLAYER_TWO);
 
-		gamestate = Globals.GAME_TURN;
-		trace("started game, turn 1");
+		newTurn();
 	}
 
 	// toggles the locked in state of the player that calls it
 	// it also proforms the check to move to the next turn
-	public function lockin(player:Int) {
+	public function lockin(p:Int) {
 		if (gamestate != Globals.GAME_TURN) {
 			return;
 		}
-		
-		if (player == Globals.PLAYER_ONE){
-			player1.toggleLockedIn();
-			trace((player1.isLockedIn()) ? "player one locked in" : "player one unlocked");
-		} 
 
-		else if (player == Globals.PLAYER_TWO) {
-			player2.toggleLockedIn();
-			trace((player2.isLockedIn()) ? "player two locked in" : "player two unlocked");
-		}
+		var player = getPlayerById(p);
+		player.toggleLockedIn();
+		trace(player.isLockedIn() ? "player " + p + " locked in" : "player " + p + " unlocked");
 
 		if (player1.isLockedIn() && player2.isLockedIn()) {
 			updateGame();
@@ -43,22 +36,14 @@ class Game {
 	}
 
 	// highlights a character to apply an action to
-	public function selectCharacter(player:Int, characterID:Int) {
+	public function selectCharacter(p:Int, characterID:Int) {
 		if (gamestate != Globals.GAME_TURN){
 			return; 
 		}
 
-		if (player == Globals.PLAYER_ONE) { 
-			player1.setSelected(characterID);
-			trace("player 1 selected character " + (player1.getSelected()+1));
-			trace("plaer 1 locked in: " + player1.isLockedIn());
-		}
-
-		else if (player == Globals.PLAYER_TWO) { 
-			player2.setSelected(characterID);
-			trace("player 2 selected character " + (player2.getSelected()+1));
-			trace("plaer 2 locked in: " + player2.isLockedIn());
-		}
+		var player = getPlayerById(p);
+		player.setSelected(characterID);
+		trace("player " + p + " selected character " + (player.getSelected()+1));
 	}
 
 	public function selectAction(selectedPlayer:Int, action:Int, targetPlayer:Int, targetCharacter:Int) {
@@ -66,13 +51,10 @@ class Game {
 			return;
 		}
 
-		if (selectedPlayer == Globals.PLAYER_ONE) {
-			player1.setAction(action, targetPlayer, targetCharacter);
-		}
-
-		else if (selectedPlayer == Globals.PLAYER_TWO){
-			player2.setAction(action, targetPlayer, targetCharacter);
-		}
+		var player = getPlayerById(selectedPlayer);
+		player.setAction(action, targetPlayer, targetCharacter);
+		trace("player " + selectedPlayer + " selected: " + (action == Globals.ACTION_ATTACK ? "ATTACK" : "OTHER") + 
+			" for Character " + (player.getSelected() == -1 ? "UNSELECTED" : (player.getSelected()+1)+""));
 	}
 
 
@@ -85,18 +67,17 @@ class Game {
 
 		for (i in 0...actions.length){
 			var action = actions[i];
-			var splayer = getPlayerOffId(action.getSelectedPlayer());
-			var tplayer = getPlayerOffId(action.getTargetPlayer());
+			var splayer = getPlayerById(action.getSelectedPlayer());
+			var tplayer = getPlayerById(action.getTargetPlayer());
 			var schar = splayer.team[action.getSelectedCharacter()];
 			var tchar = tplayer.team[action.getTargetCharacter()];
-
 			if (action.getAction() == Globals.ACTION_ATTACK) {
 				schar.getAction().report.damage_dealt = tchar.takeDamage(schar.getAttackPower());
 			}
 		}
 
 		// after log
-		actions = getSortedActions();
+		var actions = getSortedActions();
 		for (i in 0...actions.length){
 			trace("player " + actions[i].getSelectedPlayer() + " character " + (actions[i].getSelectedCharacter()+1) + 
 				"\'s attack did " + actions[i].report.damage_dealt + " damage to player " + actions[i].getTargetPlayer() + 
@@ -106,7 +87,7 @@ class Game {
 		newTurn();
 	}
 
-	private function getPlayerOffId(id:Int) {
+	private function getPlayerById(id:Int) {
 		if (id == Globals.PLAYER_ONE) {
 			return player1;
 		} else {
@@ -121,26 +102,28 @@ class Game {
 		// connect lists into one
 		var list = player1.getActionList();
 		var temp = player2.getActionList();
+
 		for (i in 0...temp.length) {
 			list.push(temp[i]);
 		}
 
-		actions.push(list[0]);
+		if (list.length > 0) actions.push(list[0]);
 
 		for (i in 1...list.length) {
+			var flag = false;
 			for (i2 in 0...actions.length) {
 				
 				if (list[i].report.attack_speed < actions[i2].report.attack_speed){
 					actions.insert(i2, list[i]);
+					flag = true;
 					break;
-				} 
-
-				else if (i2 == list.length-1) {
-					actions.push(list[i]);
 				}
 			}
+			if (!flag) {
+				actions.push(list[i]);
+			}
 		}
-
+		
 		return actions;
 	}
 
@@ -150,16 +133,16 @@ class Game {
 		player2.newTurn();
 		turn++;
 		gamestate = Globals.GAME_TURN;
-		trace("Turn: " + turn);
+		trace("\n-------------------------------Turn " + turn +"--------------------------------------");
 		// list players
 		trace("player 1");
 		for(i in 0...player1.team.length){
-			trace("Character " + (i+1) + " Vitality " + player1.team[i].getVitality());
+			trace("Character " + (i+1) + " Vitality " + player1.team[i].getVitality() + (player1.team[i].isDead() ? " DEAD" : " ALIVE"));
 		}
 
 		trace("player 2");
 		for(i in 0...player2.team.length){
-			trace("Character " + (i+1) + " Vitality " + player2.team[i].getVitality());
+			trace("Character " + (i+1) + " Vitality " + player2.team[i].getVitality() + (player2.team[i].isDead() ? " DEAD" : " ALIVE"));
 		}
 	}
 }

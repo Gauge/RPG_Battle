@@ -4,12 +4,6 @@ class Character {
 
 	private var vitality:Int;
 	private var isdead:Bool;
-	
-	//private lvl_mele:Int;
-	//private lvl_ranged:Int;
-	//private lvl_magic:Int;
-	//private lvl_support:Int;
-	//private statusEffects:Array;
 
 	private var head:Item;
 	private var body:Item;
@@ -21,8 +15,6 @@ class Character {
 	private var action:Action;
 	
 	// set up a new character
-	// NOTE: later we will create an over loaded method that can
-	// 		 load a new character based on the data provided 
 	public function new():Void {
 		equipItem(new Item(Globals.ITEM_ONHAND, 10, 200, 0, 0, 0, Math.round(Math.random()*500)));
 		vitality = getMaxVitality();
@@ -209,7 +201,14 @@ class Character {
 	// total damage dealt
 	public function takeDamage(physicalDamage:Int) {
 		var damageDealt = physicalDamage-getPhysicalRes();
-		vitality -= damageDealt;
+		if (vitality <= damageDealt){
+			vitality = 0;
+			isdead = true;
+			
+		} else {
+			vitality -= damageDealt;
+		}
+
 		return damageDealt;
 	}
 }
