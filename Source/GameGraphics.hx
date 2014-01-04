@@ -112,10 +112,10 @@ class  GameGraphics extends Sprite {
 			else {
 				characterList[i].currentAnimation.timer++;
 			}
-
+			var direction = characterList[i].direction * 2.5;
 			var characterX = TEAM_POSITIONS[i].x;
 			var characterY = TEAM_POSITIONS[i].y;
-			characterList[i].tilesheet.drawTiles(displayContainer.graphics, [characterX, characterY, frameId, 2.5], Tilesheet.TILE_SCALE);
+			characterList[i].tilesheet.drawTiles(displayContainer.graphics, [characterX, characterY, frameId, direction, 0, 0, 2.5], Tilesheet.TILE_TRANS_2x2);
 		}
 	}
 

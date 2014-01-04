@@ -14,7 +14,7 @@ import openfl.display.Tilesheet;
 
 class LoadCharacterSprite {
 
-	static var LEFT = 0;
+	static var LEFT = -1;
 	static var RIGHT = 1;
 
 	static var CHAR_NAME = 0;
@@ -43,7 +43,7 @@ class LoadCharacterSprite {
 		for( c in 0...characterData.length ) {
 			var character = new CharacterSprite(); 
 
-			character.direction = LEFT;
+			character.direction = (c < 4) ? LEFT : RIGHT;
 			character.tilesheet = loadTilesheet(Assets.getBitmapData(characterData[c][CHAR_BITMAP_LOC]), characterData[c]);
 			character.animationList = loadAnimations( characterData[c] );
 			character.currentAnimation = character.animationList[0];
