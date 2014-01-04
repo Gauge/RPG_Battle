@@ -3,14 +3,21 @@ package;
 import flash.display.Sprite;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
+
+import flash.events.MouseEvent;
+import flash.events.Event;
+
 import flash.geom.Rectangle;
 import flash.geom.Point;
-import flash.events.Event;
-import openfl.Assets;
+
 import flash.Lib;
+
+import openfl.Assets;
+import openfl.display.Tilesheet;
+
 import Animations;
 import FileLoader;
-import openfl.display.Tilesheet;
+
 
 
 class  GameGraphics extends Sprite {
@@ -30,16 +37,21 @@ class  GameGraphics extends Sprite {
 
 	static var TEAM_POSITIONS = [POS_L_1, POS_L_2, POS_L_3, POS_L_4, POS_R_1, POS_R_2, POS_R_3, POS_R_4];
 
+	static var CHAR_SCALE = 2.5;
 
 	public var characterList:Array <CharacterSprite>;
 	public var displayContainer:Sprite;
+	public var spriteContainer:Array <Sprite>;
 
 	public var screenWidth:Float;
 	public var screenHeight:Float;
 	public var gameStage:flash.display.Stage;
 
+	private var mainclass:Main;
+
 	
-	function new(){
+	function new(parent : Main){
+		mainclass = parent;
 		super();
 		init();
 
@@ -48,28 +60,39 @@ class  GameGraphics extends Sprite {
 	public function init(){
 		gameStage = Lib.current.stage;
 		characterList = new Array();
-		getScreenDimentions();
-		loadBackdrop();
-		var spriteLoader = new LoadCharacterSprite();
+
+		var spriteLoader = new LoadCharacterSprite(mainclass);
 		characterList = spriteLoader.loadSprites();
 
-		trace(TEAM_POSITIONS);
+		loadBackdrop();
+		loadContainers();
+
 
 		gameStage.addEventListener(Event.ENTER_FRAME, renderLoop);
 
 	}
 
-	private function getScreenDimentions() : Void {
-		screenWidth = gameStage.width;
-		screenHeight = gameStage.height; 
-	} 
-
 	private function loadBackdrop() : Void {
 		var backdrop = new Graphic(Assets.getBitmapData('assets/background.png'), new Rectangle(0, 0, 800,600));
 		drawGraphic(backdrop);
+	}
+
+	private function loadContainers() : Void {
 		displayContainer = new Sprite();
 		gameStage.addChild(displayContainer);
 
+		spriteContainer = new Array();
+
+		for(c in 0...TEAM_POSITIONS.length){
+			var sprite = new Sprite();
+			sprite.x = TEAM_POSITIONS[c].x;
+			sprite.y = TEAM_POSITIONS[c].y;
+
+			sprite.addEventListener(MouseEvent.MOUSE_DOWN, characterList[c].on_click);
+
+			spriteContainer.push(sprite);
+			displayContainer.addChild(sprite);
+		}
 	}
 
 	public function drawGraphic( graphic : Graphic ) : Void {
@@ -92,12 +115,12 @@ class  GameGraphics extends Sprite {
 
 
 	private function renderLoop( event:Event ) : Void {
-		displayContainer.graphics.clear();
 		for ( i in 0...characterList.length ){
+			spriteContainer[i].graphics.clear();
 			var animation = characterList[i].currentAnimation; // this method is for testing purposes only
 			var frameId = animation.currentFrameId;
 			var frame = animation.frameList[frameId];
-
+			
 			if( frame.duration == animation.timer ) {
 				if( frameId < animation.frameList.length - 1 ) {
 					frame = animation.frameList[frameId + 1];
@@ -112,10 +135,10 @@ class  GameGraphics extends Sprite {
 			else {
 				characterList[i].currentAnimation.timer++;
 			}
-			var direction = characterList[i].direction * 2.5;
-			var characterX = TEAM_POSITIONS[i].x;
-			var characterY = TEAM_POSITIONS[i].y;
-			characterList[i].tilesheet.drawTiles(displayContainer.graphics, [characterX, characterY, frameId, direction, 0, 0, 2.5], Tilesheet.TILE_TRANS_2x2);
+			var direction = characterList[i].direction * CHAR_SCALE;
+			var characterX = 0;
+			var characterY = 0;
+			characterList[i].tilesheet.drawTiles(spriteContainer[i].graphics, [characterX, characterY, frameId, direction, 0, 0, CHAR_SCALE], Tilesheet.TILE_TRANS_2x2);
 		}
 	}
 

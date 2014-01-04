@@ -11,14 +11,14 @@ import flash.system.System;
 
 class Main extends Sprite {
 
-	var game:Game;
+	public var game:Game;
 	var gamegraphics:GameGraphics;
 
 	public function new () {
 		super();
 		// start a new game
 		game = new Game();
-		gamegraphics = new GameGraphics();
+		gamegraphics = new GameGraphics(this);
 		stage.addEventListener (KeyboardEvent.KEY_DOWN, keyDown);
 	}
 

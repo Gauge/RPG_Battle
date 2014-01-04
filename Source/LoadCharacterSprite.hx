@@ -35,15 +35,23 @@ class LoadCharacterSprite {
 	static var FRAME_REF_Y = 6;
 	static var FRAME_ID = 7;
 
-	public function new(){}
+	static var TEAMSIZE = 4;
+
+	private var mainclass:Main;
+
+	public function new(parent : Main){
+		mainclass = parent;
+	}
 
 	public function loadSprites() : Array <CharacterSprite> {
 		var characterList:Array <CharacterSprite> = new Array();
 		var characterData = FileLoader.loadData('assets/dataTest.xml');
 		for( c in 0...characterData.length ) {
-			var character = new CharacterSprite(); 
+			var character = new CharacterSprite(mainclass); 
 
-			character.direction = (c < 4) ? LEFT : RIGHT;
+			character.id = (c < TEAMSIZE) ? c : c - TEAMSIZE;
+			character.team = (c < TEAMSIZE) ? 1 : 2;
+			character.direction = (c < TEAMSIZE) ? LEFT : RIGHT;
 			character.tilesheet = loadTilesheet(Assets.getBitmapData(characterData[c][CHAR_BITMAP_LOC]), characterData[c]);
 			character.animationList = loadAnimations( characterData[c] );
 			character.currentAnimation = character.animationList[0];

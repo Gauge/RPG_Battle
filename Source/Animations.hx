@@ -3,17 +3,31 @@ package;
 import flash.display.Sprite;
 import flash.display.BitmapData;
 import flash.display.Bitmap;
+import flash.events.Event;
 import flash.geom.Rectangle;
 import flash.geom.Point;
+import flash.Lib;
 import openfl.display.Tilesheet;
 
+import Game;
+
 class CharacterSprite {
+	public var id : Int;
+	public var team : Int;
 	public var position : Int;
 	public var direction : Int;
 	public var tilesheet : Tilesheet;
 	public var animationList : Array <Animation>;
 	public var currentAnimation : Animation;
-	public function new (){};
+	public var mainclass : Main;
+	public function new (parent : Main){
+		mainclass = parent;
+	};
+
+	public function on_click(event : Event) :Void {
+		mainclass.game.selectCharacter(team, id);
+		
+	}
 
 }
 
