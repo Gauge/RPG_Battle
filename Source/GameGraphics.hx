@@ -18,8 +18,20 @@ class  GameGraphics extends Sprite {
 	static var LEFT = 0;
 	static var RIGHT = 1;
 
+	static var POS_L_1 = new Point(175, 325);
+	static var POS_L_2 = new Point(150, 400);
+	static var POS_L_3 = new Point(125, 475);
+	static var POS_L_4 = new Point(100, 550);
+
+	static var POS_R_1 = new Point(600, 325);
+	static var POS_R_2 = new Point(625, 400);
+	static var POS_R_3 = new Point(650, 475);
+	static var POS_R_4 = new Point(675, 550);
+
+	static var TEAM_POSITIONS = [POS_L_1, POS_L_2, POS_L_3, POS_L_4, POS_R_1, POS_R_2, POS_R_3, POS_R_4];
+
+
 	public var characterList:Array <CharacterSprite>;
-	public var characterData:Array <Dynamic>;
 	public var displayContainer:Sprite;
 
 	public var screenWidth:Float;
@@ -41,7 +53,7 @@ class  GameGraphics extends Sprite {
 		var spriteLoader = new LoadCharacterSprite();
 		characterList = spriteLoader.loadSprites();
 
-		//FileLoader.loadXmlFile('assets/dataTest.xml');
+		trace(TEAM_POSITIONS);
 
 		gameStage.addEventListener(Event.ENTER_FRAME, renderLoop);
 
@@ -100,7 +112,10 @@ class  GameGraphics extends Sprite {
 			else {
 				characterList[i].currentAnimation.timer++;
 			}
-			characterList[i].tilesheet.drawTiles(displayContainer.graphics, [650, 300, frameId, 3], Tilesheet.TILE_SCALE);
+
+			var characterX = TEAM_POSITIONS[i].x;
+			var characterY = TEAM_POSITIONS[i].y;
+			characterList[i].tilesheet.drawTiles(displayContainer.graphics, [characterX, characterY, frameId, 2.5], Tilesheet.TILE_SCALE);
 		}
 	}
 
