@@ -1,63 +1,63 @@
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="10" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="10" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 		
 
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="10" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="10" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 		
 
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="10" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="10" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 		
 
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="10" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="10" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 		
 
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="10" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="10" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 		
 
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="10" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="10" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 		
 
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="10" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="10" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 		
 
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="10" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="10" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 		
 
 	</animation>
