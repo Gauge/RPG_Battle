@@ -81,7 +81,7 @@ class Game {
 				}
 			}
 			
-			if (action.getAction() != Globals.ACTION_DEFEND){
+			if (action.getAction() != Globals.ACTION_DEFEND && schar.isDead() == false){
 				schar.getAction().report.damage_dealt = tchar.defend(schar.attack());
 			}
 		}
