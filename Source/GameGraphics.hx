@@ -66,7 +66,6 @@ class  GameGraphics extends Sprite {
 	}
 
 	private function sendCharSelect(event:Event){
-		trace(event.target.id);
 		game.selectCharacter(event.target.team, event.target.id);
 	}
 
