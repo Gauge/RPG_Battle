@@ -53,6 +53,7 @@ class  GameGraphics extends Sprite {
 	public var gameStage:flash.display.Stage;
 
 	var game:Game;
+	var actionmenu:ActionMenu;
 	
 	function new(){
 
@@ -67,6 +68,8 @@ class  GameGraphics extends Sprite {
 
 	private function sendCharSelect(event:Event){
 		game.selectCharacter(event.target.team, event.target.id);
+		actionmenu.target = event.target;
+		actionmenu.show = true;
 	}
 
 	public function init(){
@@ -81,6 +84,8 @@ class  GameGraphics extends Sprite {
 		loadBackdrop();
 		loadContainers();
 
+		actionmenu = new ActionMenu();
+		gameStage.addChild(actionmenu);
 
 		gameStage.addEventListener(Event.ENTER_FRAME, renderLoop);
 
@@ -129,9 +134,12 @@ class  GameGraphics extends Sprite {
 
 
 	private function renderLoop( event:Event ) : Void {
+		actionmenu.graphics.clear();
+		if(actionmenu.show) drawActionMenu();
+
 		for ( i in 0...characterList.length ){
 			spriteContainer[i].graphics.clear();
-			var animation = characterList[i].currentAnimation; // this method is for testing purposes only
+			var animation = characterList[i].currentAnimation;
 			var frameId = animation.currentFrameId;
 			var frame = animation.frameList[frameId];
 			
@@ -154,6 +162,13 @@ class  GameGraphics extends Sprite {
 			var characterY = 0;
 			characterList[i].tilesheet.drawTiles(spriteContainer[i].graphics, [characterX, characterY, frameId, direction, 0, 0, CHAR_SCALE], Tilesheet.TILE_TRANS_2x2);
 		}
+	}
+
+	private function drawActionMenu(){
+		var target = actionmenu.target;
+		actionmenu.x = target.x - 100;
+		actionmenu.y = target.y;
+		actionmenu.tilesheet.drawTiles(actionmenu.graphics, [0,0,0, 2.5], Tilesheet.TILE_SCALE);
 	}
 
 	private function keyDown(event:KeyboardEvent):Void {

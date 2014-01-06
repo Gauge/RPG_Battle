@@ -9,6 +9,7 @@ import flash.geom.Rectangle;
 import flash.geom.Point;
 import flash.Lib;
 import openfl.display.Tilesheet;
+import openfl.Assets;
 import Game;
 
 class CharacterSprite extends Sprite {
@@ -61,3 +62,16 @@ class Frame {
 	public var offset : Point;
 	public function new(){};
 	}
+
+class ActionMenu extends Sprite {
+	public var show:Bool;
+	public var target:CharacterSprite;
+	public var tilesheet:Tilesheet;
+
+	public function new(){
+		super();
+		tilesheet = new Tilesheet(Assets.getBitmapData("assets/menusprite.png"));
+		tilesheet.addTileRect(new Rectangle(0,0,50,100), new Point(25,100));
+	}
+
+}
