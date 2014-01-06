@@ -4,14 +4,14 @@ import flash.display.Sprite;
 import flash.display.BitmapData;
 import flash.display.Bitmap;
 import flash.events.Event;
+import flash.events.MouseEvent;
 import flash.geom.Rectangle;
 import flash.geom.Point;
 import flash.Lib;
 import openfl.display.Tilesheet;
-
 import Game;
 
-class CharacterSprite {
+class CharacterSprite extends Sprite {
 	public var id : Int;
 	public var team : Int;
 	public var position : Int;
@@ -19,14 +19,13 @@ class CharacterSprite {
 	public var tilesheet : Tilesheet;
 	public var animationList : Array <Animation>;
 	public var currentAnimation : Animation;
-	public var mainclass : Main;
-	public function new (parent : Main){
-		mainclass = parent;
-	};
+
+	public function new (){
+		super();
+	}
 
 	public function on_click(event : Event) :Void {
-		mainclass.game.selectCharacter(team, id);
-		
+		event.target.dispatchEvent(new Event('select_character', true));		
 	}
 
 }

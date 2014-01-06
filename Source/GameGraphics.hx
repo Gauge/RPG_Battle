@@ -5,10 +5,14 @@ import flash.display.Bitmap;
 import flash.display.BitmapData;
 
 import flash.events.MouseEvent;
+import flash.events.KeyboardEvent;
 import flash.events.Event;
 
 import flash.geom.Rectangle;
 import flash.geom.Point;
+
+import flash.ui.Keyboard;
+import flash.system.System;
 
 import flash.Lib;
 
@@ -42,27 +46,37 @@ class  GameGraphics extends Sprite {
 	public var characterList:Array <CharacterSprite>;
 	public var displayContainer:Sprite;
 	public var spriteContainer:Array <Sprite>;
+	public var GUIlist: Array <CharacterSprite>;
 
 	public var screenWidth:Float;
 	public var screenHeight:Float;
 	public var gameStage:flash.display.Stage;
 
-	private var mainclass:Main;
-
+	var game:Game;
 	
-	function new(parent : Main){
-		mainclass = parent;
-		super();
-		init();
+	function new(){
 
+		super();
+
+		game = new Game();
+
+		init();
+		gameStage.addEventListener (KeyboardEvent.KEY_DOWN, keyDown);
+		gameStage.addEventListener ('select_character', sendCharSelect);
+	}
+
+	private function sendCharSelect(event:Event){
+		game.selectCharacter(event.target.team, event.target.team);
 	}
 
 	public function init(){
 		gameStage = Lib.current.stage;
 		characterList = new Array();
 
-		var spriteLoader = new LoadCharacterSprite(mainclass);
-		characterList = spriteLoader.loadSprites();
+		var spriteLoader = new LoadCharacterSprite();
+		characterList = spriteLoader.loadSprites("assets/dataTest.xml");
+
+		GUIlist = spriteLoader.loadSprites("assets/GUIdata.xml");
 
 		loadBackdrop();
 		loadContainers();
@@ -84,7 +98,7 @@ class  GameGraphics extends Sprite {
 		spriteContainer = new Array();
 
 		for(c in 0...TEAM_POSITIONS.length){
-			var sprite = new Sprite();
+			var sprite = characterList[c];
 			sprite.x = TEAM_POSITIONS[c].x;
 			sprite.y = TEAM_POSITIONS[c].y;
 
@@ -142,4 +156,54 @@ class  GameGraphics extends Sprite {
 		}
 	}
 
+	private function keyDown(event:KeyboardEvent):Void {
+		switch (event.keyCode) {
+			case Keyboard.NUMBER_1:
+				game.lockin(Globals.PLAYER_ONE);
+
+			case Keyboard.NUMBER_2:
+				game.lockin(Globals.PLAYER_TWO);
+
+			case Keyboard.Q:
+				game.selectCharacter(Globals.PLAYER_ONE, Globals.CHARACTER_1);
+
+			case Keyboard.W:
+				game.selectCharacter(Globals.PLAYER_ONE, Globals.CHARACTER_2);
+
+			case Keyboard.E:
+				game.selectCharacter(Globals.PLAYER_ONE, Globals.CHARACTER_3);
+
+			case Keyboard.R:
+				game.selectCharacter(Globals.PLAYER_ONE, Globals.CHARACTER_4);
+
+			case Keyboard.T:
+				game.selectCharacter(Globals.PLAYER_TWO, Globals.CHARACTER_1);
+
+			case Keyboard.Y:
+				game.selectCharacter(Globals.PLAYER_TWO, Globals.CHARACTER_2);
+
+			case Keyboard.U:
+				game.selectCharacter(Globals.PLAYER_TWO, Globals.CHARACTER_3);
+
+			case Keyboard.I:
+				game.selectCharacter(Globals.PLAYER_TWO, Globals.CHARACTER_4);
+
+			case Keyboard.O:
+				game.selectAction(Globals.PLAYER_ONE, Globals.ACTION_ATTACK, Globals.PLAYER_TWO, Globals.CHARACTER_3);
+
+			case Keyboard.P:
+				game.selectAction(Globals.PLAYER_ONE, Globals.ACTION_DEFEND, Globals.PLAYER_ONE, Globals.CHARACTER_1);
+
+			case Keyboard.A:
+				game.selectAction(Globals.PLAYER_TWO, Globals.ACTION_ATTACK, Globals.PLAYER_ONE, Globals.CHARACTER_3);
+
+			case Keyboard.S:
+				game.selectAction(Globals.PLAYER_TWO, Globals.ACTION_DEFEND, Globals.PLAYER_ONE, Globals.CHARACTER_1);
+
+			case Keyboard.ESCAPE:
+				trace("quiting program");
+				System.exit(0);
+
+		}
+	}
 }

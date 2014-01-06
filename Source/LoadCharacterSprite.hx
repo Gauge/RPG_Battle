@@ -37,18 +37,14 @@ class LoadCharacterSprite {
 
 	static var TEAMSIZE = 4;
 
-	private var mainclass:Main;
-
-	public function new(parent : Main){
-		mainclass = parent;
+	public function new(){
 	}
 
-	public function loadSprites() : Array <CharacterSprite> {
+	public function loadSprites( filesource : String ) : Array <CharacterSprite> {
 		var characterList:Array <CharacterSprite> = new Array();
-		var characterData = FileLoader.loadData('assets/dataTest.xml');
+		var characterData = FileLoader.loadData( filesource );
 		for( c in 0...characterData.length ) {
-			var character = new CharacterSprite(mainclass); 
-
+			var character = new CharacterSprite();
 			character.id = (c < TEAMSIZE) ? c : c - TEAMSIZE;
 			character.team = (c < TEAMSIZE) ? 1 : 2;
 			character.direction = (c < TEAMSIZE) ? LEFT : RIGHT;
