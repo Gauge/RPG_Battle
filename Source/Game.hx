@@ -61,8 +61,6 @@ class Game {
 	// this is where all the calculations for battle will happen
 	// and all the after math will be updated
 	private function updateGame() {
-		gamestate = Globals.GAME_UPDATE;
-
 		var actions = getSortedActions();
 
 		for (i in 0...actions.length){
@@ -94,7 +92,7 @@ class Game {
 				" character " + (actions[i].getTargetPlayer()+1));
 		}
 		
-		newTurn();
+		gamestate = Globals.GAME_UPDATE;
 	}
 
 	private function getPlayerById(id:Int) {
