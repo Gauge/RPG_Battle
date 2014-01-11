@@ -171,6 +171,8 @@ class  GameGraphics extends Sprite {
 		}
 	}
 
+	/// DRAWING & RENDERING
+
 	public function drawGraphic( graphic : Graphic ) : Void {
 		var container = graphic.graphicContainer;
 
@@ -245,6 +247,8 @@ class  GameGraphics extends Sprite {
 	private function drawCursor(){
 		cursor.drawTiles(this.graphics, [cursor.x, cursor.y, 0, 2.5*cursor.direction, 0, 0, 2.5], Tilesheet.TILE_TRANS_2x2);
 	}
+
+	/// BATTLE ///
 
 	private function startBattle(){
 		battleSequence = new Sequence();
