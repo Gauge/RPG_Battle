@@ -43,7 +43,7 @@ class Game {
 
 		var player = getPlayerById(p);
 		player.setSelected(characterID);
-		trace("player " + p + " selected character " + (player.getSelected()+1));
+		trace("player " + (p+1) + " selected character " + (player.getSelected()+1));
 	}
 
 	public function selectAction(selectedPlayer:Int, action:Int, targetPlayer:Int, targetCharacter:Int) {
@@ -53,7 +53,7 @@ class Game {
 
 		var player = getPlayerById(selectedPlayer);
 		player.setAction(action, targetPlayer, targetCharacter);
-		trace("player " + selectedPlayer + " selected: " + (action == Globals.ACTION_ATTACK ? "ATTACK" : (action == Globals.ACTION_DEFEND ? "DEFEND" : "OTHER")) + 
+		trace("player " + (selectedPlayer+1) + " selected: " + (action == Globals.ACTION_ATTACK ? "ATTACK" : (action == Globals.ACTION_DEFEND ? "DEFEND" : "OTHER")) + 
 			" for Character " + (player.getSelected() == -1 ? "UNSELECTED" : (player.getSelected()+1)+""));
 	}
 
@@ -69,7 +69,7 @@ class Game {
 			
 			var schar = splayer.team[action.getSelectedCharacter()];
 			var tchar = tplayer.team[action.getTargetCharacter()];
-			
+			trace(tchar);
 			if (tchar.isDead()) {
 				for(newTarget in 0...tplayer.team.length) {
 					if (!tplayer.team[newTarget].isDead()){
@@ -87,8 +87,8 @@ class Game {
 		var actions = getSortedActions();
 
 		for (i in 0...actions.length){
-			trace("player " + actions[i].getSelectedPlayer() + " character " + (actions[i].getSelectedCharacter()+1) + 
-				"\'s attack did " + actions[i].report.damage_dealt + " damage to player " + actions[i].getTargetPlayer() + 
+			trace("player " + (actions[i].getSelectedPlayer()+1) + " character " + (actions[i].getSelectedCharacter()+1) + 
+				"\'s attack did " + actions[i].report.damage_dealt + " damage to player " + (actions[i].getTargetPlayer()+1)+ 
 				" character " + (actions[i].getTargetPlayer()+1));
 		}
 		
