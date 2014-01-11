@@ -34,7 +34,7 @@ class FileLoader {
 				var f = 0;
 
 				for( frame in frames ) {
-					var frameData = new Array();
+					var frameData:Array <Dynamic> = new Array();
 					frameData.push( Std.parseInt( frame.get('duration') ) );
 					frameData.push( Std.parseInt( frame.get('x') ) );
 					frameData.push( Std.parseInt( frame.get('y') ) );
@@ -45,6 +45,7 @@ class FileLoader {
 					frameData.push( Std.parseInt( frame.get('ref-x') ) );
 					frameData.push( Std.parseInt( frame.get('ref-y') ) );
 					frameData.push( Std.parseInt( frame.get('id') ) );
+					frameData.push( frame.get('trigger') );
 
 					dataArray[c][2 + a][2 + f] = frameData;
 					f++;

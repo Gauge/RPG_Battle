@@ -12,7 +12,7 @@ import Animations;
 import FileLoader;
 import openfl.display.Tilesheet;
 
-class LoadCharacterSprite {
+class LoadAnimationSprite {
 
 	static var LEFT = -1;
 	static var RIGHT = 1;
@@ -33,18 +33,20 @@ class LoadCharacterSprite {
 	static var FRAME_HEIGHT = 4;
 	static var FRAME_REF_X = 5;
 	static var FRAME_REF_Y = 6;
+
 	static var FRAME_ID = 7;
+	static var FRAME_TRIGGER = 8;
 
 	static var TEAMSIZE = 4;
 
 	public function new(){
 	}
 
-	public function loadSprites( filesource : String ) : Array <CharacterSprite> {
-		var characterList:Array <CharacterSprite> = new Array();
+	public function loadSprites( filesource : String ) : Array <AnimationSprite> {
+		var characterList:Array <AnimationSprite> = new Array();
 		var characterData = FileLoader.loadData( filesource );
 		for( c in 0...characterData.length ) {
-			var character = new CharacterSprite();
+			var character = new AnimationSprite();
 			character.id = (c < TEAMSIZE) ? c : c - TEAMSIZE;
 			character.team = (c < TEAMSIZE) ? 1 : 2;
 			character.direction = (c < TEAMSIZE) ? LEFT : RIGHT;
@@ -81,7 +83,7 @@ class LoadCharacterSprite {
 		for(a in ANIM_LIST_START...data.length){
 			var animation = new Animation();
 			animation.name = data[a][ANIM_NAME];
-			animation.loop = data[a][ANIM_LOOP];
+			animation.loop = (data[a][ANIM_LOOP] == "true") ? true : false;
 			animation.frameList = loadFrameData(data[a]);
 
 			animation.currentFrameId = 0;
@@ -100,7 +102,7 @@ class LoadCharacterSprite {
 			var frame = new Frame();
 			frame.tileId = data[f][FRAME_ID];
 			frame.duration = data[f][FRAME_DURATION];
-
+			frame.trigger = data[f][FRAME_TRIGGER];
 			framelist.push(frame);
 		}
 

@@ -3,7 +3,7 @@ package;
 class Game {
 
 	var turn:Int;
-	var gamestate:Int;
+	public var gamestate:Int;
 
 	var player1:Player;
 	var player2:Player;
@@ -62,7 +62,6 @@ class Game {
 	// and all the after math will be updated
 	private function updateGame() {
 		var actions = getSortedActions();
-
 		for (i in 0...actions.length){
 			var action = actions[i];
 			var splayer = getPlayerById(action.getSelectedPlayer());
@@ -86,6 +85,7 @@ class Game {
 
 		// after log
 		var actions = getSortedActions();
+
 		for (i in 0...actions.length){
 			trace("player " + actions[i].getSelectedPlayer() + " character " + (actions[i].getSelectedCharacter()+1) + 
 				"\'s attack did " + actions[i].report.damage_dealt + " damage to player " + actions[i].getTargetPlayer() + 
@@ -131,12 +131,11 @@ class Game {
 				actions.push(list[i]);
 			}
 		}
-
 		return actions;
 	}
 
 	// sets everything up for the next turn
-	private function newTurn() {
+	public function newTurn() {
 		player1.newTurn();
 		player2.newTurn();
 		turn++;
