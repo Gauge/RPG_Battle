@@ -6,23 +6,28 @@ class Character {
 
 	private var vitality:Int;
 	private var isdead:Bool;
+	private var name:String;
 
-	private var equippment:Array <Item>;
+	private var equipment:Array <Item>;
 
 	private var action:Action;
 	
 	// set up a new character
-	public function new():Void {
-		equippment = [null, null, null, null, null, null];
-		equipItem(ItemLoader.load("ShortSword"));
-		equipItem(ItemLoader.load("SteelArms"));
-		equipItem(ItemLoader.load("SteelBuckler"));
-		equipItem(ItemLoader.load("SteelHelm"));
-		equipItem(ItemLoader.load("SteelLegs"));
-		equipItem(ItemLoader.load("SteelPlate"));
+	public function new(?name:String, ?equipment:Array <String>):Void {
+		this.name = (name != null) ? name : "Mr. Sir";
+		this.equipment = [null, null, null, null, null, null];
+		if (equipment != null) {
+			for (e in equipment){
+				equipItem(Loader.loadItem(e));
+			}
+		}
 		vitality = getMaxVitality();
 		action = null;
 		isdead = false;
+	}
+
+	public function getName():String {
+		return name;
 	}
 
 	public function isDead():Bool {
@@ -37,8 +42,8 @@ class Character {
 	public function getMaxVitality():Int {
 		var vit = 1;
 
-		for (i in 0...equippment.length) {
-			vit += (equippment[i] != null) ? equippment[i].getVitality() : 0;
+		for (i in 0...equipment.length) {
+			vit += (equipment[i] != null) ? equipment[i].getVitality() : 0;
 		}
 		return vit;
 	}
@@ -47,8 +52,8 @@ class Character {
 	public function getAttackPower():Int {
 		var attack_power = 0;
 
-		for (i in 0...equippment.length){
-			attack_power += (equippment[i] != null) ? equippment[i].getAttackPower() : 0;
+		for (i in 0...equipment.length){
+			attack_power += (equipment[i] != null) ? equipment[i].getAttackPower() : 0;
 		}
 		return attack_power;
 	}
@@ -57,8 +62,8 @@ class Character {
 	public function getMagicPower():Int {
 		var magic_power = 0;
 
-		for (i in 0...equippment.length){
-			magic_power += (equippment[i] != null) ? equippment[i].getMagicPower() : 0;
+		for (i in 0...equipment.length){
+			magic_power += (equipment[i] != null) ? equipment[i].getMagicPower() : 0;
 		}
 		return magic_power;
 	}
@@ -67,8 +72,8 @@ class Character {
 	public function getPhysicalRes():Int {
 		var physical_res = 0;
 
-		for (i in 0...equippment.length){
-			physical_res += (equippment[i] != null) ? equippment[i].getPhysicalRes() : 0;
+		for (i in 0...equipment.length){
+			physical_res += (equipment[i] != null) ? equipment[i].getPhysicalRes() : 0;
 		}
 		return physical_res;
 	}
@@ -77,8 +82,8 @@ class Character {
 	public function getMagicRes():Int {
 		var magic_res = 0;
 
-		for (i in 0...equippment.length){
-			magic_res += (equippment[i] != null) ? equippment[i].getMagicRes() : 0;
+		for (i in 0...equipment.length){
+			magic_res += (equipment[i] != null) ? equipment[i].getMagicRes() : 0;
 		}
 		return magic_res;
 	}
@@ -86,35 +91,35 @@ class Character {
 	public function getAttackSpeed():Int {
 		var attack_speed = 0;
 
-		for (i in 0...equippment.length){
-			attack_speed += (equippment[i] != null) ? equippment[i].getAttackSpeed() : 0;
+		for (i in 0...equipment.length){
+			attack_speed += (equipment[i] != null) ? equipment[i].getAttackSpeed() : 0;
 		}
 		return attack_speed;	
 	}
 
 
 	public function getHead():Item {
-		return equippment[Globals.ITEM_HEAD];
+		return equipment[Globals.ITEM_HEAD];
 	}
 
 	public function getBody():Item {
-		return equippment[Globals.ITEM_BODY];
+		return equipment[Globals.ITEM_BODY];
 	}
 
 	public function getArms():Item {
-		return equippment[Globals.ITEM_ARMS];
+		return equipment[Globals.ITEM_ARMS];
 	}
 
 	public function getLegs():Item {
-		return equippment[Globals.ITEM_LEGS];
+		return equipment[Globals.ITEM_LEGS];
 	}
 
 	public function getOnhand():Item {
-		return equippment[Globals.ITEM_ONHAND];
+		return equipment[Globals.ITEM_ONHAND];
 	}
 
 	public function getOffhand():Item {
-		return equippment[Globals.ITEM_OFFHAND];
+		return equipment[Globals.ITEM_OFFHAND];
 	}
 
 	//take in the Item “i”
@@ -122,16 +127,16 @@ class Character {
 	//place item i in appropriate slot
 	// if there is an item already in that slot replace return the old item otherwise return null
 	public function equipItem(i:Item):Item {
-		var oldItem = equippment[i.getType()];
-		equippment[i.getType()] = i;
+		var oldItem = equipment[i.getType()];
+		equipment[i.getType()] = i;
 
 		return oldItem;
 	}
 
 	// requires the item type and replaces it with nothing
 	public function unequipItem(type:Int):Void {
-		var oldItem = equippment[type];
-		equippment[type] == null;
+		var oldItem = equipment[type];
+		equipment[type] == null;
 	}
 
 	// this is used when a new turn happens
