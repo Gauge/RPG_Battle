@@ -1,72 +1,137 @@
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
-		
-
+		<frame trigger="" id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+	</animation>
+	<animation name="attack" loop="false">
+		<frame trigger="" id="0" duration="2" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame trigger="" id="1" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame trigger="" id="3" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="2" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="4" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="hitsplat"  duration="2" x='149' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="6" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="7" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="8" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="9" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
-		
-
+		<frame trigger="" id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+	</animation>
+	<animation name="attack" loop="false">
+		<frame trigger="" id="0" duration="2" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame trigger="" id="1" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame trigger="" id="3" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="2" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="4" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="hitsplat"  duration="2" x='149' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="6" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="7" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="8" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="9" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
-		
-
+		<frame trigger="" id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+	</animation>
+	<animation name="attack" loop="false">
+		<frame trigger="" id="0" duration="2" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame trigger="" id="1" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame trigger="" id="3" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="2" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="4" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="hitsplat"  duration="2" x='149' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="6" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="7" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="8" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="9" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
-		
-
+		<frame trigger="" id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+	</animation>
+	<animation name="attack" loop="false">
+		<frame trigger="" id="0" duration="2" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame trigger="" id="1" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame trigger="" id="3" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="2" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="4" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="hitsplat"  duration="2" x='149' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="6" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="7" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="8" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="9" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
-		
-
+		<frame trigger="" id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+	</animation>
+	<animation name="attack" loop="false">
+		<frame trigger="" id="0" duration="2" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame trigger="" id="1" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame trigger="" id="3" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="2" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="4" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="hitsplat"  duration="2" x='149' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="6" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="7" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="8" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="9" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
-		
-
+		<frame trigger="" id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+	</animation>
+	<animation name="attack" loop="false">
+		<frame trigger="" id="0" duration="2" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame trigger="" id="1" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame trigger="" id="3" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="2" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="4" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="hitsplat"  duration="2" x='149' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="6" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="7" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="8" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="9" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame trigger="" id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+	</animation>
+	<animation name="attack" loop="false">
+		<frame trigger="" id="0" duration="2" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame trigger="" id="1" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame trigger="" id="3" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
 		
-
+		<frame trigger="" id="2" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="4" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="hitsplat"  duration="2" x='149' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="6" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="7" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="8" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="9" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 	</animation>
 </character>
 <character name="Test" bitmap="assets/testsprite.png">
 	<animation name="waiting" loop="true">
-		<frame id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
-		<frame id="1" duration="15" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
-		
-
+		<frame trigger="" id="0" duration="15" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+	</animation>
+	<animation name="attack" loop="false">
+		<frame trigger="" id="0" duration="2" x="6" y="6" width="24" height="35" ref-x="4" ref-y="30" />
+		<frame trigger="" id="1" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
+		<frame trigger="" id="3" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="2" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="4" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="hitsplat"  duration="2" x='149' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="6" duration="2" x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="7" duration="2" x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
+		<frame trigger="" id="8" duration="2" x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
+		<frame trigger="" id="9" duration="2" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" />
 	</animation>
 </character>
-<!-- <frame id="3" duration='3' x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
-		<frame id="2" duration='3' x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
-		<frame id="4" duration='3' x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
-		<frame id="5" duration='3' x='149' y='8' width='24' height='33' ref-x='4' ref-y='29' />
-		<frame id="6" duration='3' x='122' y='8' width='24' height='33' ref-x='4' ref-y='29' />
-		<frame id="7" duration='3' x='94' y='8' width='23' height='33' ref-x='4' ref-y='29' />
-		<frame id="8" duration='3' x='67' y='7' width='22' height='34' ref-x='3' ref-y='30' />
-		<frame id="9" duration="3" x="36" y="6" width="22" height="34" ref-x="3" ref-y="30" /> -->

@@ -43,10 +43,10 @@ class  GameGraphics extends Sprite {
 
 	static var CHAR_SCALE = 2.5;
 
-	public var characterList:Array <CharacterSprite>;
+	public var characterList:Array <AnimationSprite>;
 	public var displayContainer:Sprite;
 	public var spriteContainer:Array <Sprite>;
-	public var GUIlist: Array <CharacterSprite>;
+	public var GUIlist: Array <AnimationSprite>;
 	public var renderList: Array <Dynamic>;
 
 	public var screenWidth:Float;
@@ -58,6 +58,8 @@ class  GameGraphics extends Sprite {
 	var cursorVisible:Bool;
 
 	var selectingTarget:Bool;
+
+	var battleSequence:Sequence;
 	
 	function new(){
 
@@ -66,19 +68,21 @@ class  GameGraphics extends Sprite {
 		game = new Game();
 
 		init();
-		addEventListener (KeyboardEvent.KEY_DOWN, keyDown);
+		Lib.current.stage.addEventListener (KeyboardEvent.KEY_DOWN, keyDown);
+
+		loadListeners();
+	}
+
+	private function loadListeners() :Void {
 		addEventListener ('select_character', sendCharSelect);
 		addEventListener ('menu_select', menuSelect);
 	}
 
-
-
 	public function init(){
 		characterList = new Array();
 
-		var spriteLoader = new LoadCharacterSprite();
+		var spriteLoader = new LoadAnimationSprite();
 		characterList = spriteLoader.loadSprites("assets/dataTest.xml");
-
 		GUIlist = spriteLoader.loadSprites("assets/GUIdata.xml");
 
 		loadBackdrop();
@@ -92,6 +96,7 @@ class  GameGraphics extends Sprite {
 		actionmenu.addEventListener(MouseEvent.MOUSE_DOWN, actionmenu.on_click);
 		addChild(actionmenu);
 
+		enemyTeamActions(); //Stand in for now...
 
 		addEventListener(Event.ENTER_FRAME, renderLoop);
 	}
@@ -109,7 +114,7 @@ class  GameGraphics extends Sprite {
 				showCursor();
 				trace('please select target');
 			case "defend":
-				game.selectAction(Globals.PLAYER_TWO, Globals.ACTION_DEFEND, null, null);
+				game.selectAction(Globals.PLAYER_TWO, Globals.ACTION_DEFEND, -1, -1);
 				actionmenu.show = false;
 			case "attack":
 				selectingTarget = true;
@@ -121,11 +126,13 @@ class  GameGraphics extends Sprite {
 	private function sendCharSelect(event:Event){
 		if(event.target.team == 2 && selectingTarget == false){
 			game.selectCharacter(event.target.team, event.target.id);
+			trace(event.target.team);
 			actionmenu.target = event.target;
 			actionmenu.show = true;
 		}
 		else if(event.target.team == 1 && selectingTarget == true) {
-			game.selectAction(Globals.PLAYER_TWO, Globals.ACTION_ATTACK, event.target.id, Globals.PLAYER_ONE);
+
+			game.selectAction(Globals.PLAYER_TWO, Globals.ACTION_ATTACK, Globals.PLAYER_ONE, event.target.id);
 			selectingTarget = false;
 			actionmenu.show = false;
 		}
@@ -184,26 +191,41 @@ class  GameGraphics extends Sprite {
 
 
 	private function renderLoop( event:Event ) : Void {
-		actionmenu.graphics.clear();
-		if(actionmenu.show) drawActionMenu();
-		if(cursorVisible) drawCursor();
+		if(game.gamestate == Globals.GAME_TURN){	
+			actionmenu.graphics.clear();
+			if(actionmenu.show) drawActionMenu();
+			if(cursorVisible) drawCursor();
+		}
+		else if(game.gamestate == Globals.GAME_UPDATE){
+			if(battleSequence == null) startBattle();
 
+		}
 		for ( char in 0...characterList.length ){
 			spriteContainer[char].graphics.clear();
 			var animation = characterList[char].currentAnimation;
 			var frameId = animation.currentFrameId;
 			var frame = animation.frameList[frameId];
+
 			
+
 			if( frame.duration == animation.timer ) {
 				if( frameId < animation.frameList.length - 1 ) {
 					frame = animation.frameList[frameId + 1];
 					characterList[char].currentAnimation.currentFrameId = frameId + 1;
 				}
-				else{
+				else if(!animation.loop) {
+					characterList[char].currentAnimation.currentFrameId = 0;
+					continueBattle();
+					
+				}
+				else {
 					frame = animation.frameList[0];
 					characterList[char].currentAnimation.currentFrameId = 0;
 				}
+
 				characterList[char].currentAnimation.timer = 0;
+
+				if(frame.trigger != '') battleTrigger(frame.trigger);
 			}
 			else {
 				characterList[char].currentAnimation.timer++;
@@ -222,6 +244,48 @@ class  GameGraphics extends Sprite {
 
 	private function drawCursor(){
 		cursor.drawTiles(this.graphics, [cursor.x, cursor.y, 0, 2.5*cursor.direction, 0, 0, 2.5], Tilesheet.TILE_TRANS_2x2);
+	}
+
+	private function startBattle(){
+		battleSequence = new Sequence();
+		battleSequence.load( game.getSortedActions() );
+
+		removeEventListener ('select_character', sendCharSelect);
+		removeEventListener ('menu_select', menuSelect);
+
+		battleAnimationCycle();
+	}
+
+	private function battleAnimationCycle() :Void {
+		var action = battleSequence.get(0);
+		characterList[action[0]].currentAnimation = characterList[action[0]].animationList[1];
+	}
+
+	private function continueBattle() :Void {
+		var action = battleSequence.get(0);
+		characterList[action[0]].currentAnimation = characterList[action[0]].animationList[0];
+
+		battleSequence.shift();
+		if(battleSequence.seqList[0] != null) battleAnimationCycle();
+		else{
+			loadListeners();
+			game.newTurn();
+			battleSequence = null;
+			trace(game.gamestate);
+		}
+	}
+
+	private function battleTrigger(trigger : String) :Void {
+		var action = battleSequence.get(0);
+		var char = characterList[action[0]];
+		var target = characterList[action[1]];
+
+		switch (trigger) {
+			case "hitsplat" :
+				trace('show the damage');
+
+		}
+
 	}
 
 	private function keyDown(event:KeyboardEvent):Void {
@@ -272,6 +336,13 @@ class  GameGraphics extends Sprite {
 			trace("quiting program");
 			System.exit(0);
 
+		}
+	}
+
+	private function enemyTeamActions(){
+		for(c in 0...4){
+			game.selectCharacter(0, c);
+			game.selectAction(0, 0, 1, c);
 		}
 	}
 }

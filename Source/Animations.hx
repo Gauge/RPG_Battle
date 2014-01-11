@@ -12,7 +12,7 @@ import openfl.display.Tilesheet;
 import openfl.Assets;
 import Game;
 
-class CharacterSprite extends Sprite {
+class AnimationSprite extends Sprite {
 	public var id : Int;
 	public var team : Int;
 	public var position : Int;
@@ -32,13 +32,15 @@ class CharacterSprite extends Sprite {
 }
 
 class Animation {
+	public function new(){}
+
+	public var index : Int;
 	public var name : String;
 	public var frameList : Array <Frame>;
 	public var currentFrameId : Int;
 	public var loop : Bool;
 	public var nextAnimation : Int;
 	public var timer : Int;
-	public function new () {};	
 }
 
 class Graphic {
@@ -60,12 +62,13 @@ class Frame {
 	public var tileId : Int;
 	public var duration : Int;
 	public var offset : Point;
+	public var trigger : String;
 	public function new(){};
 	}
 
 class ActionMenu extends Sprite {
 	public var show:Bool;
-	public var target:CharacterSprite;
+	public var target:AnimationSprite;
 	public var tilesheet:Tilesheet;
 	public var selection:String;
 
@@ -109,5 +112,34 @@ class Cursor extends Tilesheet {
 	public function new(image:BitmapData){
 		super(image);
 		addTileRect(new Rectangle(0,0,10,10), new Point(0,5));
+	}
+}
+
+class Sequence {
+	public function new(){}
+
+	public var seqList:Array <Dynamic>;
+
+	public function load( ?rawSequence : Array <Dynamic> ) :Void {
+		seqList = new Array();
+		if(rawSequence != null){
+			for(action in rawSequence) {
+				var character = action.selectedCharacter + (action.selectedPlayer * 4);
+				var target = action.targetCharacter + (action.targetPlayer * 4);
+				var anim = action.action;
+				var damage = action.report.damage_dealt;
+
+				seqList.push([character, target, anim, damage]);
+			}
+		}
+		trace(seqList);
+	}
+
+	public function get(index : Int) : Array <Int> {
+		return seqList[index];
+	}
+
+	public function shift() :Void {
+		seqList.shift();
 	}
 }
