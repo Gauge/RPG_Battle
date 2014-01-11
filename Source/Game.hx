@@ -13,8 +13,8 @@ class Game {
 		trace("Initalizing game...");
 		
 		turn = 0;
-		player1 = new Player(Globals.PLAYER_ONE);
-		player2 = new Player(Globals.PLAYER_TWO);
+		player1 = Loader.loadPlayer(Globals.PLAYER_ONE, "player1");
+		player2 = Loader.loadPlayer(Globals.PLAYER_TWO, "player2");
 
 		newTurn();
 	}

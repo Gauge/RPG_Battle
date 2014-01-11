@@ -13,9 +13,13 @@ class Player {
 	public var team:Array <Character>;
 
 
-	public function new(id:Int) {
+	public function new(id:Int, team:Array <String>) {
 		playerID = id;
-		team = [new Character(), new Character(), new Character(), new Character()];
+		this.team = [null, null, null, null];
+		for (i in 0...team.length) {
+			this.team[i] = Loader.loadCharacter(team[i]);
+		}
+
 		newTurn();
 	}
 
