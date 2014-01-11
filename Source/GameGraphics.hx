@@ -47,13 +47,15 @@ class  GameGraphics extends Sprite {
 	public var displayContainer:Sprite;
 	public var spriteContainer:Array <Sprite>;
 	public var GUIlist: Array <CharacterSprite>;
+	public var renderList: Array <Dynamic>;
 
 	public var screenWidth:Float;
 	public var screenHeight:Float;
-	public var gameStage:flash.display.Stage;
 
 	var game:Game;
 	var actionmenu:ActionMenu;
+	var cursor:Cursor;
+	var cursorVisible:Bool;
 
 	var selectingTarget:Bool;
 	
@@ -64,15 +66,14 @@ class  GameGraphics extends Sprite {
 		game = new Game();
 
 		init();
-		gameStage.addEventListener (KeyboardEvent.KEY_DOWN, keyDown);
-		gameStage.addEventListener ('select_character', sendCharSelect);
-		gameStage.addEventListener ('menu_select', menuSelect);
+		addEventListener (KeyboardEvent.KEY_DOWN, keyDown);
+		addEventListener ('select_character', sendCharSelect);
+		addEventListener ('menu_select', menuSelect);
 	}
 
 
 
 	public function init(){
-		gameStage = Lib.current.stage;
 		characterList = new Array();
 
 		var spriteLoader = new LoadCharacterSprite();
@@ -85,13 +86,14 @@ class  GameGraphics extends Sprite {
 
 		selectingTarget = false;
 
+		cursorVisible = false;
+
 		actionmenu = new ActionMenu();
 		actionmenu.addEventListener(MouseEvent.MOUSE_DOWN, actionmenu.on_click);
-		gameStage.addChild(actionmenu);
+		addChild(actionmenu);
 
 
-		gameStage.addEventListener(Event.ENTER_FRAME, renderLoop);
-
+		addEventListener(Event.ENTER_FRAME, renderLoop);
 	}
 
 	private function menuSelect(event : Event) {
@@ -104,11 +106,15 @@ class  GameGraphics extends Sprite {
 				actionmenu.show = false;
 			case "magic":
 				selectingTarget = true;
+				showCursor();
+				trace('please select target');
 			case "defend":
 				game.selectAction(Globals.PLAYER_TWO, Globals.ACTION_DEFEND, null, null);
 				actionmenu.show = false;
 			case "attack":
 				selectingTarget = true;
+				showCursor();
+				trace('please select target');
 			}
 	}
 
@@ -125,6 +131,16 @@ class  GameGraphics extends Sprite {
 		}
 	}
 
+	private function showCursor() :Void{
+		cursorVisible = true;
+		if(cursor == null) cursor = new Cursor(Assets.getBitmapData('assets/cursor.png'));
+		cursor.direction = 1;
+	}
+
+	private function updateCursor() :Void {
+
+	}
+
 	private function loadBackdrop() : Void {
 		var backdrop = new Graphic(Assets.getBitmapData('assets/background.png'), new Rectangle(0, 0, 800,600));
 		drawGraphic(backdrop);
@@ -132,7 +148,7 @@ class  GameGraphics extends Sprite {
 
 	private function loadContainers() : Void {
 		displayContainer = new Sprite();
-		gameStage.addChild(displayContainer);
+		addChild(displayContainer);
 
 		spriteContainer = new Array();
 
@@ -154,7 +170,7 @@ class  GameGraphics extends Sprite {
 		container = new Sprite();
 		container.addChild(graphic.bitmapSource);
 		resizeSprite(container, graphic.gameGeometry);
-		gameStage.addChild(container);
+		addChild(container);
 		
 	}
 
@@ -170,31 +186,30 @@ class  GameGraphics extends Sprite {
 	private function renderLoop( event:Event ) : Void {
 		actionmenu.graphics.clear();
 		if(actionmenu.show) drawActionMenu();
+		if(cursorVisible) drawCursor();
 
-		for ( i in 0...characterList.length ){
-			spriteContainer[i].graphics.clear();
-			var animation = characterList[i].currentAnimation;
+		for ( char in 0...characterList.length ){
+			spriteContainer[char].graphics.clear();
+			var animation = characterList[char].currentAnimation;
 			var frameId = animation.currentFrameId;
 			var frame = animation.frameList[frameId];
 			
 			if( frame.duration == animation.timer ) {
 				if( frameId < animation.frameList.length - 1 ) {
 					frame = animation.frameList[frameId + 1];
-					characterList[i].currentAnimation.currentFrameId = frameId + 1;
+					characterList[char].currentAnimation.currentFrameId = frameId + 1;
 				}
 				else{
 					frame = animation.frameList[0];
-					characterList[i].currentAnimation.currentFrameId = 0;
+					characterList[char].currentAnimation.currentFrameId = 0;
 				}
-				characterList[i].currentAnimation.timer = 0;
+				characterList[char].currentAnimation.timer = 0;
 			}
 			else {
-				characterList[i].currentAnimation.timer++;
+				characterList[char].currentAnimation.timer++;
 			}
-			var direction = characterList[i].direction * CHAR_SCALE;
-			var characterX = 0;
-			var characterY = 0;
-			characterList[i].tilesheet.drawTiles(spriteContainer[i].graphics, [characterX, characterY, frameId, direction, 0, 0, CHAR_SCALE], Tilesheet.TILE_TRANS_2x2);
+			var direction = characterList[char].direction * CHAR_SCALE;
+			characterList[char].tilesheet.drawTiles(spriteContainer[char].graphics, [0,0, frameId, direction, 0, 0, CHAR_SCALE], Tilesheet.TILE_TRANS_2x2);
 		}
 	}
 
@@ -203,6 +218,10 @@ class  GameGraphics extends Sprite {
 		actionmenu.x = target.x - 100;
 		actionmenu.y = target.y;
 		actionmenu.tilesheet.drawTiles(actionmenu.graphics, [0,0,0, 2.5], Tilesheet.TILE_SCALE);
+	}
+
+	private function drawCursor(){
+		cursor.drawTiles(this.graphics, [cursor.x, cursor.y, 0, 2.5*cursor.direction, 0, 0, 2.5], Tilesheet.TILE_TRANS_2x2);
 	}
 
 	private function keyDown(event:KeyboardEvent):Void {

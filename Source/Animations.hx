@@ -100,3 +100,14 @@ class ActionMenu extends Sprite {
 	}
 
 }
+
+class Cursor extends Tilesheet {
+	public var direction:Int;
+	public var x:Float;
+	public var y:Float;
+
+	public function new(image:BitmapData){
+		super(image);
+		addTileRect(new Rectangle(0,0,10,10), new Point(0,5));
+	}
+}
