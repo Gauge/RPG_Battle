@@ -18,8 +18,8 @@ class LoadAnimationSprite {
 	static var RIGHT = 1;
 
 	static var CHAR_NAME = 0;
-	static var CHAR_BITMAP_LOC = 1;
-	static var ANIM_LIST_START = 2;
+	static var CHAR_BITMAP_LOC = 0;
+	static var ANIM_LIST_START = 1;
 
 	static var ANIM_NAME = 0;
 	static var ANIM_LOOP = 1;
@@ -42,21 +42,24 @@ class LoadAnimationSprite {
 	public function new(){
 	}
 
-	public function loadSprites( filesource : String ) : Array <AnimationSprite> {
+	public function loadSprites( filesource : String , index : Int) : Array <AnimationSprite> {
 		var characterList:Array <AnimationSprite> = new Array();
-		var characterData = FileLoader.loadData( filesource );
+		var characterData = new Array();
+		for(c in 0...index) {
+			characterData.push(Loader.loadSprite( filesource ));
+		}
 		for( c in 0...characterData.length ) {
 			var character = new AnimationSprite();
 			character.id = (c < TEAMSIZE) ? c : c - TEAMSIZE;
 			character.team = (c < TEAMSIZE) ? 1 : 2;
 			character.direction = (c < TEAMSIZE) ? LEFT : RIGHT;
+
 			character.tilesheet = loadTilesheet(Assets.getBitmapData(characterData[c][CHAR_BITMAP_LOC]), characterData[c]);
 			character.animationList = loadAnimations( characterData[c] );
 			character.currentAnimation = character.animationList[0];
 
 			characterList.push(character);
 		}
-
 		return characterList;
 	}
 
@@ -69,11 +72,10 @@ class LoadAnimationSprite {
 				var frame = characterData[animations][frames];
 				var geometry = new Rectangle(frame[FRAME_X], frame[FRAME_Y], frame[FRAME_WIDTH], frame[FRAME_HEIGHT]);
 				var reference = new Point(frame[FRAME_REF_X], frame[FRAME_REF_Y]);
-
 				tilesheet.addTileRect(geometry, reference);
 			}
 		}
-		
+
 		return tilesheet;
 	}
 
@@ -83,7 +85,7 @@ class LoadAnimationSprite {
 		for(a in ANIM_LIST_START...data.length){
 			var animation = new Animation();
 			animation.name = data[a][ANIM_NAME];
-			animation.loop = (data[a][ANIM_LOOP] == "true") ? true : false;
+			animation.loop = (data[a][ANIM_LOOP] == 0) ? false : true;
 			animation.frameList = loadFrameData(data[a]);
 
 			animation.currentFrameId = 0;
@@ -102,7 +104,7 @@ class LoadAnimationSprite {
 			var frame = new Frame();
 			frame.tileId = data[f][FRAME_ID];
 			frame.duration = data[f][FRAME_DURATION];
-			frame.trigger = data[f][FRAME_TRIGGER];
+			if(data[f][FRAME_TRIGGER] != null) frame.trigger = data[f][FRAME_TRIGGER];
 			framelist.push(frame);
 		}
 

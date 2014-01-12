@@ -1,0 +1,21 @@
+{
+	"bitmap": "assets/menusprite.png",
+	"animationList": [
+		{
+			"name" : "menu_waiting",
+			"loop" : 0,
+			"frameList" : [
+				{
+					"id": 0,
+					"duration": 1,
+					"x": 0,
+					"y": 0,
+					"width": 49,
+					"height": 99,
+					"refx": 24,
+					"refy": 99
+				}
+			]
+		}
+	]
+}

@@ -80,18 +80,15 @@ class  GameGraphics extends Sprite {
 
 	public function init(){
 		characterList = new Array();
-
 		var spriteLoader = new LoadAnimationSprite();
-		characterList = spriteLoader.loadSprites("assets/dataTest.xml");
-		GUIlist = spriteLoader.loadSprites("assets/GUIdata.xml");
+		characterList = spriteLoader.loadSprites('basicCharacter', 8);
+		GUIlist = spriteLoader.loadSprites("GUI", 1);
 
 		loadBackdrop();
 		loadContainers();
-
 		selectingTarget = false;
 
 		cursorVisible = false;
-
 		actionmenu = new ActionMenu();
 		actionmenu.addEventListener(MouseEvent.MOUSE_DOWN, actionmenu.on_click);
 		addChild(actionmenu);
@@ -208,8 +205,6 @@ class  GameGraphics extends Sprite {
 			var frameId = animation.currentFrameId;
 			var frame = animation.frameList[frameId];
 
-			
-
 			if( frame.duration == animation.timer ) {
 				if( frameId < animation.frameList.length - 1 ) {
 					frame = animation.frameList[frameId + 1];
@@ -227,7 +222,7 @@ class  GameGraphics extends Sprite {
 
 				characterList[char].currentAnimation.timer = 0;
 
-				if(frame.trigger != '') battleTrigger(frame.trigger);
+				if(frame.trigger != null) battleTrigger(frame.trigger);
 			}
 			else {
 				characterList[char].currentAnimation.timer++;
