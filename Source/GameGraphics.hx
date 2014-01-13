@@ -54,6 +54,7 @@ class  GameGraphics extends Sprite {
 
 	var game:Game;
 	var actionmenu:ActionMenu;
+	var hpBars:Array <Sprite>;
 	var cursor:Cursor;
 	var cursorVisible:Bool;
 
@@ -86,6 +87,7 @@ class  GameGraphics extends Sprite {
 
 		loadBackdrop();
 		loadContainers();
+		loadHpBars();
 		selectingTarget = false;
 
 		cursorVisible = false;
@@ -145,6 +147,8 @@ class  GameGraphics extends Sprite {
 
 	}
 
+	// // // // // LOADERS // // // // // 
+
 	private function loadBackdrop() : Void {
 		var backdrop = new Graphic(Assets.getBitmapData('assets/background.png'), new Rectangle(0, 0, 800,600));
 		drawGraphic(backdrop);
@@ -168,7 +172,20 @@ class  GameGraphics extends Sprite {
 		}
 	}
 
-	/// DRAWING & RENDERING
+	private function loadHpBars() :Void {
+		hpBars = new Array();
+		for(character in characterList) {
+			var team = (character.team == 1) ? -1 : 1;
+			var hpBar = new Sprite();
+			hpBar.x = character.x + (80 * team);
+			hpBar.y = character.y;
+
+			hpBars.push(hpBar);
+			addChild(hpBar);
+		}
+	}
+
+	// // // // // DRAWING & RENDERING // // // // //
 
 	public function drawGraphic( graphic : Graphic ) : Void {
 		var container = graphic.graphicContainer;
@@ -199,6 +216,9 @@ class  GameGraphics extends Sprite {
 			if(battleSequence == null) startBattle();
 
 		}
+
+		drawHpBars();
+
 		for ( char in 0...characterList.length ){
 			spriteContainer[char].graphics.clear();
 			var animation = characterList[char].currentAnimation;
@@ -243,7 +263,26 @@ class  GameGraphics extends Sprite {
 		cursor.drawTiles(this.graphics, [cursor.x, cursor.y, 0, 2.5*cursor.direction, 0, 0, 2.5], Tilesheet.TILE_TRANS_2x2);
 	}
 
-	/// BATTLE ///
+	private function drawHpBars() :Void {
+		var charId = 0;
+		for(p in 0...2) {
+			var player = game.getPlayerById(p);
+			for(character in player.team) {
+
+				var vitMax = character.getMaxVitality();
+				var vit = character.getVitality();
+				var hp = (vit / vitMax) * 80;
+				hpBars[charId].graphics.clear();
+				hpBars[charId].graphics.beginFill(0xFF0000);
+				hpBars[charId].graphics.drawRect(-7,0,15,-hp);
+				charId++;
+			}
+		}
+	}
+
+
+
+	// // // // // BATTLE // // // // //
 
 	private function startBattle(){
 		battleSequence = new Sequence();
@@ -270,7 +309,6 @@ class  GameGraphics extends Sprite {
 			loadListeners();
 			game.newTurn();
 			battleSequence = null;
-			trace(game.gamestate);
 		}
 	}
 
