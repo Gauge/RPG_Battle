@@ -54,7 +54,7 @@ class  GameGraphics extends Sprite {
 
 	var game:Game;
 	var actionmenu:ActionMenu;
-	var hpBars:Array <Sprite>;
+	var hpBars:Array <HpBar>;
 	var cursor:Cursor;
 	var cursorVisible:Bool;
 
@@ -174,14 +174,24 @@ class  GameGraphics extends Sprite {
 
 	private function loadHpBars() :Void {
 		hpBars = new Array();
-		for(character in characterList) {
-			var team = (character.team == 1) ? -1 : 1;
-			var hpBar = new Sprite();
-			hpBar.x = character.x + (80 * team);
-			hpBar.y = character.y;
+		var charId = 0;
+		for(p in 0...2) {
+			var player = game.getPlayerById(p);
+			for(character in player.team) {
+				var hpBar = new HpBar();
+				var team = (p == 0) ? -1 : 1;
+				
+				hpBar.x = characterList[charId].x + (80 * team);
+				hpBar.y = characterList[charId].y;
 
-			hpBars.push(hpBar);
-			addChild(hpBar);
+				
+				hpBar.vitMax = character.getMaxVitality();
+				hpBar.vit = character.getVitality();
+
+				hpBars.push(hpBar);
+				addChild(hpBar);
+				charId++;
+			}
 		}
 	}
 
@@ -269,9 +279,8 @@ class  GameGraphics extends Sprite {
 			var player = game.getPlayerById(p);
 			for(character in player.team) {
 
-				var vitMax = character.getMaxVitality();
-				var vit = character.getVitality();
-				var hp = (vit / vitMax) * 80;
+				var hp = (hpBars[charId].vit / hpBars[charId].vitMax) * 80;
+
 				hpBars[charId].graphics.clear();
 				hpBars[charId].graphics.beginFill(0xFF0000);
 				hpBars[charId].graphics.drawRect(-7,0,15,-hp);
@@ -315,11 +324,13 @@ class  GameGraphics extends Sprite {
 	private function battleTrigger(trigger : String) :Void {
 		var action = battleSequence.get(0);
 		var char = characterList[action[0]];
+		var hpBar = hpBars[action[1]];
 		var target = characterList[action[1]];
+		var damage = action[3];
 
 		switch (trigger) {
 			case "hitsplat" :
-				trace('show the damage');
+				hpBar.update(damage);
 
 		}
 

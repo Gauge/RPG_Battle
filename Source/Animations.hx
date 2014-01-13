@@ -143,3 +143,12 @@ class Sequence {
 		seqList.shift();
 	}
 }
+
+class HpBar extends Sprite {
+	public function new () super();
+	public var vitMax:Int;
+	public var vit:Int;
+	public function update(damage : Int) {
+		vit -= damage;
+	}
+}
