@@ -1,7 +1,0 @@
-<character name="action_menu" bitmap="assets/menuSprite.png">
-	<animation name="menu_waiting" loop="true">
-		<frame id='0' duration='1' x='0' y='0' width='49' height='99' ref-x='24' ref-y='99' />
-
-	</animation>
-
-</character>

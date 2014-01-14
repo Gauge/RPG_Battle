@@ -1,0 +1,128 @@
+{
+	"bitmap" : "assets/testsprite.png",
+	"animationList" : [
+		{
+	        "name": "waiting",
+	        "loop": 1,
+	        "frameList": [
+		        {
+					"id": 0,
+					"duration": 15,
+					"x": 6,
+					"y": 6,
+					"width": 24,
+					"height": 35,
+					"refx": 4,
+					"refy": 30
+				}
+			]
+		},
+		{
+			"name" : "attack",
+			"loop" : 0,
+			"frameList" : [
+				{
+					"id": 0,
+					"duration": 2,
+					"x": 6,
+					"y": 6,
+					"width": 24,
+					"height": 35,
+					"refx": 4,
+					"refy": 30
+				},
+				{
+					"id": 1,
+					"duration": 2,
+					"x": 36,
+					"y": 6,
+					"width": 22,
+					"height": 34,
+					"refx": 3,
+					"refy": 30
+				},
+				{
+					"id": 2,
+					"duration": 2,
+					"x": 67,
+					"y": 7,
+					"width": 22,
+					"height": 34,
+					"refx": 3,
+					"refy": 30
+				},
+				{
+					"id": 3,
+					"duration": 2,
+					"x": 94,
+					"y": 8,
+					"width": 23,
+					"height": 33,
+					"refx": 4,
+					"refy": 29
+				},
+				{
+					"id": 4,
+					"duration": 2,
+					"x": 122,
+					"y": 8,
+					"width": 24,
+					"height": 33,
+					"refx": 4,
+					"refy": 29
+				},
+				{
+					"trigger": "hitsplat",
+					"id": 5,
+					"duration": 2,
+					"x": 149,
+					"y": 8,
+					"width": 24,
+					"height": 33,
+					"refx": 4,
+					"refy": 29
+				},
+				{
+					"id": 6,
+					"duration": 2,
+					"x": 122,
+					"y": 8,
+					"width": 24,
+					"height": 33,
+					"refx": 4,
+					"refy": 29
+				},
+				{
+					"id": 7,
+					"duration": 2,
+					"x": 94,
+					"y": 8,
+					"width": 23,
+					"height": 33,
+					"refx": 4,
+					"refy": 29
+				},
+				{
+					"id": 8,
+					"duration": 2,
+					"x": 67,
+					"y": 7,
+					"width": 22,
+					"height": 34,
+					"refx": 3,
+					"refy": 30
+				},
+				{
+					"id": 9,
+					"duration": 2,
+					"x": 36,
+					"y": 6,
+					"width": 22,
+					"height": 34,
+					"refx": 3,
+					"refy": 30
+				}
+			]
+		}
+	]
+}

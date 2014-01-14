@@ -54,6 +54,7 @@ class  GameGraphics extends Sprite {
 
 	var game:Game;
 	var actionmenu:ActionMenu;
+	var hpBars:Array <HpBar>;
 	var cursor:Cursor;
 	var cursorVisible:Bool;
 
@@ -80,18 +81,16 @@ class  GameGraphics extends Sprite {
 
 	public function init(){
 		characterList = new Array();
-
 		var spriteLoader = new LoadAnimationSprite();
-		characterList = spriteLoader.loadSprites("assets/dataTest.xml");
-		GUIlist = spriteLoader.loadSprites("assets/GUIdata.xml");
+		characterList = spriteLoader.loadSprites('basicCharacter', 8);
+		GUIlist = spriteLoader.loadSprites("GUI", 1);
 
 		loadBackdrop();
 		loadContainers();
-
+		loadHpBars();
 		selectingTarget = false;
 
 		cursorVisible = false;
-
 		actionmenu = new ActionMenu();
 		actionmenu.addEventListener(MouseEvent.MOUSE_DOWN, actionmenu.on_click);
 		addChild(actionmenu);
@@ -148,6 +147,8 @@ class  GameGraphics extends Sprite {
 
 	}
 
+	// // // // // LOADERS // // // // // 
+
 	private function loadBackdrop() : Void {
 		var backdrop = new Graphic(Assets.getBitmapData('assets/background.png'), new Rectangle(0, 0, 800,600));
 		drawGraphic(backdrop);
@@ -170,6 +171,31 @@ class  GameGraphics extends Sprite {
 			displayContainer.addChild(sprite);
 		}
 	}
+
+	private function loadHpBars() :Void {
+		hpBars = new Array();
+		var charId = 0;
+		for(p in 0...2) {
+			var player = game.getPlayerById(p);
+			for(character in player.team) {
+				var hpBar = new HpBar();
+				var team = (p == 0) ? -1 : 1;
+				
+				hpBar.x = characterList[charId].x + (80 * team);
+				hpBar.y = characterList[charId].y;
+
+				
+				hpBar.vitMax = character.getMaxVitality();
+				hpBar.vit = character.getVitality();
+
+				hpBars.push(hpBar);
+				addChild(hpBar);
+				charId++;
+			}
+		}
+	}
+
+	// // // // // DRAWING & RENDERING // // // // //
 
 	public function drawGraphic( graphic : Graphic ) : Void {
 		var container = graphic.graphicContainer;
@@ -200,13 +226,14 @@ class  GameGraphics extends Sprite {
 			if(battleSequence == null) startBattle();
 
 		}
+
+		drawHpBars();
+
 		for ( char in 0...characterList.length ){
 			spriteContainer[char].graphics.clear();
 			var animation = characterList[char].currentAnimation;
 			var frameId = animation.currentFrameId;
 			var frame = animation.frameList[frameId];
-
-			
 
 			if( frame.duration == animation.timer ) {
 				if( frameId < animation.frameList.length - 1 ) {
@@ -225,7 +252,7 @@ class  GameGraphics extends Sprite {
 
 				characterList[char].currentAnimation.timer = 0;
 
-				if(frame.trigger != '') battleTrigger(frame.trigger);
+				if(frame.trigger != null) battleTrigger(frame.trigger);
 			}
 			else {
 				characterList[char].currentAnimation.timer++;
@@ -245,6 +272,26 @@ class  GameGraphics extends Sprite {
 	private function drawCursor(){
 		cursor.drawTiles(this.graphics, [cursor.x, cursor.y, 0, 2.5*cursor.direction, 0, 0, 2.5], Tilesheet.TILE_TRANS_2x2);
 	}
+
+	private function drawHpBars() :Void {
+		var charId = 0;
+		for(p in 0...2) {
+			var player = game.getPlayerById(p);
+			for(character in player.team) {
+
+				var hp = (hpBars[charId].vit / hpBars[charId].vitMax) * 80;
+
+				hpBars[charId].graphics.clear();
+				hpBars[charId].graphics.beginFill(0xFF0000);
+				hpBars[charId].graphics.drawRect(-7,0,15,-hp);
+				charId++;
+			}
+		}
+	}
+
+
+
+	// // // // // BATTLE // // // // //
 
 	private function startBattle(){
 		battleSequence = new Sequence();
@@ -271,18 +318,19 @@ class  GameGraphics extends Sprite {
 			loadListeners();
 			game.newTurn();
 			battleSequence = null;
-			trace(game.gamestate);
 		}
 	}
 
 	private function battleTrigger(trigger : String) :Void {
 		var action = battleSequence.get(0);
 		var char = characterList[action[0]];
+		var hpBar = hpBars[action[1]];
 		var target = characterList[action[1]];
+		var damage = action[3];
 
 		switch (trigger) {
 			case "hitsplat" :
-				trace('show the damage');
+				hpBar.update(damage);
 
 		}
 

@@ -99,7 +99,7 @@ class Game {
 		gamestate = Globals.GAME_UPDATE;
 	}
 
-	private function getPlayerById(id:Int) {
+	public function getPlayerById(id:Int) {
 		if (id == Globals.PLAYER_ONE) {
 			return player1;
 		} else {
