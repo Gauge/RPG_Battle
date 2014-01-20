@@ -1,4 +1,4 @@
-package;
+package graphics;
 
 import flash.display.Sprite;
 import flash.display.Bitmap;
@@ -8,8 +8,7 @@ import flash.geom.Point;
 import flash.events.Event;
 import openfl.Assets;
 import flash.Lib;
-import Animations;
-import FileLoader;
+import graphics.Animations;
 import openfl.display.Tilesheet;
 
 class LoadAnimationSprite {

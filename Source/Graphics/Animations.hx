@@ -1,4 +1,4 @@
-package;
+package graphics;
 
 import flash.display.Sprite;
 import flash.display.BitmapData;
@@ -10,7 +10,6 @@ import flash.geom.Point;
 import flash.Lib;
 import openfl.display.Tilesheet;
 import openfl.Assets;
-import Game;
 
 class AnimationSprite extends Sprite {
 	public var id : Int;

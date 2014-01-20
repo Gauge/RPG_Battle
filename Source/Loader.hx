@@ -2,6 +2,9 @@ package;
 
 import haxe.Json;
 import openfl.Assets;
+import logic.Player;
+import logic.Item;
+import logic.Character;
 
 class Loader {
 

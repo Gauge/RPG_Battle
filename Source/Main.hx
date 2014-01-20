@@ -7,6 +7,7 @@ import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.ui.Keyboard;
 import flash.system.System;
+import graphics.GameGraphics;
 
 class Main extends Sprite {
 
