@@ -53,7 +53,10 @@ class  GameGraphics extends Sprite {
 
 	var game:Game;
 	var actionmenu:ActionMenu;
+	var lockinBtn:Sprite;
+	var lockinBtnTS:Tilesheet;
 	var hpBars:Array <HpBar>;
+	var textBoxes: Array <TextAnimation>;
 	var cursor:Cursor;
 	var cursorVisible:Bool;
 
@@ -79,7 +82,8 @@ class  GameGraphics extends Sprite {
 		actionmenu = new ActionMenu();
 		actionmenu.addEventListener(MouseEvent.MOUSE_DOWN, actionmenu.on_click);
 		addChild(actionmenu);
-		//enemyTeamActions(); //Stand in for now...
+		createLockinBtn();
+		enemyTeamActions(); //Stand in for now...
 		initListeners();
 	}
 
@@ -190,6 +194,41 @@ class  GameGraphics extends Sprite {
 		}
 	}
 
+	private function createLockinBtn(){
+		lockinBtn = new Sprite();
+		lockinBtn.x = 700;
+		lockinBtn.y = 30;
+
+		lockinBtnTS = new Tilesheet(Assets.getBitmapData('assets/lockin_btn.png'));
+		lockinBtnTS.addTileRect(new Rectangle(0,0,30,20));
+		lockinBtnTS.addTileRect(new Rectangle(30,0,30,20));
+
+		lockinBtnTS.drawTiles(lockinBtn.graphics, [0,0,0,3], Tilesheet.TILE_SCALE);
+
+		addChild(lockinBtn);
+
+		lockinBtn.addEventListener(MouseEvent.MOUSE_OVER, lockinHover);
+		lockinBtn.addEventListener(MouseEvent.MOUSE_DOWN, lockin);
+
+
+	}
+
+	private function lockinHover(event:MouseEvent) :Void {
+		lockinBtn.graphics.clear();
+		lockinBtnTS.drawTiles(lockinBtn.graphics, [0,0,1,3], Tilesheet.TILE_SCALE);
+		lockinBtn.addEventListener(MouseEvent.MOUSE_OUT, lockinOut);
+	}
+
+	private function lockinOut(event:MouseEvent) :Void {
+		lockinBtn.graphics.clear();
+		lockinBtnTS.drawTiles(lockinBtn.graphics, [0,0,0,3], Tilesheet.TILE_SCALE);
+	}
+
+	private function lockin(evetn:MouseEvent) :Void {
+		game.lockin(Globals.PLAYER_ONE);
+		game.lockin(Globals.PLAYER_TWO);
+	}
+
 	// // // // // DRAWING & RENDERING // // // // //
 
 	public function drawGraphic( graphic : Graphic ) : Void {
@@ -255,6 +294,19 @@ class  GameGraphics extends Sprite {
 			var direction = characterList[char].direction * CHAR_SCALE;
 			characterList[char].tilesheet.drawTiles(spriteContainer[char].graphics, [0,0, frameId, direction, 0, 0, CHAR_SCALE], Tilesheet.TILE_TRANS_2x2);
 		}
+		if(textBoxes != null){
+			for(box in textBoxes) {
+				addChild(box);
+				if(box.timer < box.timerMax) {
+					box.timer++;
+					box.y -= 3;
+				}
+				else {
+					textBoxes.remove(box);
+					removeChild(box);
+				}
+			}
+		}
 	}
 
 	private function drawActionMenu(){
@@ -275,10 +327,16 @@ class  GameGraphics extends Sprite {
 			for(character in player.team) {
 
 				var hp = ((hpBars[charId].vit <= 0) ? 0 : (hpBars[charId].vit / hpBars[charId].vitMax)) * 80;
+				var color = (hp < .5) ? 0xFF3300 : 0x008CFF;
 
 				hpBars[charId].graphics.clear();
-				hpBars[charId].graphics.beginFill(0xFF0000);
-				hpBars[charId].graphics.drawRect(-7,0,15,-hp);
+				hpBars[charId].graphics.beginFill(color);
+				hpBars[charId].graphics.drawRect(-7,0,16,-(hp * 84));
+
+				var hpTile = new Tilesheet(Assets.getBitmapData('assets/healthBar.png'));
+				hpTile.addTileRect(new Rectangle(0,0,10,35), new Point(5, 35));
+				hpTile.drawTiles(hpBars[charId].graphics, [1,1, 0, CHAR_SCALE], Tilesheet.TILE_SCALE);
+
 				charId++;
 			}
 		}
@@ -333,6 +391,10 @@ class  GameGraphics extends Sprite {
 		switch (trigger) {
 			case "hitsplat" :
 				hpBar.update(damage);
+				if(textBoxes == null) textBoxes = new Array();
+				var newBox = new TextAnimation("" + damage, 0xFF0000, 15, target);
+				textBoxes.push(newBox);
+				addChild(newBox);
 
 		}
 
