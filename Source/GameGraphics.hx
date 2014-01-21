@@ -54,6 +54,8 @@ class  GameGraphics extends Sprite {
 
 	var game:Game;
 	var actionmenu:ActionMenu;
+	var lockinBtn:Sprite;
+	var lockinBtnTS:Tilesheet;
 	var hpBars:Array <HpBar>;
 	var textBoxes: Array <TextAnimation>;
 	var cursor:Cursor;
@@ -95,6 +97,8 @@ class  GameGraphics extends Sprite {
 		actionmenu = new ActionMenu();
 		actionmenu.addEventListener(MouseEvent.MOUSE_DOWN, actionmenu.on_click);
 		addChild(actionmenu);
+
+		createLockinBtn();
 
 		enemyTeamActions(); //Stand in for now...
 
@@ -194,6 +198,41 @@ class  GameGraphics extends Sprite {
 				charId++;
 			}
 		}
+	}
+
+	private function createLockinBtn(){
+		lockinBtn = new Sprite();
+		lockinBtn.x = 700;
+		lockinBtn.y = 30;
+
+		lockinBtnTS = new Tilesheet(Assets.getBitmapData('assets/lockin_btn.png'));
+		lockinBtnTS.addTileRect(new Rectangle(0,0,30,20));
+		lockinBtnTS.addTileRect(new Rectangle(30,0,30,20));
+
+		lockinBtnTS.drawTiles(lockinBtn.graphics, [0,0,0,3], Tilesheet.TILE_SCALE);
+
+		addChild(lockinBtn);
+
+		lockinBtn.addEventListener(MouseEvent.MOUSE_OVER, lockinHover);
+		lockinBtn.addEventListener(MouseEvent.MOUSE_DOWN, lockin);
+
+
+	}
+
+	private function lockinHover(event:MouseEvent) :Void {
+		lockinBtn.graphics.clear();
+		lockinBtnTS.drawTiles(lockinBtn.graphics, [0,0,1,3], Tilesheet.TILE_SCALE);
+		lockinBtn.addEventListener(MouseEvent.MOUSE_OUT, lockinOut);
+	}
+
+	private function lockinOut(event:MouseEvent) :Void {
+		lockinBtn.graphics.clear();
+		lockinBtnTS.drawTiles(lockinBtn.graphics, [0,0,0,3], Tilesheet.TILE_SCALE);
+	}
+
+	private function lockin(evetn:MouseEvent) :Void {
+		game.lockin(Globals.PLAYER_ONE);
+		game.lockin(Globals.PLAYER_TWO);
 	}
 
 	// // // // // DRAWING & RENDERING // // // // //
