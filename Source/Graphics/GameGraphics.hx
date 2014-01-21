@@ -326,7 +326,7 @@ class  GameGraphics extends Sprite {
 			var player = game.getPlayerById(p);
 			for(character in player.team) {
 
-				var hp = ((hpBars[charId].vit <= 0) ? 0 : (hpBars[charId].vit / hpBars[charId].vitMax)) * 80;
+				var hp = (hpBars[charId].vit <= 0) ? 0 : (hpBars[charId].vit / hpBars[charId].vitMax);
 				var color = (hp < .5) ? 0xFF3300 : 0x008CFF;
 
 				hpBars[charId].graphics.clear();
