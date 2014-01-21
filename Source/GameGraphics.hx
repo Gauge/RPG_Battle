@@ -55,6 +55,7 @@ class  GameGraphics extends Sprite {
 	var game:Game;
 	var actionmenu:ActionMenu;
 	var hpBars:Array <HpBar>;
+	var textBoxes: Array <TextAnimation>;
 	var cursor:Cursor;
 	var cursorVisible:Bool;
 
@@ -260,6 +261,19 @@ class  GameGraphics extends Sprite {
 			var direction = characterList[char].direction * CHAR_SCALE;
 			characterList[char].tilesheet.drawTiles(spriteContainer[char].graphics, [0,0, frameId, direction, 0, 0, CHAR_SCALE], Tilesheet.TILE_TRANS_2x2);
 		}
+		if(textBoxes != null){
+			for(box in textBoxes) {
+				addChild(box);
+				if(box.timer < box.timerMax) {
+					box.timer++;
+					box.y -= 3;
+				}
+				else {
+					textBoxes.remove(box);
+					removeChild(box);
+				}
+			}
+		}
 	}
 
 	private function drawActionMenu(){
@@ -279,11 +293,18 @@ class  GameGraphics extends Sprite {
 			var player = game.getPlayerById(p);
 			for(character in player.team) {
 
-				var hp = (hpBars[charId].vit / hpBars[charId].vitMax) * 80;
+				var hp = (hpBars[charId].vit / hpBars[charId].vitMax);
+
+				var color = (hp < .5) ? 0xFF3300 : 0x008CFF;
 
 				hpBars[charId].graphics.clear();
-				hpBars[charId].graphics.beginFill(0xFF0000);
-				hpBars[charId].graphics.drawRect(-7,0,15,-hp);
+				hpBars[charId].graphics.beginFill(color);
+				hpBars[charId].graphics.drawRect(-7,0,16,-(hp * 84));
+
+				var hpTile = new Tilesheet(Assets.getBitmapData('assets/healthBar.png'));
+				hpTile.addTileRect(new Rectangle(0,0,10,35), new Point(5, 35));
+				hpTile.drawTiles(hpBars[charId].graphics, [1,1, 0, CHAR_SCALE], Tilesheet.TILE_SCALE);
+
 				charId++;
 			}
 		}
@@ -331,6 +352,10 @@ class  GameGraphics extends Sprite {
 		switch (trigger) {
 			case "hitsplat" :
 				hpBar.update(damage);
+				if(textBoxes == null) textBoxes = new Array();
+				var newBox = new TextAnimation("" + damage, 0xFF0000, 15, target);
+				textBoxes.push(newBox);
+				addChild(newBox);
 
 		}
 
