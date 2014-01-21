@@ -64,22 +64,24 @@ class Game {
 		var actions = getSortedActions();
 		for (i in 0...actions.length){
 			var action = actions[i];
-			var splayer = getPlayerById(action.getSelectedPlayer());
-			var tplayer = getPlayerById(action.getTargetPlayer());
-			
-			var schar = splayer.team[action.getSelectedCharacter()];
-			var tchar = tplayer.team[action.getTargetCharacter()];
-			trace(tchar);
-			if (tchar.isDead()) {
-				for(newTarget in 0...tplayer.team.length) {
-					if (!tplayer.team[newTarget].isDead()){
-						tchar = tplayer.team[newTarget];
+			if (action.getAction() != Globals.ACTION_DEFEND){
+				var splayer = getPlayerById(action.getSelectedPlayer());
+				var tplayer = getPlayerById(action.getTargetPlayer());
+				trace(action.getTargetCharacter());
+				var schar = splayer.team[action.getSelectedCharacter()];
+				var tchar = tplayer.team[action.getTargetCharacter()];
+				
+				if (tchar.isDead()) {
+					for(newTarget in 0...tplayer.team.length) {
+						if (!tplayer.team[newTarget].isDead()){
+							tchar = tplayer.team[newTarget];
+						}
 					}
 				}
-			}
-			
-			if (action.getAction() != Globals.ACTION_DEFEND && schar.isDead() == false){
-				schar.getAction().report.damage_dealt = tchar.defend(schar.attack());
+				
+				if (schar.isDead() == false){
+					schar.getAction().report.damage_dealt = tchar.defend(schar.attack());
+				}
 			}
 		}
 
@@ -87,9 +89,11 @@ class Game {
 		var actions = getSortedActions();
 
 		for (i in 0...actions.length){
-			trace("player " + (actions[i].getSelectedPlayer()+1) + " character " + (actions[i].getSelectedCharacter()+1) + 
-				"\'s attack did " + actions[i].report.damage_dealt + " damage to player " + (actions[i].getTargetPlayer()+1)+ 
-				" character " + (actions[i].getTargetPlayer()+1));
+			if (actions[i].getAction() != Globals.ACTION_DEFEND){
+				trace("player " + (actions[i].getSelectedPlayer()+1) + " character " + (actions[i].getSelectedCharacter()+1) + 
+					"\'s attack did " + actions[i].report.damage_dealt + " damage to player " + (actions[i].getTargetPlayer()+1)+ 
+					" character " + (actions[i].getTargetPlayer()+1));
+			}
 		}
 		
 		gamestate = Globals.GAME_UPDATE;
