@@ -54,7 +54,7 @@ class Action {
 		}
 
 		if (a == Globals.ACTION_DEFEND) { 
-			return new Defend(selectedPlayer, selectedCharacter, targetPlayer, targetCharacter);
+			return new Defend(selectedPlayer, selectedCharacter);
 		}
 
 		return new Action(selectedPlayer, selectedCharacter, a, targetPlayer, targetCharacter);

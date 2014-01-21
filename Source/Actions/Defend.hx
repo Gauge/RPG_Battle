@@ -2,8 +2,8 @@ package actions;
 
 class Defend extends Action {
 
-	public function new (selPlayer:Int, selCharacter:Int, targPlayer:Int, targCharacter:Int) {
-		super(selPlayer, selCharacter, Globals.ACTION_DEFEND, targPlayer, targCharacter);
+	public function new (selPlayer:Int, selCharacter:Int) {
+		super(selPlayer, selCharacter, Globals.ACTION_DEFEND, 0, 0);
 	}
 
 	// defence stance does not do damage
