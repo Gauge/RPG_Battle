@@ -1,4 +1,4 @@
-package;
+package logic;
 
 import actions.Action;
 

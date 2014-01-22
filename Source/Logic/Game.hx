@@ -1,4 +1,6 @@
-package;
+package logic;
+
+import actions.Action;
 
 class Game {
 
@@ -67,7 +69,7 @@ class Game {
 			if (action.getAction() != Globals.ACTION_DEFEND){
 				var splayer = getPlayerById(action.getSelectedPlayer());
 				var tplayer = getPlayerById(action.getTargetPlayer());
-				trace(action.getTargetCharacter());
+
 				var schar = splayer.team[action.getSelectedCharacter()];
 				var tchar = tplayer.team[action.getTargetCharacter()];
 				
@@ -75,12 +77,16 @@ class Game {
 					for(newTarget in 0...tplayer.team.length) {
 						if (!tplayer.team[newTarget].isDead()){
 							tchar = tplayer.team[newTarget];
+							var newAction = Action.createAction(action.getAction(), action.getSelectedPlayer(), action.getSelectedCharacter(), action.getTargetPlayer(), newTarget);
+							schar.setAction(newAction);
 						}
 					}
 				}
 				
 				if (schar.isDead() == false){
 					schar.getAction().report.damage_dealt = tchar.defend(schar.attack());
+				} else {
+					schar.resetAction();
 				}
 			}
 		}

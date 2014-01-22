@@ -1,4 +1,4 @@
-package;
+package graphics;
 
 import flash.display.Sprite;
 import flash.display.Bitmap;
@@ -19,9 +19,8 @@ import flash.Lib;
 import openfl.Assets;
 import openfl.display.Tilesheet;
 
-import Animations;
-import FileLoader;
-
+import graphics.Animations;
+import logic.Game;
 
 
 class  GameGraphics extends Sprite {
@@ -68,24 +67,10 @@ class  GameGraphics extends Sprite {
 
 	var battleSequence:Sequence;
 	
-	function new(){
-
+	function new() {
 		super();
 
 		game = new Game();
-
-		init();
-		Lib.current.stage.addEventListener (KeyboardEvent.KEY_DOWN, keyDown);
-
-		loadListeners();
-	}
-
-	private function loadListeners() :Void {
-		addEventListener ('select_character', sendCharSelect);
-		addEventListener ('menu_select', menuSelect);
-	}
-
-	public function init(){
 		characterList = new Array();
 		var spriteLoader = new LoadAnimationSprite();
 		characterList = spriteLoader.loadSprites('basicCharacter', 8);
@@ -96,19 +81,29 @@ class  GameGraphics extends Sprite {
 		loadHpBars();
 		selectingTarget = false;
 
+		syncTimer = 0;
+		syncTimerMax = 15;
+
 		cursorVisible = false;
 		actionmenu = new ActionMenu();
 		actionmenu.addEventListener(MouseEvent.MOUSE_DOWN, actionmenu.on_click);
 		addChild(actionmenu);
-
 		createLockinBtn();
-
 		enemyTeamActions(); //Stand in for now...
+		initListeners();
+	}
 
-		syncTimer = 0;
-		syncTimerMax = 15;
-
+		
+	private function initListeners() {
+		loadListeners();
+		Lib.current.stage.addEventListener (KeyboardEvent.KEY_DOWN, keyDown);
+		// begins animation render loop
 		addEventListener(Event.ENTER_FRAME, renderLoop);
+	}
+
+	private function loadListeners() :Void {
+		addEventListener ('select_character', sendCharSelect);
+		addEventListener ('menu_select', menuSelect);
 	}
 
 	private function menuSelect(event : Event) {
@@ -342,8 +337,7 @@ class  GameGraphics extends Sprite {
 			var player = game.getPlayerById(p);
 			for(character in player.team) {
 
-				var hp = (hpBars[charId].vit / hpBars[charId].vitMax);
-
+				var hp = (hpBars[charId].vit <= 0) ? 0 : (hpBars[charId].vit / hpBars[charId].vitMax);
 				var color = (hp < .5) ? 0xFF3300 : 0x008CFF;
 
 				hpBars[charId].graphics.clear();
@@ -370,7 +364,14 @@ class  GameGraphics extends Sprite {
 		removeEventListener ('select_character', sendCharSelect);
 		removeEventListener ('menu_select', menuSelect);
 
-		battleAnimationCycle();
+		if (battleSequence.seqList.length != 0){
+			battleAnimationCycle();
+		}
+		else {
+			loadListeners();
+			game.newTurn();
+			battleSequence = null;
+		}
 	}
 
 	private function battleAnimationCycle() :Void {
