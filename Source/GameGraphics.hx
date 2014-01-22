@@ -52,6 +52,9 @@ class  GameGraphics extends Sprite {
 	public var screenWidth:Float;
 	public var screenHeight:Float;
 
+	var syncTimer:Int;
+	var syncTimerMax:Int;
+
 	var game:Game;
 	var actionmenu:ActionMenu;
 	var lockinBtn:Sprite;
@@ -101,6 +104,9 @@ class  GameGraphics extends Sprite {
 		createLockinBtn();
 
 		enemyTeamActions(); //Stand in for now...
+
+		syncTimer = 0;
+		syncTimerMax = 15;
 
 		addEventListener(Event.ENTER_FRAME, renderLoop);
 	}
@@ -228,6 +234,7 @@ class  GameGraphics extends Sprite {
 	private function lockinOut(event:MouseEvent) :Void {
 		lockinBtn.graphics.clear();
 		lockinBtnTS.drawTiles(lockinBtn.graphics, [0,0,0,3], Tilesheet.TILE_SCALE);
+		lockinBtn.removeEventListener(MouseEvent.MOUSE_OUT, lockinOut);
 	}
 
 	private function lockin(evetn:MouseEvent) :Void {
@@ -274,7 +281,6 @@ class  GameGraphics extends Sprite {
 			var animation = characterList[char].currentAnimation;
 			var frameId = animation.currentFrameId;
 			var frame = animation.frameList[frameId];
-
 			if( frame.duration == animation.timer ) {
 				if( frameId < animation.frameList.length - 1 ) {
 					frame = animation.frameList[frameId + 1];
@@ -283,7 +289,6 @@ class  GameGraphics extends Sprite {
 				else if(!animation.loop) {
 					characterList[char].currentAnimation.currentFrameId = 0;
 					continueBattle();
-					
 				}
 				else {
 					frame = animation.frameList[0];
@@ -295,11 +300,16 @@ class  GameGraphics extends Sprite {
 				if(frame.trigger != null) battleTrigger(frame.trigger);
 			}
 			else {
-				characterList[char].currentAnimation.timer++;
+
+				characterList[char].currentAnimation.timer = (characterList[char].currentAnimation.name == "waiting") ? syncTimer : characterList[char].currentAnimation.timer + 1 ;
 			}
 			var direction = characterList[char].direction * CHAR_SCALE;
 			characterList[char].tilesheet.drawTiles(spriteContainer[char].graphics, [0,0, frameId, direction, 0, 0, CHAR_SCALE], Tilesheet.TILE_TRANS_2x2);
 		}
+
+		if(syncTimer < syncTimerMax) syncTimer++;
+		else syncTimer = 0;
+
 		if(textBoxes != null){
 			for(box in textBoxes) {
 				addChild(box);
@@ -371,7 +381,6 @@ class  GameGraphics extends Sprite {
 	private function continueBattle() :Void {
 		var action = battleSequence.get(0);
 		characterList[action[0]].currentAnimation = characterList[action[0]].animationList[0];
-
 		battleSequence.shift();
 		if(battleSequence.seqList[0] != null) battleAnimationCycle();
 		else{
@@ -392,7 +401,7 @@ class  GameGraphics extends Sprite {
 			case "hitsplat" :
 				hpBar.update(damage);
 				if(textBoxes == null) textBoxes = new Array();
-				var newBox = new TextAnimation("" + damage, 0xFF0000, 15, target);
+				var newBox = new TextAnimation("-" + damage, 0xFF0000, 15, target);
 				textBoxes.push(newBox);
 				addChild(newBox);
 

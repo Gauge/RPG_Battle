@@ -182,9 +182,6 @@ class TextAnimation extends Sprite {
 		var format = new TextFormat(font.fontName, 20, color, true);
 		format.align = TextFormatAlign.LEFT;
 
-		trace(target.team);
-
-		
 		textbox.embedFonts = true;
 		textbox.defaultTextFormat = format;
 		textbox.text = text;
