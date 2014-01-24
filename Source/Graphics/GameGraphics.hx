@@ -147,9 +147,16 @@ class  GameGraphics extends Sprite {
 		cursorVisible = true;
 		if(cursor == null) cursor = new Cursor(Assets.getBitmapData('assets/cursor.png'));
 		cursor.direction = 1;
+		this.addEventListener(MouseEvent.MOUSE_MOVE, updateCursor);
 	}
 
-	private function updateCursor() :Void {
+	private function updateCursor(event:MouseEvent) :Void {
+		for(char in 0...4) {
+			if(event.target == characterList[char]) {
+				cursor.x = event.target.x + 50;
+				cursor.y = event.target.y;
+			}
+		}
 
 	}
 
