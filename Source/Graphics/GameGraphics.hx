@@ -136,27 +136,33 @@ class  GameGraphics extends Sprite {
 			actionmenu.show = true;
 		}
 		else if(event.target.team == 1 && selectingTarget == true) {
-
 			game.selectAction(Globals.PLAYER_TWO, Globals.ACTION_ATTACK, Globals.PLAYER_ONE, event.target.id);
-			selectingTarget = false;
 			actionmenu.show = false;
+			hideCursor();
 		}
 	}
 
 	private function showCursor() :Void{
 		cursorVisible = true;
-		if(cursor == null) cursor = new Cursor(Assets.getBitmapData('assets/cursor.png'));
+		if(cursor == null) cursor = new Cursor(Assets.getBitmapData('assets/cursor.png'), characterList[0]);
 		cursor.direction = 1;
+		addChild(cursor);
 		this.addEventListener(MouseEvent.MOUSE_MOVE, updateCursor);
 	}
 
 	private function updateCursor(event:MouseEvent) :Void {
 		for(char in 0...4) {
 			if(event.target == characterList[char]) {
-				cursor.x = event.target.x + 50;
-				cursor.y = event.target.y;
+				cursor.x = characterList[char].x + 30;
+				cursor.y = characterList[char].y - 40;
 			}
 		}
+	}
+
+	private function hideCursor() :Void {
+		selectingTarget = false;
+		this.removeEventListener(MouseEvent.MOUSE_MOVE, updateCursor);
+		removeChild(cursor);
 
 	}
 
@@ -335,7 +341,7 @@ class  GameGraphics extends Sprite {
 	}
 
 	private function drawCursor(){
-		cursor.drawTiles(this.graphics, [cursor.x, cursor.y, 0, 2.5*cursor.direction, 0, 0, 2.5], Tilesheet.TILE_TRANS_2x2);
+			
 	}
 
 	private function drawHpBars() :Void {
