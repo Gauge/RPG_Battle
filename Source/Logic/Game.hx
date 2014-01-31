@@ -144,22 +144,45 @@ class Game {
 		return actions;
 	}
 
+	private function isGameover():Bool {
+		var team1 = true;
+		var team2 = true;
+		for (c in player1.team){
+			if (c.isDead() == false){
+				team1 = false;
+				break;
+			}	
+		}
+		for (c in player2.team){
+			if (c.isDead() == false){
+				team2 = false;
+				break;
+			}		
+		}
+		return (team1 || team2);
+	}
+
 	// sets everything up for the next turn
 	public function newTurn() {
 		player1.newTurn();
 		player2.newTurn();
 		turn++;
-		gamestate = Globals.GAME_TURN;
-		trace("\n-------------------------------Turn " + turn +"--------------------------------------");
-		// list players
-		trace("player 1");
-		for(i in 0...player1.team.length){
-			trace("Character " + (i+1) + " Vitality " + player1.team[i].getVitality() + (player1.team[i].isDead() ? " DEAD" : " ALIVE"));
-		}
+		if (!isGameover()) {
+			gamestate = Globals.GAME_TURN;
+			trace("\n-------------------------------Turn " + turn +"--------------------------------------");
+			// list players
+			trace("player 1");
+			for(i in 0...player1.team.length){
+				trace("Character " + (i+1) + " Vitality " + player1.team[i].getVitality() + (player1.team[i].isDead() ? " DEAD" : " ALIVE"));
+			}
 
-		trace("player 2");
-		for(i in 0...player2.team.length){
-			trace("Character " + (i+1) + " Vitality " + player2.team[i].getVitality() + (player2.team[i].isDead() ? " DEAD" : " ALIVE"));
+			trace("player 2");
+			for(i in 0...player2.team.length){
+				trace("Character " + (i+1) + " Vitality " + player2.team[i].getVitality() + (player2.team[i].isDead() ? " DEAD" : " ALIVE"));
+			}
+		} else {
+			gamestate = Globals.GAME_OVER;
+			trace("Game over on turn: " + turn);
 		}
 	}
 }
