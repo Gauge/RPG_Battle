@@ -8,6 +8,7 @@ import flash.events.KeyboardEvent;
 import flash.ui.Keyboard;
 import flash.system.System;
 import graphics.GameGraphics;
+import MainMenu;
 
 class Main extends Sprite {
 
@@ -15,8 +16,10 @@ class Main extends Sprite {
 
 	public function new () {
 		super();
-		gamegraphics = new GameGraphics();
-		addChild(gamegraphics);
+		var main_menu = new MainMenu();
+		addChild(main_menu);
+		// gamegraphics = new GameGraphics();
+		// addChild(gamegraphics);
 	}
 	
 }
