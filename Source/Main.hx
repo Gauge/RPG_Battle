@@ -1,11 +1,7 @@
 package;
 
 import flash.display.Sprite;
-import flash.display.Bitmap;
-import flash.display.BitmapData;
 import flash.events.Event;
-import flash.events.KeyboardEvent;
-import flash.ui.Keyboard;
 import flash.system.System;
 import graphics.GameGraphics;
 import MainMenu;
@@ -18,8 +14,12 @@ class Main extends Sprite {
 		super();
 		var main_menu = new MainMenu();
 		addChild(main_menu);
-		// gamegraphics = new GameGraphics();
-		// addChild(gamegraphics);
+		addEventListener("quit", quit);
+		addEventListener("new_game", new_game);
 	}
+
+	private function quit(e : Event) 		{ System.exit(0); }
+
+	private function new_game(e : Event) 	{ gamegraphics = new GameGraphics(); addChild(gamegraphics); }
 	
 }
