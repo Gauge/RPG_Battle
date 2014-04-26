@@ -7,6 +7,8 @@ import flash.text.TextFormat;
 import flash.text.TextFormatAlign;
 import flash.text.TextFieldAutoSize;
 import flash.text.Font;
+import flash.events.Event;
+import flash.events.MouseEvent;
 import openfl.Assets;
 import flash.Lib;
 
@@ -38,6 +40,9 @@ class MainMenu extends Sprite
 		addChild(play_button);
 		addChild(exit_button);
 
+		play_button.addEventListener(MouseEvent.MOUSE_UP, play_game);
+		exit_button.addEventListener(MouseEvent.MOUSE_UP, quit_game);
+
 	}
 
 	private function create_button (_text, _y) : Sprite
@@ -50,7 +55,6 @@ class MainMenu extends Sprite
 
 		var btn_text 	= build_text(_text, 60);
 		btn_text.x = btn_text.width / 2;
-		trace(Lib.stage.stageWidth);
 		btn.addChild(btn_text);
 
 		return btn;
@@ -69,5 +73,16 @@ class MainMenu extends Sprite
 
 
 		return txt;
+	}
+
+	private function play_game( e : Event ) 
+	{
+		trace("Menu Clicked! Starting game");
+	}
+
+	private function quit_game( e : Event )
+	{
+		trace("Menu Clicked! Exiting game");
+
 	}
 }
