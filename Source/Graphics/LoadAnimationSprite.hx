@@ -8,7 +8,7 @@ import flash.geom.Point;
 import flash.events.Event;
 import openfl.Assets;
 import flash.Lib;
-import graphics.Animations;
+import graphics.Animation;
 import openfl.display.Tilesheet;
 
 class LoadAnimationSprite {

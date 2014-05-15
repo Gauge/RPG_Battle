@@ -1,8 +1,6 @@
 package graphics;
 
 import flash.display.Sprite;
-import flash.display.Bitmap;
-import flash.display.BitmapData;
 
 import flash.events.MouseEvent;
 import flash.events.KeyboardEvent;
@@ -19,8 +17,10 @@ import flash.Lib;
 import openfl.Assets;
 import openfl.display.Tilesheet;
 
-import graphics.Animations;
+import graphics.Animation;
+import graphics.Graphic;
 import graphics.HpBar;
+import graphics.Cursor;
 import logic.Game;
 
 
