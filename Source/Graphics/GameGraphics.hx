@@ -20,6 +20,7 @@ import openfl.Assets;
 import openfl.display.Tilesheet;
 
 import graphics.Animations;
+import graphics.HpBar;
 import logic.Game;
 
 
@@ -27,18 +28,6 @@ class  GameGraphics extends Sprite {
 
 	static var LEFT = 0;
 	static var RIGHT = 1;
-
-	static var POS_L_1 = new Point(175, 325);
-	static var POS_L_2 = new Point(150, 400);
-	static var POS_L_3 = new Point(125, 475);
-	static var POS_L_4 = new Point(100, 550);
-
-	static var POS_R_1 = new Point(600, 325);
-	static var POS_R_2 = new Point(625, 400);
-	static var POS_R_3 = new Point(650, 475);
-	static var POS_R_4 = new Point(675, 550);
-
-	static var TEAM_POSITIONS = [POS_L_1, POS_L_2, POS_L_3, POS_L_4, POS_R_1, POS_R_2, POS_R_3, POS_R_4];
 
 	static var CHAR_SCALE = 2.5;
 
@@ -56,8 +45,7 @@ class  GameGraphics extends Sprite {
 
 	var game:Game;
 	var actionmenu:ActionMenu;
-	var lockinBtn:Sprite;
-	var lockinBtnTS:Tilesheet;
+	var lockinButton:Sprite;
 	var hpBars:Array <HpBar>;
 	var textBoxes: Array <TextAnimation>;
 	var cursor:Cursor;
@@ -67,7 +55,8 @@ class  GameGraphics extends Sprite {
 
 	var battleSequence:Sequence;
 	
-	function new() {
+
+	public function new() {
 		super();
 
 		game = new Game();
@@ -86,22 +75,30 @@ class  GameGraphics extends Sprite {
 
 		cursorVisible = false;
 		actionmenu = new ActionMenu();
-		actionmenu.addEventListener(MouseEvent.MOUSE_DOWN, actionmenu.on_click);
 		addChild(actionmenu);
-		createLockinBtn();
+		
+		lockinButton = new LockinButton();
+		addChild(lockinButton);
+
 		enemyTeamActions(); //Stand in for now...
 		initListeners();
 	}
 
+	private function lockin(event:MouseEvent) :Void {
+		game.lockin(Globals.PLAYER_ONE);
+		game.lockin(Globals.PLAYER_TWO);
+	}
 		
 	private function initListeners() {
-		loadListeners();
+		actionmenu.addEventListener(MouseEvent.MOUSE_DOWN, actionmenu.on_click);
+		lockinButton.addEventListener(MouseEvent.MOUSE_DOWN, lockin);
+
 		Lib.current.stage.addEventListener (KeyboardEvent.KEY_DOWN, keyDown);
 		// begins animation render loop
 		addEventListener(Event.ENTER_FRAME, renderLoop);
 	}
 
-	private function loadListeners() :Void {
+	private function loadListeners() {
 		addEventListener ('select_character', sendCharSelect);
 		addEventListener ('menu_select', menuSelect);
 	}
@@ -156,7 +153,7 @@ class  GameGraphics extends Sprite {
 				cursor.x = characterList[char].x + 30;
 				cursor.y = characterList[char].y - 40;
 			}
-		}
+		}	
 	}
 
 	private function hideCursor() :Void {
@@ -169,25 +166,44 @@ class  GameGraphics extends Sprite {
 	// // // // // LOADERS // // // // // 
 
 	private function loadBackdrop() : Void {
-		var backdrop = new Graphic(Assets.getBitmapData('assets/background.png'), new Rectangle(0, 0, 800,600));
+		var backdrop = new Graphic(Assets.getBitmapData('assets/background.png'), new Rectangle(0, 0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight));
 		drawGraphic(backdrop);
 	}
 
 	private function loadContainers() : Void {
 		displayContainer = new Sprite();
+		spriteContainer = new Array();
 		addChild(displayContainer);
 
-		spriteContainer = new Array();
+		// this is half the window hight divided by 6 for the location the characters stand
+		var CHAR_POSITIONING_Y = (Lib.current.stage.stageHeight / 12);
+		var x = 20;
+		var y = Lib.current.stage.stageHeight - CHAR_POSITIONING_Y;
 
-		for(c in 0...TEAM_POSITIONS.length){
+		for(c in 0...4){
 			var sprite = characterList[c];
-			sprite.x = TEAM_POSITIONS[c].x;
-			sprite.y = TEAM_POSITIONS[c].y;
+			sprite.x = x;
+			sprite.y = y;
 
 			sprite.addEventListener(MouseEvent.MOUSE_DOWN, characterList[c].on_click);
 
 			spriteContainer.push(sprite);
 			displayContainer.addChild(sprite);
+			y -= CHAR_POSITIONING_Y;
+		}
+
+		x = Lib.current.stage.stageWidth-100;
+		y = Lib.current.stage.stageHeight - CHAR_POSITIONING_Y;
+		for (c in 4...8) {
+			var sprite = characterList[c];
+			sprite.x = x;
+			sprite.y = y;
+
+			sprite.addEventListener(MouseEvent.MOUSE_DOWN, characterList[c].on_click);
+
+			spriteContainer.push(sprite);
+			displayContainer.addChild(sprite);
+			y -= CHAR_POSITIONING_Y;
 		}
 	}
 
@@ -212,42 +228,6 @@ class  GameGraphics extends Sprite {
 				charId++;
 			}
 		}
-	}
-
-	private function createLockinBtn(){
-		lockinBtn = new Sprite();
-		lockinBtn.x = 700;
-		lockinBtn.y = 30;
-
-		lockinBtnTS = new Tilesheet(Assets.getBitmapData('assets/lockin_btn.png'));
-		lockinBtnTS.addTileRect(new Rectangle(0,0,30,20));
-		lockinBtnTS.addTileRect(new Rectangle(30,0,30,20));
-
-		lockinBtnTS.drawTiles(lockinBtn.graphics, [0,0,0,3], Tilesheet.TILE_SCALE);
-
-		addChild(lockinBtn);
-
-		lockinBtn.addEventListener(MouseEvent.MOUSE_OVER, lockinHover);
-		lockinBtn.addEventListener(MouseEvent.MOUSE_DOWN, lockin);
-
-
-	}
-
-	private function lockinHover(event:MouseEvent) :Void {
-		lockinBtn.graphics.clear();
-		lockinBtnTS.drawTiles(lockinBtn.graphics, [0,0,1,3], Tilesheet.TILE_SCALE);
-		lockinBtn.addEventListener(MouseEvent.MOUSE_OUT, lockinOut);
-	}
-
-	private function lockinOut(event:MouseEvent) :Void {
-		lockinBtn.graphics.clear();
-		lockinBtnTS.drawTiles(lockinBtn.graphics, [0,0,0,3], Tilesheet.TILE_SCALE);
-		lockinBtn.removeEventListener(MouseEvent.MOUSE_OUT, lockinOut);
-	}
-
-	private function lockin(evetn:MouseEvent) :Void {
-		game.lockin(Globals.PLAYER_ONE);
-		game.lockin(Globals.PLAYER_TWO);
 	}
 
 	// // // // // DRAWING & RENDERING // // // // //

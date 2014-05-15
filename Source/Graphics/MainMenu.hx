@@ -1,4 +1,4 @@
-package ;
+package graphics;
 
 import flash.display.Sprite;
 import flash.display.Bitmap;
@@ -28,7 +28,7 @@ class MainMenu extends Sprite
 	{
 		blackout = new Bitmap();
 		blackout.graphics.beginFill(0x000000);
-		blackout.graphics.drawRect(0,0, 1000, 1000);
+		blackout.graphics.drawRect(0,0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight);
 		addChild(blackout);
 	}
 

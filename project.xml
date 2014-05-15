@@ -3,6 +3,10 @@
 	
 	<meta title="RPGBattle" package="com.example.rpgbattle" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="RPGBattle" />
+	<!--<window width="1280" height="600" />-->
+
+	<android target-sdk-version="19" />
+		
 	
 	<source path="Source" />
 	

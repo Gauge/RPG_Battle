@@ -4,7 +4,7 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.system.System;
 import graphics.GameGraphics;
-import MainMenu;
+import graphics.MainMenu;
 
 class Main extends Sprite {
 

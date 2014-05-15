@@ -151,16 +151,6 @@ class Sequence {
 	}
 }
 
-class HpBar extends Sprite {
-	public function new () super();
-	public var vitMax:Int;
-	public var vit:Int;
-	public function update(damage : Int) {
-		vit -= damage;
-		if(vit < 0) vit = 0;
-	}
-}
-
 
 class TextAnimation extends Sprite {
 	public var text:String;
