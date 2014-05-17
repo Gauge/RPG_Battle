@@ -7,6 +7,7 @@ import openfl.Assets;
 import flash.Lib;
 
 import graphics.uicomponents.Background;
+import graphics.uicomponents.LockinButton;
 import logic.Game;
 
 class ActiveGame extends Sprite {
@@ -16,12 +17,14 @@ class ActiveGame extends Sprite {
 
 	// graphic components
 	var background:Background;
+	var lockinButton:LockinButton;
 
 	public function new() {
 		super();
 		
 		game = new Game();
 		initBackground();
+		initLockinButton();
 
 		Lib.current.stage.addEventListener(Event.RESIZE, onScreenResize);
 
@@ -43,15 +46,16 @@ class ActiveGame extends Sprite {
 	}
 
 	private function initLockinButton(): Void {
-
+		lockinButton = new LockinButton();
+		this.addChild(lockinButton);
 	}
 
 	private function initActionMenu(): Void {
 
 	}
 
-
 	private function onScreenResize(e:Event) {
 		background.setSize(new Rectangle(0, 0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight));
+		lockinButton.recalculateSize();
 	}
 }
