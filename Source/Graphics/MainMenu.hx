@@ -1,4 +1,4 @@
-package graphics;
+package graphics.screens;
 
 import flash.display.Sprite;
 import flash.display.Bitmap;
