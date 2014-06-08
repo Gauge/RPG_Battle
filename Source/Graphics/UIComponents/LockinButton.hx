@@ -22,13 +22,14 @@ class LockinButton extends Sprite {
 	public function new() {
 		super();
 
-		tilesheet = new Tilesheet(Assets.getBitmapData('assets/lockin_btn.png'));
+		tilesheet = new Tilesheet(Assets.getBitmapData('assets/Images/lockin_btn.png'));
 		tilesheet.addTileRect(new Rectangle(0, 0, 30, 20));
 		tilesheet.addTileRect(new Rectangle(30, 0, 30, 20));
 		tilesheet.drawTiles(this.graphics, [0,0,0]);
 		recalculateSize();
 
 		this.addEventListener(MouseEvent.MOUSE_OVER, lockinHover);
+		this.addEventListener(MouseEvent.CLICK, onClick);
 	}
 
 	private function lockinHover(event:MouseEvent) :Void {
@@ -41,6 +42,10 @@ class LockinButton extends Sprite {
 		this.graphics.clear();
 		tilesheet.drawTiles(this.graphics, [0,0,0]);
 		this.removeEventListener(MouseEvent.MOUSE_OUT, lockinOut);
+	}
+
+	private function onClick(e:Event) {
+		e.currentTarget.dispatchEvent(new Event("lockin", true));
 	}
 
 	public function recalculateSize() {

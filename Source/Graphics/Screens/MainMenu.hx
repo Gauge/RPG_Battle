@@ -23,7 +23,7 @@ class MainMenu extends Sprite
 		blackout_background();
 		build_buttons();
 
-		Lib.current.stage.addEventListener(Event.RESIZE, onScreenResize);
+		addEventListener(Event.RESIZE, onScreenResize);
 	}
 
 	private function blackout_background () {
@@ -63,7 +63,7 @@ class MainMenu extends Sprite
 
 	private function build_text(_text:String, _size) : TextField {
 		var txt = new TextField();
-		var font = Assets.getFont('assets/pixelated.ttf');
+		var font = Assets.getFont('assets/Fonts/pixelated.ttf');
 		var format = new TextFormat(font.fontName, _size, 0x000000);
 
 		format.align = TextFormatAlign.CENTER;
@@ -71,7 +71,6 @@ class MainMenu extends Sprite
 		
 		txt.text = _text;
 		txt.autoSize = TextFieldAutoSize.CENTER;
-
 
 		return txt;
 	}

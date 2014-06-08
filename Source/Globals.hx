@@ -32,8 +32,17 @@ class Globals {
 	public static var GAME_UPDATE = 2;
 	public static var GAME_OVER = 3;
 
-	public static var CHARACTER_1 = 0;
-	public static var CHARACTER_2 = 1;
-	public static var CHARACTER_3 = 2;
-	public static var CHARACTER_4 = 3;
+	// character number
+	public static var CHARACTER_1 = 1;
+	public static var CHARACTER_2 = 2;
+	public static var CHARACTER_3 = 3;
+	public static var CHARACTER_4 = 4;
+
+	// game speed
+	public static var FRAME_RATE = 500;
+
+	// character config 
+	public static var SCALE:Float = 2;
+	public static var LEFT = 1;
+	public static var RIGHT = -1;
 }
