@@ -78,7 +78,9 @@ class MainMenu extends Sprite
 	private function play_game( e : Event ) 
 	{
 		var new_game = new Event("new_game", true);
-		e.currentTarget.dispatchEvent(new_game);
+		e.currentTarget.dispatchEvent(new_game
+			);
+		trace(e.currentTarget +  "was clicked");
 		trace("Menu Clicked! Starting game");
 	}
 

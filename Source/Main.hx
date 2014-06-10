@@ -16,10 +16,14 @@ class Main extends Sprite {
 		addChild(main_menu);
 		addEventListener("quit", quit);
 		addEventListener("new_game", new_game);
+		addEventListener("game_over", game_over);
 	}
 
 	private function quit(e : Event) 		{ System.exit(0); }
 
 	private function new_game(e : Event) 	{ gamegraphics = new GameGraphics(); addChild(gamegraphics); }
+
+
+	private function game_over(e : Event)	{trace('caught game_over call');}
 	
 }

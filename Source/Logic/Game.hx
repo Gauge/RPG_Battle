@@ -1,6 +1,9 @@
 package logic;
 
 import actions.Action;
+import flash.Lib;
+import flash.events.Event;
+import flash.events.EventDispatcher;
 
 class Game {
 
@@ -182,7 +185,9 @@ class Game {
 			}
 		} else {
 			gamestate = Globals.GAME_OVER;
-			trace("Game over on turn: " + turn);
+			var dispatch = new EventDispatcher();
+			dispatch.dispatchEvent(new Event("game_over", true));
+			trace("Game over on turn: " + turn + "|" + dispatch);
 		}
 	}
 }
