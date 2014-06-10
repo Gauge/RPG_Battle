@@ -42,19 +42,16 @@ class Game {
 
 	// highlights a character to apply an action to
 	public function selectCharacter(p:Int, characterID:Int) {
-		if (gamestate != Globals.GAME_TURN){
-			return; 
-		}
+		if (gamestate != Globals.GAME_TURN) return; 
 
 		var player = getPlayerById(p);
 		player.setSelected(characterID);
 		trace("player " + (p+1) + " selected character " + (player.getSelected()+1));
 	}
 
+	// sets an action for the currently selected character
 	public function selectAction(selectedPlayer:Int, action:Int, targetPlayer:Int, targetCharacter:Int) {
-		if (gamestate != Globals.GAME_TURN){
-			return;
-		}
+		if (gamestate != Globals.GAME_TURN) return;
 
 		var player = getPlayerById(selectedPlayer);
 		player.setAction(action, targetPlayer, targetCharacter);
@@ -66,6 +63,7 @@ class Game {
 	// this is where all the calculations for battle will happen
 	// and all the after math will be updated
 	private function updateGame() {
+		trace("processing unit moves");
 		var actions = getSortedActions();
 		for (i in 0...actions.length){
 			var action = actions[i];

@@ -4,6 +4,8 @@
 	<meta title="RPGBattle" package="com.example.rpgbattle" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="RPGBattle" />
 
+	<!--<window width="1280" height="600" />-->
+
 	<android target-sdk-version="19" />
 	
 	<source path="Source" />
@@ -11,6 +13,6 @@
 	<haxelib name="openfl" />
 	
 	<assets path="Assets" rename="assets" exclude="openfl.svg" />
-	<icon path="Assets/lockin_a.png" />
+	<icon path="Assets/Images/cursor.png" />
 	
 </project>

@@ -5,6 +5,11 @@ import openfl.Assets;
 import logic.Player;
 import logic.Item;
 import logic.Character;
+import flash.geom.Rectangle;
+import openfl.display.Tilesheet;
+import flash.geom.Point;
+
+import graphics.uicomponents.CharacterSprite;
 
 class Loader {
 
@@ -50,34 +55,34 @@ class Loader {
 		}
 	}
 
-	public static function loadSprite(spriteName:String) :Array <Dynamic> {
+	public static function loadSprite(spriteName:String, direction:Int, charNumber:Int) : CharacterSprite {
 
-		var filename = "assets/Spritesheets/" + spriteName + ".ass";
-		var string = Assets.getText(filename);
-		var dataArray:Array <Dynamic> = new Array();
+		var filename = "assets/Layouts/" + spriteName + ".ass";
 		try {
-			var json = Json.parse(string);
-			dataArray.push(json.bitmap);
-	
-			var animations:Array <Dynamic> = json.animationList;
+			var json = Json.parse(Assets.getText(filename));
+			var char = new CharacterSprite(direction, charNumber);
+			var tempsheet = new Tilesheet(Assets.getBitmapData("assets/Images/" + json.filename));
+			var start = 0;
 			
-			for(a in 0...animations.length){
-				var animList:Array <Dynamic> = new Array();
-				animList.push(animations[a].name);
-				animList.push(animations[a].loop);
-				var frames:Array <Dynamic> = animations[a].frameList;
-				for(f in 0...frames.length) {
-					var frame = [ frames[f].duration, frames[f].x, frames[f].y, frames[f].width, frames[f].height, frames[f].refx, frames[f].refy, frames[f].id];
-					if(frames[f].trigger != null) frame.push( frames[f].trigger );
-					animList.push(frame);
+			json.actions[0]; // must have!!!
+			for (i in 0...json.actions.length) { 
+				json.actions[i].frames[0]; // must have!!!
+				
+				var end = 0;
+				for (ii in 0...json.actions[i].frames.length) {
+					var rec = json.actions[i].frames[ii];
+					tempsheet.addTileRect(new Rectangle(rec.x, rec.y , rec.w , rec.h));
+					end++;
 				}
-				dataArray.push(animList);
+				char.addAnimation(json.actions[i].name, new Point(start, end));
+				start = end;
 			}
-			
-			return dataArray;
-		
-		} catch (msg: String){
-			trace("error loading file: " + filename);
+
+			char.setTilesheet(tempsheet);
+			return char;
+
+		} catch(msg: String) {
+			trace("error loading file: " + filename + "\n" + msg);
 			return null;
 		}
 	}

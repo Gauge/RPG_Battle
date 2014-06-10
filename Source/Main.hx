@@ -3,12 +3,13 @@ package;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.system.System;
-import graphics.GameGraphics;
-import MainMenu;
+import graphics.screens.ActiveGame;
+import graphics.screens.MainMenu;
 
 class Main extends Sprite {
 
-	var gamegraphics:GameGraphics;
+	var main_menu:MainMenu;
+	var activeGame:ActiveGame;
 
 	public function new () {
 		super();
@@ -19,11 +20,18 @@ class Main extends Sprite {
 		addEventListener("game_over", game_over);
 	}
 
-	private function quit(e : Event) 		{ System.exit(0); }
-
-	private function new_game(e : Event) 	{ gamegraphics = new GameGraphics(); addChild(gamegraphics); }
-
-
+	private function quit(e : Event) { 
+		System.exit(0); 
+	}
 	private function game_over(e : Event)	{trace('caught game_over call');}
+
+	
+	private function new_game(e : Event) { 
+		// remove old view
+		removeChild(main_menu);
+		// add current view
+		activeGame = new ActiveGame(); 
+		addChild(activeGame); 
+	}
 	
 }
