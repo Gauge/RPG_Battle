@@ -82,7 +82,7 @@ class Loader {
 			return char;
 
 		} catch(msg: String) {
-			trace("error loading file: " + filename + "\n" + msg);
+			trace("error loading file: " + filename);
 			return null;
 		}
 	}
