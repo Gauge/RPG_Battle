@@ -14,74 +14,57 @@ import graphics.uicomponents.CharacterSprite;
 class Loader {
 
 	public static function loadPlayer(id:Int, playerName:String) {
-		var filename = "assets/Players/" + playerName + ".ps";
-		var string = Assets.getText(filename);
-		try {
-			var json = Json.parse(string);
-			trace(json.characters);
-			return new Player(id, json.characters);
-		
-		} catch (msg: String){
-			trace("error loading file: " + filename);
-			return null;
-		}
+		var json = getParsedJSON("assets/Players/" + playerName + ".ps");
+		//trace(json);
+		return (json != null) ? new Player(id, json.characters) : null;
 	}
 
 	public static function loadCharacter(characterName:String):Character {
-
-		var filename = "assets/Characters/" + characterName + ".chd";
-		var string = Assets.getText(filename);
-		try {
-			var json = Json.parse(string);
-			return new Character(json.name, json.equipment);
-		
-		} catch (msg: String){
-			trace("error loading file: " + filename);
-			return null;
-		}
+		var json = getParsedJSON("assets/Characters/" + characterName + ".chd");
+		//trace(json);
+		return (json != null) ? new Character(json.name, json.equipment) : null;
 	}
 
 	public static function loadItem(itemName:String):Item {
-
-		var filename = "assets/Items/" + itemName + ".tm";
-		var string = Assets.getText(filename);
-		try {
-			var json = Json.parse(string);
-			return new Item(json.type, json.vitality, json.attackPower, json.magicPower, json.physicalRes, json.magicRes, json.attackSpeed);
+		var json = getParsedJSON("assets/Items/" + itemName + ".tm");
+		//trace(json);
+		return (json != null) ? 
+			new Item(json.type, json.vitality, json.attackPower, json.magicPower, json.physicalRes, json.magicRes, json.attackSpeed) : null;
 		
-		} catch (msg: String){
-			trace("error loading file: " + filename);
-			return null;
-		}
 	}
 
 	public static function loadSprite(spriteName:String, direction:Int, charNumber:Int) : CharacterSprite {
-
-		var filename = "assets/Layouts/" + spriteName + ".ass";
-		try {
-			var json = Json.parse(Assets.getText(filename));
-			var char = new CharacterSprite(direction, charNumber);
-			var tempsheet = new Tilesheet(Assets.getBitmapData("assets/Images/" + json.filename));
+		var json = getParsedJSON("assets/Layouts/" + spriteName + ".src");
+		//trace(json);
+		if (json != null) {
 			var start = 0;
+			var char = new CharacterSprite(direction, charNumber);
+			var tempsheet = new Tilesheet(Assets.getBitmapData("assets/Images/" + json.name));
 			
-			json.actions[0]; // must have!!!
-			for (i in 0...json.actions.length) { 
-				json.actions[i].frames[0]; // must have!!!
+			json.dir[0]; // must have!!!
+			for (i in 0...json.dir.length) { 
+				json.dir[i].spr[0]; // must have!!!
 				
 				var end = 0;
-				for (ii in 0...json.actions[i].frames.length) {
-					var rec = json.actions[i].frames[ii];
+				for (ii in 0...json.dir[i].spr.length) {
+					var rec = json.dir[i].spr[ii];
 					tempsheet.addTileRect(new Rectangle(rec.x, rec.y , rec.w , rec.h));
 					end++;
 				}
-				char.addAnimation(json.actions[i].name, new Point(start, end));
+				char.addAnimation(json.dir[i].name, new Point(start, end));
 				start = end;
 			}
 
 			char.setTilesheet(tempsheet);
 			return char;
+		}
+		return null;
+	}
 
-		} catch(msg: String) {
+	public static function getParsedJSON(filename:String):Dynamic {
+		try {
+			return Json.parse(Assets.getText(filename));
+		} catch(msg:String) {
 			trace("error loading file: " + filename);
 			return null;
 		}

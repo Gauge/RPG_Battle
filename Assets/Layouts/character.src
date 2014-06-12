@@ -2,7 +2,7 @@
 	"name": "testsprite.png",
 	"dir": [
 		{
-			"name": "attack_1",
+			"name": "Attack 1",
 			"spr": [
 				{"name": "0",	"x": 6 ,	"y": 5 ,	"w": 24,	"h": 35},
 				{"name": "1",	"x": 36 ,	"y": 6 ,	"w": 22,	"h": 34},
@@ -45,7 +45,7 @@
 			]
 		},
 		{
-			"name": "pose",
+			"name": "Pose 1",
 			"spr": [
 				{"name": "0",	"x": 6 ,	"y": 257 ,	"w": 31,	"h": 35},
 				{"name": "1",	"x": 38 ,	"y": 257 ,	"w": 29,	"h": 35},

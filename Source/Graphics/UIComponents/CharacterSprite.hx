@@ -15,11 +15,12 @@ class CharacterSprite extends Sprite {
 	var _direction:Int;
 	var _characterNumber:Int;
 
+
 	public function new(direction:Int, characterNumber:Int) {
 		super();
 		_direction = direction;
 		_characterNumber = characterNumber;
-		_currentAnimation = "Idle";
+		_currentAnimation = "Attack 1";
 		_currentPosition = 0;
 		_animations = new Map<String, Point>();
 	}
