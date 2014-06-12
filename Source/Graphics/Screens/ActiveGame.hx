@@ -61,14 +61,14 @@ class ActiveGame extends Sprite {
 		trace("creating characters");
 		// create team 1
 		for (i in 0...4) {
-			var char = Loader.loadSprite("character", Globals.LEFT, i);
+			var char = Loader.loadSprite("box", Globals.LEFT, i);
 			this.addChild(char);
 			char.recalculateSize();
 			team1.push(char);
 		}
 
 		for (i in 0...4) {
-			var char = Loader.loadSprite("character", Globals.RIGHT, i);
+			var char = Loader.loadSprite("box", Globals.RIGHT, i);
 			this.addChild(char);
 			char.recalculateSize();
 			team2.push(char);

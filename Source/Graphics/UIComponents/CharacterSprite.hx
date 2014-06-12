@@ -5,36 +5,28 @@ import flash.display.Graphics;
 import flash.geom.Point;
 import flash.display.Sprite;
 import flash.Lib;
+import graphics.util.DarkFunctionTileSheet;
 
 class CharacterSprite extends Sprite {
 
-	var _tilesheet:Tilesheet;
-	var _animations:Map<String,Point>;
-	var _currentAnimation:String;
-	var _currentPosition:Int;
+	var _tilesheet:DarkFunctionTileSheet;
 	var _direction:Int;
 	var _characterNumber:Int;
 
 
-	public function new(direction:Int, characterNumber:Int) {
+	public function new(direction:Int, characterNumber:Int, tile:Dynamic, style:Dynamic) {
 		super();
+		_tilesheet = new DarkFunctionTileSheet(tile, style);
 		_direction = direction;
 		_characterNumber = characterNumber;
-		_currentAnimation = "Attack 1";
-		_currentPosition = 0;
-		_animations = new Map<String, Point>();
 	}
 
-	public function setTilesheet(tilesheet:Tilesheet) {
-		_tilesheet = tilesheet;
+	public function getAnimations():Array<String>{
+		return _tilesheet.getAnimations();
 	}
 
 	public function setAnimation(name:String) {
-		_currentAnimation = name;
-	}
-
-	public function addAnimation(name:String, point:Point):Void {
-		_animations.set(name, point);
+		_tilesheet.setAnimation(name);
 	}
 
 	public function recalculateSize():Void {
@@ -53,10 +45,8 @@ class CharacterSprite extends Sprite {
 
 	public function render():Void {
 		this.graphics.clear();
-		var range = _animations.get(_currentAnimation);
-		_tilesheet.drawTiles(this.graphics, [0, 0,_currentPosition, _direction*Globals.SCALE, 0, 0, Globals.SCALE], Tilesheet.TILE_TRANS_2x2);
-
-		_currentPosition = ((_currentPosition+1) == Std.int(range.y)) ? Std.int(range.x) : _currentPosition+1; 
+		var frame = _tilesheet.nextFrame();
+		_tilesheet.drawTiles(this.graphics, [frame.xOffset, frame.yOffset, frame.index, _direction*Globals.SCALE, 0, 0, Globals.SCALE], Tilesheet.TILE_TRANS_2x2); 
 	}
 
 }

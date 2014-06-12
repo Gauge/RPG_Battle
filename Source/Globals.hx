@@ -39,7 +39,7 @@ class Globals {
 	public static var CHARACTER_4 = 4;
 
 	// game speed
-	public static var FRAME_RATE = 500;
+	public static var FRAME_RATE = 50;
 
 	// character config 
 	public static var SCALE:Float = 2;

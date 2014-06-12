@@ -5,6 +5,7 @@ import flash.events.Event;
 import flash.system.System;
 import graphics.screens.ActiveGame;
 import graphics.screens.MainMenu;
+import graphics.util.DarkFunctionTileSheet;
 
 class Main extends Sprite {
 
@@ -13,6 +14,7 @@ class Main extends Sprite {
 
 	public function new () {
 		super();
+
 		var main_menu = new MainMenu();
 		addChild(main_menu);
 		addEventListener("quit", quit);

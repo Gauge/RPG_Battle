@@ -5,9 +5,6 @@ import openfl.Assets;
 import logic.Player;
 import logic.Item;
 import logic.Character;
-import flash.geom.Rectangle;
-import openfl.display.Tilesheet;
-import flash.geom.Point;
 
 import graphics.uicomponents.CharacterSprite;
 
@@ -35,28 +32,10 @@ class Loader {
 
 	public static function loadSprite(spriteName:String, direction:Int, charNumber:Int) : CharacterSprite {
 		var json = getParsedJSON("assets/Layouts/" + spriteName + ".src");
-		//trace(json);
-		if (json != null) {
-			var start = 0;
-			var char = new CharacterSprite(direction, charNumber);
-			var tempsheet = new Tilesheet(Assets.getBitmapData("assets/Images/" + json.name));
-			
-			json.dir[0]; // must have!!!
-			for (i in 0...json.dir.length) { 
-				json.dir[i].spr[0]; // must have!!!
-				
-				var end = 0;
-				for (ii in 0...json.dir[i].spr.length) {
-					var rec = json.dir[i].spr[ii];
-					tempsheet.addTileRect(new Rectangle(rec.x, rec.y , rec.w , rec.h));
-					end++;
-				}
-				char.addAnimation(json.dir[i].name, new Point(start, end));
-				start = end;
-			}
-
-			char.setTilesheet(tempsheet);
-			return char;
+		var json2 = getParsedJSON("assets/Layouts/" + spriteName + ".ass");
+		
+		if (json != null && json2 != null) {
+			return new CharacterSprite(direction, charNumber, json, json2);
 		}
 		return null;
 	}
