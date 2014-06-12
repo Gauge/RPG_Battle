@@ -53,7 +53,7 @@ class ActiveGame extends Sprite {
 
 	private function initBackground(): Void {
 		trace("creating background");
-		background = new Background(Assets.getBitmapData('assets/Images/background.png'), new Rectangle(0, 0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight));
+		background = new Background(Assets.getBitmapData('assets/Images/terregenBackground.png'), new Rectangle(0, 0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight));
 		this.addChild(background);
 	}
 
