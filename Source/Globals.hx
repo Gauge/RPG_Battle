@@ -42,7 +42,7 @@ class Globals {
 	public static var FRAME_RATE = 50;
 
 	// character config 
-	public static var SCALE:Float = 2;
+	public static var BASE_SCREEN_OFFSET = 50;
 	public static var LEFT = 1;
 	public static var RIGHT = -1;
 }
