@@ -1,0 +1,53 @@
+{
+  "anims": [
+    {
+      "name": "Inactive",
+      "frames":
+      	[
+					{"index": 0	, "delay": 1	, "x": 0	,"y": 0	,"z": 0	 }
+				]
+    },
+    {
+      "name": "Transition_Over",
+      "frames":
+      [
+				{"index": 0	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 1	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 2	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 3	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 4	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 5	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 6	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 7	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 8	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 9	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 10	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	}
+
+      ]
+    },
+    {
+      "name": "Transition_Out",
+      "frames":
+      [
+				{"index": 10	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 9	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 8	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 7	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 6	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 5	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 4	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 3	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 2	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 1	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	},
+				{"index": 0	,"delay": 1	,  "x": 0	,  "y": 0	,  "z": 0	}
+      ]
+    },
+    {
+      "name": "Active",
+      "frames":
+      [
+      	{"index": 10	, "delay": 1	, "x": 0	,"y": 0	,"z": 0	 } 
+      ]
+    }
+  ]
+}
