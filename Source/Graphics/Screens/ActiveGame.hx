@@ -1,6 +1,5 @@
 package graphics.screens;
 
-
 import openfl.Assets;
 
 import logic.Game;
@@ -103,8 +102,8 @@ class ActiveGame extends Sprite {
 	}
 
 	private function onLockinClick(e:Event) {
-		game.selectCharacter(Globals.PLAYER_ONE, Globals.CHARACTER_1);
-		game.selectAction(Globals.PLAYER_ONE, Globals.ACTION_ATTACK, Globals.PLAYER_TWO, Globals.CHARACTER_3);
+		game.selectCharacter(Globals.PLAYER_ONE, Globals.CHARACTER_1); // Sample data
+		game.selectAction(Globals.PLAYER_ONE, Globals.ACTION_ATTACK, Globals.PLAYER_TWO, Globals.CHARACTER_3); // Sample data
 		game.lockin(Globals.PLAYER_ONE);
 		game.lockin(Globals.PLAYER_TWO);
 	}
@@ -120,6 +119,7 @@ class ActiveGame extends Sprite {
 	}
 
 	private function render() {
+		lockinButton.render();
 		for (char in team1) { 
 			char.render();
 		}

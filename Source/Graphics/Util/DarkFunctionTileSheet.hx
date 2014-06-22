@@ -2,19 +2,24 @@ package graphics.util;
 
 import openfl.Assets;
 import openfl.display.Tilesheet;
+import flash.Lib;
 import flash.geom.Rectangle;
+import flash.events.Event;
+import flash.events.EventDispatcher;
 
 class DarkFunctionTileSheet extends Tilesheet {
 
 	private var _animations:Map<String,Array<AnimationFrame>>;
 	private var _currentAnimation:String;
 	private var _currentFrame:Int;
+	private var _endOfAnimation:Bool;
 
 	// load the src and ass files
 	public function new(tile:Dynamic, style:Dynamic) {
 		super(Assets.getBitmapData("assets/Images/" + tile.name));
 
 		_animations = new Map<String, Array<AnimationFrame>>();
+		_endOfAnimation = false;
 
 		// load sprite sheet frames
 		for (i in 0...tile.frames.length){
@@ -48,16 +53,47 @@ class DarkFunctionTileSheet extends Tilesheet {
 		}
 		return array;
 	}
+
+	public function getCurrentAnimation():String {
+		return _currentAnimation;
+	}
 	
 	public function setAnimation(name:String) {
 		_currentAnimation = name;
+		_currentFrame = 0;
+	}
+
+	public function isEndOfAnimation() {
+		return _endOfAnimation;
 	}
 
 	public function nextFrame(): AnimationFrame {
 		var list = _animations.get(_currentAnimation);
 		var a = list[_currentFrame];
-		_currentFrame = ((_currentFrame+1) == list.length) ? 0 : _currentFrame+1;
+
+		if ((_currentFrame+1) == list.length) {
+			_currentFrame = 0;
+			_endOfAnimation = true;
+		} else {
+			_currentFrame = _currentFrame+1;
+			_endOfAnimation = false;
+		}
 		return a;
+	}
+
+	public function getFrameNumber() {
+		return _currentFrame;
+	}
+
+	public static function loadTileSheet (filename:String) {
+		var json = Loader.getParsedJSON("assets/Layouts/" + filename + ".src");
+		var json2 = Loader.getParsedJSON("assets/Layouts/" + filename + ".ass");
+
+		if (json != null && json2 != null) {
+			return new DarkFunctionTileSheet(json, json2);
+		}
+		return null;
+
 	}
 
 }
