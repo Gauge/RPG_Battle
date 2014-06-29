@@ -29,29 +29,26 @@ class LockinButton extends Sprite {
 		this.render();
 		recalculateSize();
 
-		this.addEventListener(MouseEvent.MOUSE_OVER, lockinHover);
-		this.addEventListener(MouseEvent.MOUSE_OUT, lockinOut);
-		this.addEventListener(MouseEvent.CLICK, onClick);
+		this.addEventListener(MouseEvent.ROLL_OVER, lockinHover);
+		this.addEventListener(MouseEvent.ROLL_OUT, lockinOut);
+		this.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+		this.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 	}
 
 	private function lockinHover(event:MouseEvent) :Void {
-		this.graphics.clear();
-		if (_tilesheet.getCurrentAnimation() == "Inactive"){
-			_tilesheet.setAnimation("Transition_Over");
-		}
+		_tilesheet.setAnimation("Active");
 	}
 
-	private function lockinOut(event:MouseEvent) :Void {
-		this.graphics.clear();
-		if (_tilesheet.getCurrentAnimation() == "Active") {
-			_tilesheet.setAnimation("Transition_Out");
-		}
+	private function lockinOut(event:MouseEvent): Void {
+		_tilesheet.setAnimation("Inactive");
 	}
 
-	private function onClick(e:Event) {
-		if (_tilesheet.getCurrentAnimation() == "Active"){
-			_tilesheet.setAnimation("Inactive");
-		}
+	private function onMouseDown(e:MouseEvent): Void {
+		_tilesheet.setAnimation("Inactive");
+	}
+
+	private function onMouseUp(e:MouseEvent): Void {
+		_tilesheet.setAnimation("Active");
 		e.currentTarget.dispatchEvent(new Event("lockin", true));
 	}
 
@@ -68,21 +65,14 @@ class LockinButton extends Sprite {
 		this.y = padding;
 	}
 
-	private function changeAnimation() {
-		var current = _tilesheet.getCurrentAnimation();
-		if (current == "Transition_Over"){ 
-			_tilesheet.setAnimation("Active");
-		} else if (current == "Transition_Out"){
-			_tilesheet.setAnimation("Inactive");
-		}
-	}
-
 	public function render():Void {
 		this.graphics.clear();
 		var frame = _tilesheet.nextFrame();
 		_tilesheet.drawTiles(this.graphics, [frame.xOffset, frame.yOffset, frame.index, 1, 0, 0, 1], Tilesheet.TILE_TRANS_2x2);
-		if (_tilesheet.isEndOfAnimation() == true) {
-			changeAnimation();
-		} 
+		
+		if (_tilesheet.getCurrentAnimation() == "Clicked" && _tilesheet.isEndOfAnimation()) {
+			_tilesheet.setAnimation("Active");
+		}
+
 	}
 }
