@@ -1,0 +1,11 @@
+{
+  "anims": [
+	    {
+	      "name": "main",
+	      "frames":
+	      	[
+						{"index": 0	, "delay": 1	, "x": 0	,"y": 0	,"z": 0	 }
+					]
+	    }
+    ]
+}

@@ -14,6 +14,8 @@ import graphics.uicomponents.Background;
 import graphics.uicomponents.LockinButton;
 import graphics.uicomponents.CharacterSprite;
 
+import motion.Actuate;
+
 class ActiveGame extends Sprite {
 	// holds the game instance
 	var game:Game;
@@ -30,6 +32,7 @@ class ActiveGame extends Sprite {
 
 	public function new() {
 		super();
+		alpha = 0;
 		delta = 0;
 		lastTick = 0;
 
@@ -48,6 +51,8 @@ class ActiveGame extends Sprite {
 		addEventListener("lockin", onLockinClick);
 		Lib.current.stage.addEventListener(Event.RESIZE, onScreenResize);
 		Lib.current.stage.addEventListener(Event.ENTER_FRAME, enterFrame);
+
+		Actuate.tween(this, 2, {alpha:1});
 	}
 
 	private function initBackground(): Void {

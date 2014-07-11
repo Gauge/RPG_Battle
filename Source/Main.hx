@@ -3,9 +3,11 @@ package;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.system.System;
+
 import graphics.screens.ActiveGame;
 import graphics.screens.MainMenu;
-import graphics.util.DarkFunctionTileSheet;
+import graphics.screens.SplashRunner;
+
 
 class Main extends Sprite {
 
@@ -14,7 +16,16 @@ class Main extends Sprite {
 
 	public function new () {
 		super();
+		runSplashes();
+	}
 
+	private function runSplashes() {
+		var splashes = new SplashRunner(['GGsplash.png','ABsplash.png']); // add any splashscreen filenames to this list to auto add them to the splashscreen loop
+		addChild(splashes);
+		addEventListener('splash_complete', build_main_menu);
+	}
+
+	private function build_main_menu(e : Event) {
 		var main_menu = new MainMenu();
 		addChild(main_menu);
 		addEventListener("quit", quit);
@@ -22,18 +33,19 @@ class Main extends Sprite {
 		addEventListener("game_over", game_over);
 	}
 
-	private function quit(e : Event) { 
+	private function quit(e : Event) {
 		System.exit(0); 
 	}
 	private function game_over(e : Event)	{trace('caught game_over call');}
 
 	
-	private function new_game(e : Event) { 
+	private function new_game(e : Event) {
 		// remove old view
 		removeChild(main_menu);
 		// add current view
 		activeGame = new ActiveGame(); 
-		addChild(activeGame); 
+		addChild(activeGame);
+		//animate
 	}
 	
 }

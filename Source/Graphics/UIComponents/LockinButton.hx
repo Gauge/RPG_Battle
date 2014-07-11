@@ -69,7 +69,7 @@ class LockinButton extends Sprite {
 		this.graphics.clear();
 		var frame = _tilesheet.nextFrame();
 		_tilesheet.drawTiles(this.graphics, [frame.xOffset, frame.yOffset, frame.index, 1, 0, 0, 1], Tilesheet.TILE_TRANS_2x2);
-		
+
 		if (_tilesheet.getCurrentAnimation() == "Clicked" && _tilesheet.isEndOfAnimation()) {
 			_tilesheet.setAnimation("Active");
 		}
