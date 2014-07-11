@@ -13,6 +13,7 @@ import openfl.Assets;
 import flash.Lib;
 import graphics.uicomponents.MainMenuBtn;
 import motion.Actuate;
+import motion.easing.Quad;
 import haxe.Timer;
 
 class MainMenu extends Sprite
@@ -58,5 +59,9 @@ class MainMenu extends Sprite
 	private function onScreenResize(e:Event) {
 		for(btn in 0...buttonList.length) buttonList[btn].recalculateSize();
 		blackout.graphics.drawRect(0,0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight);
+	}
+
+	public function slide_up() {
+		Actuate.tween(this, 1, {y:-Lib.current.stage.stageHeight}).ease(Quad.easeIn);
 	}
 }

@@ -26,7 +26,7 @@ class Main extends Sprite {
 	}
 
 	private function build_main_menu(e : Event) {
-		var main_menu = new MainMenu();
+		main_menu = new MainMenu();
 		addChild(main_menu);
 		addEventListener("quit", quit);
 		addEventListener("new_game", new_game);
@@ -41,10 +41,10 @@ class Main extends Sprite {
 	
 	private function new_game(e : Event) {
 		// remove old view
-		removeChild(main_menu);
+		main_menu.slide_up();
 		// add current view
 		activeGame = new ActiveGame(); 
-		addChild(activeGame);
+		addChildAt(activeGame, 1);
 		//animate
 	}
 	
