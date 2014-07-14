@@ -28,6 +28,8 @@ class ActiveGame extends Sprite {
 	var actionMenu:ActionMenu;
 	var team1:Array<CharacterSprite>;
 	var team2:Array<CharacterSprite>;
+	var _selectedCharacter:Int;
+	var _sequenceCount:Int;
 	
 	// render data
 	var delta:Float;
@@ -41,6 +43,8 @@ class ActiveGame extends Sprite {
 
 		team1 = new Array<CharacterSprite>();
 		team2 = new Array<CharacterSprite>();
+		_selectedCharacter = -1;
+		_sequenceCount = 0;
 
 		game = new Game();
 		trace("Starting GUI");
@@ -54,6 +58,8 @@ class ActiveGame extends Sprite {
 		// adjusts the screen if orientation changes
 		addEventListener("lockin", onLockinClick);
 		addEventListener("character_select", onCharacterSelect);
+		addEventListener("attack", onAttack);
+		addEventListener("defend", onDefend);
 		Lib.current.stage.addEventListener(Event.RESIZE, onScreenResize);
 		Lib.current.stage.addEventListener(Event.ENTER_FRAME, enterFrame);
 
@@ -107,6 +113,7 @@ class ActiveGame extends Sprite {
 	private function onScreenResize(e:Event) {
 		background.setSize(new Rectangle(0, 0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight));
 		lockinButton.recalculateSize();
+		actionMenu.recalculateSize();
 		for (char in team1) { 
 			char.recalculateSize();
 		}
@@ -117,27 +124,72 @@ class ActiveGame extends Sprite {
 	}
 
 	private function onCharacterSelect(e:Event) {
-		var player = ((e.target.getDirection() == Globals.LEFT) ? Globals.PLAYER_ONE : Globals.PLAYER_TWO);
-		var character = e.target.getCharacterNumber();
-		game.selectCharacter(player, character);
-		actionMenu.showActionMenu();
+		if (e.target.getDirection() == Globals.LEFT){
+			_selectedCharacter = Math.round(e.target.getCharacterNumber()-1);
+			
+			game.selectCharacter(Globals.PLAYER_ONE, _selectedCharacter);
+			actionMenu.showActionMenu();
+		}
+	}
+
+	private function onCharacterActionSelect(e:Event){
+		// attack the selected character
+		var player = (e.target.getDirection() == Globals.LEFT) ? Globals.PLAYER_ONE : Globals.PLAYER_TWO;
+		var character = Math.round(e.target.getCharacterNumber()-1);
+		game.selectAction(Globals.PLAYER_ONE, Globals.ACTION_ATTACK, player, character);
+		team1[_selectedCharacter].setAnimation("pre_attack");
+
+		this.removeEventListener("character_select", onCharacterActionSelect);
+		this.addEventListener("character_select", onCharacterSelect);
+	}
+
+	private function onAttack(e:Event) {
+		this.removeEventListener("character_select", onCharacterSelect);
+		this.addEventListener("character_select", onCharacterActionSelect);
+	}
+
+	private function onDefend(e:Event) {
+		team1[_selectedCharacter].setAnimation("defend");
+		game.selectAction(Globals.PLAYER_ONE, Globals.ACTION_DEFEND, -1, -1);
+		actionMenu.hideActionMenu();
 	}
 
 	private function onLockinClick(e:Event) {
-		game.selectCharacter(Globals.PLAYER_ONE, Globals.CHARACTER_1); // Sample data
-		game.selectAction(Globals.PLAYER_ONE, Globals.ACTION_ATTACK, Globals.PLAYER_TWO, Globals.CHARACTER_3); // Sample data
 		game.lockin(Globals.PLAYER_ONE);
 		game.lockin(Globals.PLAYER_TWO);
-		
-
+		while(game.gamestate != Globals.GAME_DISPLAY_ROUND){}
+		sequence();
 	}
 
-	private function initSequence() {
-
+	private function sequence() {
+		var action_list = game.getSortedActions();
+		if (_sequenceCount < action_list.length){
+			var action = action_list[_sequenceCount];
+			var character = (action.getSelectedPlayer() == Globals.PLAYER_ONE) ? team1[action.getSelectedCharacter()] : team2[action.getSelectedCharacter()];
+			if (action.getAction() == Globals.ACTION_ATTACK) {
+				character.setAnimationWithCallBack("attack", "action"+_sequenceCount);
+				addEventListener("action"+_sequenceCount, nextSequence);
+			
+			} else if (action.getAction() == Globals.ACTION_DEFEND) {
+				_sequenceCount++;
+				sequence();
+			}
+		} else{
+			for (char in team1){
+				if (char.getCurrentAnimation() != "spin") char.setAnimation("spin");
+			}
+			for(char in team2){
+				if (char.getCurrentAnimation() != "spin") char.setAnimation("spin");	
+			}
+			game.newTurn();
+		}
 	}
 
-	private function updateSequence() {
-
+	private function nextSequence(e:Event) {
+		e.target.setAnimation("spin");
+		removeEventListener("action"+_sequenceCount, nextSequence);
+		_sequenceCount++;
+		sequence();
 	}
 
 	private function enterFrame(e:Event){

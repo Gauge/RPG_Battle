@@ -4,8 +4,6 @@ import openfl.Assets;
 import openfl.display.Tilesheet;
 import flash.Lib;
 import flash.geom.Rectangle;
-import flash.events.Event;
-import flash.events.EventDispatcher;
 
 class DarkFunctionTileSheet extends Tilesheet {
 
@@ -20,7 +18,7 @@ class DarkFunctionTileSheet extends Tilesheet {
 
 		_animations = new Map<String, Array<AnimationFrame>>();
 		_endOfAnimation = false;
-
+		
 		// load sprite sheet frames
 		for (i in 0...tile.frames.length){
 			var dim = tile.frames[i];

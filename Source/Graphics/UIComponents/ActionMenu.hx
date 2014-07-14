@@ -18,6 +18,7 @@ class ActionMenu extends Sprite {
 	private static var NOTHING:Int= 3;
 
 	var _selected:Int;
+	var _abilityPanelToggle:Bool;
 	var _tilesheet:DarkFunctionTileSheet;
 	var _abilityPanel:DarkFunctionTileSheet;
 
@@ -25,9 +26,12 @@ class ActionMenu extends Sprite {
 		super();
 		this.x = -70;
 		_selected = UNSELECTED;
+		_abilityPanelToggle = false;
 		_tilesheet = DarkFunctionTileSheet.loadTileSheet("ActionMenu/action_menu");
 		_abilityPanel = DarkFunctionTileSheet.loadTileSheet("ActionMenu/ability_panel");
 		_tilesheet.setAnimation("Inactive");
+		recalculateSize();
+
 		this.addEventListener(MouseEvent.MOUSE_MOVE, setActive);
 		this.addEventListener(MouseEvent.MOUSE_DOWN, setInactive);
 		this.addEventListener(MouseEvent.MOUSE_UP, onClick);
@@ -66,14 +70,21 @@ class ActionMenu extends Sprite {
 		if (_selected == ATTACK) {
 			_tilesheet.setAnimation("Attack");
 			this.dispatchEvent(new Event("attack", true));
-			
+
 		} else if (_selected == DEFEND) {
 			_tilesheet.setAnimation("Defend");
 			this.dispatchEvent(new Event("defend", true));
+			
 		
 		} else if (_selected == ABILITY) {
 			_tilesheet.setAnimation("Ability");
-			showAbilityPanel();
+			if (_abilityPanelToggle){
+				hideAbilityPanel();
+				_abilityPanelToggle = false;
+			} else { 
+				showAbilityPanel();
+				_abilityPanelToggle = true;
+			}
 		
 		} else if (_selected == NOTHING) {
 			_tilesheet.setAnimation("Inactive");
@@ -86,6 +97,7 @@ class ActionMenu extends Sprite {
 	}
 
 	public function hideActionMenu():Void {
+		_tilesheet.setAnimation("Inactive");
 		Actuate.tween(this, .25, {x:-70}).ease(Quad.easeIn);
 	}
 
@@ -94,7 +106,12 @@ class ActionMenu extends Sprite {
 	}
 
 	private function hideAbilityPanel():Void {
+		_tilesheet.setAnimation("Inactive");
 		Actuate.tween(this, .35, {x:0}).ease(Quad.easeIn);
+	}
+
+	public function recalculateSize() {
+
 	}
 
 	public function render() {

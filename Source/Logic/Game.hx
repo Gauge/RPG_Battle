@@ -63,6 +63,7 @@ class Game {
 	// this is where all the calculations for battle will happen
 	// and all the after math will be updated
 	private function updateGame():Void {
+		gamestate = Globals.GAME_UPDATE;
 		trace("processing unit moves");
 		var actions = getSortedActions();
 		for (i in 0...actions.length){
@@ -99,11 +100,10 @@ class Game {
 			if (actions[i].getAction() != Globals.ACTION_DEFEND){
 				trace("player " + (actions[i].getSelectedPlayer()+1) + " character " + (actions[i].getSelectedCharacter()+1) + 
 					"\'s attack did " + actions[i].report.damage_dealt + " damage to player " + (actions[i].getTargetPlayer()+1)+ 
-					" character " + (actions[i].getTargetPlayer()+1));
+					" character " + (actions[i].getTargetCharacter()+1));
 			}
 		}
-		
-		gamestate = Globals.GAME_UPDATE;
+		gamestate = Globals.GAME_DISPLAY_ROUND;
 	}
 
 	public function getPlayerById(id:Int):Player {

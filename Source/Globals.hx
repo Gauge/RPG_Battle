@@ -30,7 +30,8 @@ class Globals {
 	public static var GAME_INIT = 0;
 	public static var GAME_TURN = 1;
 	public static var GAME_UPDATE = 2;
-	public static var GAME_OVER = 3;
+	public static var GAME_DISPLAY_ROUND = 3;
+	public static var GAME_OVER = 4;
 
 	// character number
 	public static var CHARACTER_1 = 1;

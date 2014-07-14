@@ -17,6 +17,7 @@ class CharacterSprite extends Sprite {
 	var _characterNumber:Int;
 	var _characterScale:Float;
 	var _hpBar:HpBar;
+	var _callback:String;
 
 
 	public function new(direction:Int, characterNumber:Int, tile:Dynamic, style:Dynamic) {
@@ -25,6 +26,7 @@ class CharacterSprite extends Sprite {
 		_direction = direction;
 		_characterNumber = characterNumber+1;
 		_characterScale = 1;
+		_callback = "";
 		this.addEventListener(MouseEvent.CLICK, onClick);
 		this.addEventListener(MouseEvent.ROLL_OVER, onMouseOver);
 		this.addEventListener(MouseEvent.ROLL_OUT, onMouseOut);
@@ -47,9 +49,19 @@ class CharacterSprite extends Sprite {
 		return _tilesheet.getAnimations();
 	}
 
+	public function getCurrentAnimation():String {
+		return _tilesheet.getCurrentAnimation();
+	}
+
 	public function setAnimation(name:String) {
 		_tilesheet.setAnimation(name);
 	}
+
+	public function setAnimationWithCallBack(name:String, callback:String){
+		_tilesheet.setAnimation(name);
+		_callback = callback;
+	}
+
 
 	public function recalculateSize():Void {
 		var tile = _tilesheet.getTileRect(0);
@@ -88,6 +100,10 @@ class CharacterSprite extends Sprite {
 	public function render():Void {
 		this.graphics.clear();
 		var frame = _tilesheet.nextFrame();
+		if (_tilesheet.isEndOfAnimation() && _callback != "") { 
+			this.dispatchEvent(new Event(_callback, true));
+			_callback = "";
+		}
 		_tilesheet.drawTiles(this.graphics, [((_direction*-1)*frame.xOffset), frame.yOffset, frame.index, _direction*_characterScale, 0, 0, _characterScale], Tilesheet.TILE_TRANS_2x2); 
 		_hpBar.render();
 	}
@@ -101,7 +117,6 @@ class CharacterSprite extends Sprite {
 	}
 
 	private function onClick(e:MouseEvent) {
-		trace("mouse clicked");
 		this.dispatchEvent(new Event("character_select", true));
 	}
 }
