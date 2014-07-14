@@ -26,7 +26,7 @@ class Game {
 
 	// toggles the locked in state of the player that calls it
 	// it also proforms the check to move to the next turn
-	public function lockin(p:Int) {
+	public function lockin(p:Int):Void {
 		if (gamestate != Globals.GAME_TURN) {
 			return;
 		}
@@ -41,7 +41,7 @@ class Game {
 	}
 
 	// highlights a character to apply an action to
-	public function selectCharacter(p:Int, characterID:Int) {
+	public function selectCharacter(p:Int, characterID:Int):Void {
 		if (gamestate != Globals.GAME_TURN) return; 
 
 		var player = getPlayerById(p);
@@ -62,7 +62,7 @@ class Game {
 
 	// this is where all the calculations for battle will happen
 	// and all the after math will be updated
-	private function updateGame() {
+	private function updateGame():Void {
 		trace("processing unit moves");
 		var actions = getSortedActions();
 		for (i in 0...actions.length){
@@ -106,7 +106,7 @@ class Game {
 		gamestate = Globals.GAME_UPDATE;
 	}
 
-	public function getPlayerById(id:Int) {
+	public function getPlayerById(id:Int):Player {
 		if (id == Globals.PLAYER_ONE) {
 			return player1;
 		} else {
@@ -114,7 +114,7 @@ class Game {
 		}
 	}
 
-	public function getSortedActions() {
+	public function getSortedActions():Array<Action> {
 		// sort actions by attack speed
 		var actions = [];
 

@@ -7,7 +7,6 @@ import flash.display.Bitmap;
 import flash.display.BitmapData;
 
 import flash.events.MouseEvent;
-import flash.events.KeyboardEvent;
 import flash.events.Event;
 
 import openfl.Assets;

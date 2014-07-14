@@ -41,7 +41,8 @@ class Main extends Sprite {
 	
 	private function new_game(e : Event) {
 		// remove old view
-		main_menu.slide_up();
+		//main_menu.slide_up();
+		removeChild(main_menu);
 		// add current view
 		activeGame = new ActiveGame(); 
 		addChildAt(activeGame, 1);

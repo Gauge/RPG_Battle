@@ -53,9 +53,9 @@ class MainMenuButton extends Sprite {
 	// }
 
 	private function onClick(e:Event) {
-		// if (_tilesheet.getCurrentAnimation() == "Active"){
-		// 	_tilesheet.setAnimation("Inactive");
-		// }
+		//if (_tilesheet.getCurrentAnimation() == "Active"){
+		//	_tilesheet.setAnimation("Inactive");
+		//}
 		e.currentTarget.dispatchEvent(new Event(eventName, true));
 	}
 
@@ -71,7 +71,6 @@ class MainMenuButton extends Sprite {
 
 		this.x = stageWidth - (this.width+paddingBot);
 		this.y = paddingTop;
-		render();
 	}
 
 	// private function changeAnimation() {

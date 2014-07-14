@@ -38,7 +38,7 @@ class MainMenu extends Sprite
 
 	private function blackout_background () {
 		blackout = new Bitmap();
-		blackout.graphics.beginFill(0xAAAAAA);
+		blackout.graphics.beginFill(0x000000);
 		blackout.graphics.drawRect(0,0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight);
 		addChild(blackout);
 	}
@@ -63,5 +63,11 @@ class MainMenu extends Sprite
 
 	public function slide_up() {
 		Actuate.tween(this, 1, {y:-Lib.current.stage.stageHeight}).ease(Quad.easeIn);
+	}
+
+	private function render() {
+		for (btn in buttonList){
+			btn.render();
+		}
 	}
 }
