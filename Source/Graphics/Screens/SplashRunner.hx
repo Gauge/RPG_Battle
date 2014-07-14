@@ -45,6 +45,7 @@ class SplashRunner extends Sprite {
 			});
 		}
 		else {
+			removeEventListener(MouseEvent.MOUSE_DOWN, skip);
 			var event = new Event('splash_complete', true);
 			dispatchEvent(event);
 		}

@@ -6,9 +6,12 @@ import flash.geom.Point;
 import flash.display.Sprite;
 import flash.geom.Rectangle;
 import flash.Lib;
+import flash.filters.GlowFilter;
+import flash.filters.BitmapFilterQuality;
 import graphics.util.DarkFunctionTileSheet;
 import flash.events.MouseEvent;
 import flash.events.Event;
+import motion.Actuate;
 
 class CharacterSprite extends Sprite {
 
@@ -62,7 +65,6 @@ class CharacterSprite extends Sprite {
 		_callback = callback;
 	}
 
-
 	public function recalculateSize():Void {
 		var tile = _tilesheet.getTileRect(0);
 		var stageWidth = Lib.current.stage.stageWidth;
@@ -106,6 +108,10 @@ class CharacterSprite extends Sprite {
 		}
 		_tilesheet.drawTiles(this.graphics, [((_direction*-1)*frame.xOffset), frame.yOffset, frame.index, _direction*_characterScale, 0, 0, _characterScale], Tilesheet.TILE_TRANS_2x2); 
 		_hpBar.render();
+		// var bounds = getRect(this);
+		// graphics.lineStyle(1, 0xFF0000, .3);
+		// graphics.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+		// graphics.endFill();
 	}
 
 	private function onMouseOver(e:MouseEvent) {

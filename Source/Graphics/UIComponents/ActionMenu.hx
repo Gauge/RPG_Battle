@@ -93,7 +93,7 @@ class ActionMenu extends Sprite {
 	}
 
 	public function showActionMenu():Void {
-		Actuate.tween(this, .25, {x:0}).ease(Quad.easeIn);
+		Actuate.tween(this, .25, {x:0}).ease(Quad.easeOut);
 	}
 
 	public function hideActionMenu():Void {
@@ -102,7 +102,7 @@ class ActionMenu extends Sprite {
 	}
 
 	private function showAbilityPanel():Void {
-		Actuate.tween(this, .35, {x:122}).ease(Quad.easeIn);
+		Actuate.tween(this, .35, {x:122}).ease(Quad.easeOut);
 	}
 
 	private function hideAbilityPanel():Void {

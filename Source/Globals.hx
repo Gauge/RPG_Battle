@@ -44,6 +44,6 @@ class Globals {
 
 	// character config 
 	public static var BASE_SCREEN_OFFSET = 45;
-	public static var LEFT = 1;
-	public static var RIGHT = -1;
+	public static var LEFT = -1;
+	public static var RIGHT = 1;
 }
