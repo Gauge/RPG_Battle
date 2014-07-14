@@ -30,8 +30,8 @@ class MainMenu extends Sprite
 
 	function new () {
 		super();
-		y = -Lib.current.stage.stageHeight;
 		blackout_background();
+		this.alpha = 0;
 		build_buttons();
 		Lib.current.stage.addEventListener(Event.RESIZE, onScreenResize);
 	}
@@ -52,8 +52,8 @@ class MainMenu extends Sprite
 		options_btn = new MainMenuButton('options', 'mm_options', 3, 3);
 
 		buttonList = [cancel_btn, loadout_btn, online_btn, training_btn, options_btn];
-		for(i in 0...buttonList.length)addChild(buttonList[i]);
-		Actuate.tween(this, 2, {y:0});
+		for(i in 0...buttonList.length) addChild(buttonList[i]);
+		Actuate.tween(this, 2, {alpha:1});
 	}
 
 	private function onScreenResize(e:Event) {

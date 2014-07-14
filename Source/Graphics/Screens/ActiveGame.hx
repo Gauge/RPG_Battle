@@ -70,7 +70,7 @@ class ActiveGame extends Sprite {
 		trace("creating characters");
 		// create team 1
 		for (i in 0...4) {
-			var char = Loader.loadSprite("box", Globals.LEFT, i);
+			var char = Loader.loadSprite("bc_waiting", Globals.LEFT, i);
 			this.addChild(char);
 			var player = game.getPlayerById(Globals.PLAYER_ONE);
 			var max = player.team[i].getMaxVitality();
@@ -81,7 +81,7 @@ class ActiveGame extends Sprite {
 		}
 
 		for (i in 0...4) {
-			var char = Loader.loadSprite("box", Globals.RIGHT, i);
+			var char = Loader.loadSprite("bc_waiting", Globals.RIGHT, i);
 			this.addChild(char);
 			var player = game.getPlayerById(Globals.PLAYER_TWO);
 			var max = player.team[i].getMaxVitality();
@@ -119,6 +119,7 @@ class ActiveGame extends Sprite {
 	private function onCharacterSelect(e:Event) {
 		var player = ((e.target.getDirection() == Globals.LEFT) ? Globals.PLAYER_ONE : Globals.PLAYER_TWO);
 		var character = e.target.getCharacterNumber();
+		// e.target.setFilter();
 		game.selectCharacter(player, character);
 		actionMenu.showActionMenu();
 	}
