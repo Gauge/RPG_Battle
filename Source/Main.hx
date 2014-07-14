@@ -20,7 +20,7 @@ class Main extends Sprite {
 	}
 
 	private function runSplashes() {
-		var splashes = new SplashRunner(['GGsplash.png','ABsplash.png']); // add any splashscreen filenames to this list to auto add them to the splashscreen loop
+		var splashes = new SplashRunner(['GGsplash.png','ABsplash.png','RPGsplash.png']); // add any splashscreen filenames to this list to auto add them to the splashscreen loop
 		addChild(splashes);
 		addEventListener('splash_complete', build_main_menu);
 	}
