@@ -33,6 +33,7 @@ class CharacterSprite extends Sprite {
 		this.addEventListener(MouseEvent.CLICK, onClick);
 		this.addEventListener(MouseEvent.ROLL_OVER, onMouseOver);
 		this.addEventListener(MouseEvent.ROLL_OUT, onMouseOut);
+		// setGlowFilter();
 	}
 
 	public function _init_(maxVit:Int, vit:Int):Void {
@@ -63,6 +64,11 @@ class CharacterSprite extends Sprite {
 	public function setAnimationWithCallBack(name:String, callback:String){
 		_tilesheet.setAnimation(name);
 		_callback = callback;
+	}
+
+	public function setGlowFilter() {
+		var gfilter = new GlowFilter(0xFFFFFF, 1, 0, 0, 1, BitmapFilterQuality.LOW, false, false);
+		filters = [gfilter];
 	}
 
 	public function recalculateSize():Void {
@@ -108,18 +114,22 @@ class CharacterSprite extends Sprite {
 		}
 		_tilesheet.drawTiles(this.graphics, [((_direction*-1)*frame.xOffset), frame.yOffset, frame.index, _direction*_characterScale, 0, 0, _characterScale], Tilesheet.TILE_TRANS_2x2); 
 		_hpBar.render();
-		// var bounds = getRect(this);
-		// graphics.lineStyle(1, 0xFF0000, .3);
-		// graphics.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
-		// graphics.endFill();
+		var bounds = getRect(this);
+		graphics.lineStyle(1, 0xFFFFFF, 0);
+		graphics.drawRect(bounds.x*(-3), bounds.y*(-3), bounds.width*3, bounds.height*3);
+		graphics.endFill();
 	}
 
 	private function onMouseOver(e:MouseEvent) {
 		// add some cool effect
+		// Actuate.stop(this);
+		// Actuate.effects(this, .5).filter(GlowFilter, {blurX:20, blurY:20});
 	}
 
 	private function onMouseOut(e:MouseEvent) {
 		// kill the cool effect
+		// Actuate.stop(this);
+		// Actuate.effects(this, .5).filter(GlowFilter, {blurX:0, blurY:0});
 	}
 
 	private function onClick(e:MouseEvent) {

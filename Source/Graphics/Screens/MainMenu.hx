@@ -2,6 +2,9 @@ package graphics.screens;
 
 import flash.display.Sprite;
 import flash.display.Bitmap;
+import flash.media.Sound;
+import flash.media.SoundChannel;
+import flash.media.SoundTransform;
 import flash.text.TextField;
 import flash.text.TextFormat;
 import flash.text.TextFormatAlign;
@@ -27,12 +30,17 @@ class MainMenu extends Sprite
 	private var training_btn:MainMenuButton;	
 	private var options_btn:MainMenuButton;
 	private var buttonList:Array<MainMenuButton>;
+	private var menu_sound:Sound;
+	private var menu_loop:Sound;
+	private var soundPlaying:SoundChannel;
+	private var volumeControl:SoundTransform;
 
 	function new () {
 		super();
 		blackout_background();
 		this.alpha = 0;
 		build_buttons();
+		start_music();
 		Lib.current.stage.addEventListener(Event.RESIZE, onScreenResize);
 	}
 
@@ -56,13 +64,32 @@ class MainMenu extends Sprite
 		Actuate.tween(this, 2, {alpha:1});
 	}
 
+	private function start_music() {
+		menu_sound = Assets.getSound('assets/Sounds/menu.ogg');
+		menu_loop = Assets.getSound('assets/Sounds/menu_split.ogg');
+
+		volumeControl = new SoundTransform(1);
+		soundPlaying = menu_sound.play(0, 1, volumeControl);
+		
+		soundPlaying.addEventListener(Event.SOUND_COMPLETE, restart_music);
+		
+	}
+
+	private function restart_music(e : Event) {
+		soundPlaying.removeEventListener(Event.SOUND_COMPLETE, restart_music);
+
+		soundPlaying = menu_loop.play(0);
+		soundPlaying.addEventListener(Event.SOUND_COMPLETE, restart_music);
+	}
+
+
 	private function onScreenResize(e:Event) {
 		for(btn in 0...buttonList.length) buttonList[btn].recalculateSize();
 		blackout.graphics.drawRect(0,0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight);
 	}
 
-	public function slide_up() {
-		Actuate.tween(this, 1, {y:-Lib.current.stage.stageHeight}).ease(Quad.easeIn);
+	public function stop_music() {
+		Actuate.tween(volumeControl, 4, {volume:0}).onUpdate(function() {soundPlaying.soundTransform = volumeControl;}).onComplete(function() {soundPlaying.stop();});
 	}
 
 	private function render() {
