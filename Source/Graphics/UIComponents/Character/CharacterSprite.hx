@@ -1,4 +1,4 @@
-package graphics.uicomponents;
+package graphics.uicomponents.character;
 import openfl.display.Tilesheet;
 import openfl.Assets;
 import flash.display.Graphics;

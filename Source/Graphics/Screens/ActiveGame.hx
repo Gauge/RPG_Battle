@@ -11,9 +11,8 @@ import flash.display.Sprite;
 import flash.geom.Rectangle;
 
 import graphics.uicomponents.Background;
-import graphics.uicomponents.LockinButton;
-import graphics.uicomponents.CharacterSprite;
-import graphics.uicomponents.ActionMenu;
+import graphics.uicomponents.character.CharacterSprite;
+import graphics.uicomponents.actionmenu.ActionMenu;
 
 import motion.Actuate;
 import motion.easing.Quad;
@@ -24,7 +23,6 @@ class ActiveGame extends Sprite {
 
 	// graphic components
 	var background:Background;
-	var lockinButton:LockinButton;
 	var actionMenu:ActionMenu;
 	var team1:Array<CharacterSprite>;
 	var team2:Array<CharacterSprite>;
@@ -50,7 +48,6 @@ class ActiveGame extends Sprite {
 		trace("Starting GUI");
 		trace("Initializing components");
 		initBackground();
-		initLockinButton();
 		initCharacters();
 		initActionMenu();
 
@@ -98,12 +95,6 @@ class ActiveGame extends Sprite {
 		}
 	}
 
-	private function initLockinButton(): Void {
-		trace("creating lock-in button");
-		lockinButton = new LockinButton();
-		this.addChild(lockinButton);
-	}
-
 	private function initActionMenu(): Void {
 		trace("creating action menu");
 		actionMenu = new ActionMenu();
@@ -112,7 +103,6 @@ class ActiveGame extends Sprite {
 
 	private function onScreenResize(e:Event) {
 		background.setSize(new Rectangle(0, 0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight));
-		lockinButton.recalculateSize();
 		actionMenu.recalculateSize();
 		for (char in team1) { 
 			char.recalculateSize();
@@ -203,7 +193,6 @@ class ActiveGame extends Sprite {
 	}
 
 	private function render() {
-		lockinButton.render();
 		actionMenu.render();
 		for (char in team1) { 
 			char.render();

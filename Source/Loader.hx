@@ -6,7 +6,7 @@ import logic.Player;
 import logic.Item;
 import logic.Character;
 
-import graphics.uicomponents.CharacterSprite;
+import graphics.uicomponents.character.CharacterSprite;
 
 class Loader {
 
