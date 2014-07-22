@@ -32,6 +32,7 @@ class ActionMenu extends Sprite {
 
 		this.addEventListener(MouseEvent.MOUSE_DOWN, setActive);
 		this.addEventListener(MouseEvent.MOUSE_UP, onClick);
+		render();
 		recalculateSize();
 	}
 
@@ -109,9 +110,6 @@ class ActionMenu extends Sprite {
 	}
 
 	public function recalculateSize() {
-		trace("this is passing "+ Lib.current.stage.stageHeight);
-		// make sure the tile has already been drawn
-		this.render();
 
 		// set height to a third of the screen
 		this.height = (Lib.current.stage.stageHeight/3);
