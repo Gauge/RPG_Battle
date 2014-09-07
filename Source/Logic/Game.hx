@@ -87,6 +87,7 @@ class Game {
 				
 				if (schar.isDead() == false){
 					schar.getAction().report.damage_dealt = tchar.defend(schar.attack());
+					schar.getAction().report.died_this_turn = tchar.isDead();
 				} else {
 					schar.resetAction();
 				}

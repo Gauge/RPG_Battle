@@ -16,7 +16,7 @@ class CharacterSprite extends Sprite {
 	var _characterNumber:Int;
 	var _direction:Int;
 	var _hpBar:HpBar;
-	var _callback:String;
+
 
 	public function new(direction:Int, characterNumber:Int, tile:Dynamic, style:Dynamic) {
 		super();
@@ -24,7 +24,6 @@ class CharacterSprite extends Sprite {
 		_tilesheet = new DarkFunctionTileSheet(tile, style);
 		_characterNumber = characterNumber+1;
 		_direction = direction;
-		_callback = "";
 
 		this.addEventListener(MouseEvent.CLICK, onClick);
 	}
@@ -34,7 +33,11 @@ class CharacterSprite extends Sprite {
 		this.addChild(_hpBar);
 		this.update(0); // this initializes the color for the hp bar
 		this.recalculateSize();
-		this.setAnimation("idle");
+		this.hardSetAnimation("idle");
+	}
+
+	public function getTeam():Int {
+		return (_direction == Globals.LEFT) ? Globals.PLAYER_ONE : Globals.PLAYER_TWO;
 	}
 
 	public function getDirection():Int {
@@ -53,13 +56,16 @@ class CharacterSprite extends Sprite {
 		return _tilesheet.getCurrentAnimation();
 	}
 
+	public function getQueueCount():Int {
+		return _tilesheet.getQueueCount();
+	}
+
 	public function setAnimation(name:String) {
 		_tilesheet.setAnimation(name);
 	}
 
-	public function setAnimationWithCallBack(name:String, callback:String){
-		_tilesheet.setAnimation(name);
-		_callback = callback;
+	public function hardSetAnimation(name:String){
+		_tilesheet.hardSetAnimation(name);
 	}
 
 	public function recalculateSize():Void {
@@ -104,10 +110,6 @@ class CharacterSprite extends Sprite {
 	public function render():Void {
 		this.graphics.clear();
 		var frame = _tilesheet.nextFrame();
-		if (_tilesheet.isEndOfAnimation() && _callback != "") { 
-			this.dispatchEvent(new Event(_callback, true));
-			_callback = "";
-		}
 		//                                                 v--- this can be removed if the character sheet gets fliped
 		_tilesheet.drawTiles(this.graphics, [((_direction*-1)*frame.xOffset), frame.yOffset, frame.index, _direction, 0, 0, 1], Tilesheet.TILE_TRANS_2x2); 
 		_hpBar.render();

@@ -9,15 +9,14 @@ class DarkFunctionTileSheet extends Tilesheet {
 
 	private var _animations:Map<String,Array<AnimationFrame>>;
 	private var _currentAnimation:String;
+	private var _animationQueue:Array<String>;
 	private var _currentFrame:Int;
-	private var _endOfAnimation:Bool;
 
 	// load the src and ass files
 	public function new(tile:Dynamic, style:Dynamic) {
 		super(Assets.getBitmapData("assets/Images/" + tile.name));
 
 		_animations = new Map<String, Array<AnimationFrame>>();
-		_endOfAnimation = false;
 		
 		// load sprite sheet frames
 		for (i in 0...tile.frames.length){
@@ -41,6 +40,7 @@ class DarkFunctionTileSheet extends Tilesheet {
 
 		// set starting animation
 		_currentAnimation = getAnimations()[0];
+		_animationQueue = new Array<String>();
 		_currentFrame = 0;
 	}
 
@@ -55,32 +55,38 @@ class DarkFunctionTileSheet extends Tilesheet {
 	public function getCurrentAnimation():String {
 		return _currentAnimation;
 	}
+
+	public function getFrameNumber():Int {
+		return _currentFrame;
+	}
 	
 	public function setAnimation(name:String) {
+		_animationQueue.push(name);
+	}
+
+	public function hardSetAnimation(name:String){
 		_currentAnimation = name;
 		_currentFrame = 0;
 	}
 
-	public function isEndOfAnimation() {
-		return _endOfAnimation;
+	public function getQueueCount():Int {
+		return _animationQueue.length;
 	}
 
 	public function nextFrame(): AnimationFrame {
-		var list = _animations.get(_currentAnimation);
-		var a = list[_currentFrame];
+		var list = _animations.get(_currentAnimation); // get the animation frame list
+		var a = list[_currentFrame]; // get the current frame
+		// update the current frame for the next round
+		if ((_currentFrame+1) == list.length) { // if we have come to the end of the animation
+			if (_animationQueue.length > 0) { // if there is are animations in the queue
+				_currentAnimation = _animationQueue.shift(); // set the next one as the current animation
+			}
+			_currentFrame = 0; // if there are no animations in the queue repeate the last animation
 
-		if ((_currentFrame+1) == list.length) {
-			_currentFrame = 0;
-			_endOfAnimation = true;
-		} else {
-			_currentFrame = _currentFrame+1;
-			_endOfAnimation = false;
+		} else { // if this is not the last frame
+			_currentFrame = _currentFrame+1; // increment the process by 1
 		}
-		return a;
-	}
-
-	public function getFrameNumber() {
-		return _currentFrame;
+		return a; // return the current frame
 	}
 
 	public static function loadTileSheet (filename:String) {

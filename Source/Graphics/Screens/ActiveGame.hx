@@ -29,6 +29,8 @@ class ActiveGame extends Sprite {
 	var team2:Array<CharacterSprite>;
 	var _selectedCharacter:Int;
 	var _sequenceCount:Int;
+	var _sequencing:Bool;
+	var _sequenceList:Array<CharacterSprite>;
 	var _action_list:Array<Action>;
 	
 	// render data
@@ -45,6 +47,8 @@ class ActiveGame extends Sprite {
 		team2 = new Array<CharacterSprite>();
 		_selectedCharacter = -1;
 		_sequenceCount = 0;
+		_sequencing = false;
+		_sequenceList = new Array<CharacterSprite>();
 
 		game = new Game();
 		trace("Starting GUI");
@@ -129,7 +133,7 @@ class ActiveGame extends Sprite {
 		var player = (e.target.getDirection() == Globals.LEFT) ? Globals.PLAYER_ONE : Globals.PLAYER_TWO;
 		var character = Math.round(e.target.getCharacterNumber()-1);
 		game.selectAction(Globals.PLAYER_ONE, Globals.ACTION_ATTACK, player, character);
-		team1[_selectedCharacter].setAnimation("pre_attack");
+		team1[_selectedCharacter].hardSetAnimation("pre_attack");
 
 		this.removeEventListener("character_select", onCharacterActionSelect);
 		this.addEventListener("character_select", onCharacterSelect);
@@ -141,7 +145,7 @@ class ActiveGame extends Sprite {
 	}
 
 	private function onDefend(e:Event) {
-		team1[_selectedCharacter].setAnimation("defend");
+		team1[_selectedCharacter].hardSetAnimation("defend");
 		game.selectAction(Globals.PLAYER_ONE, Globals.ACTION_DEFEND, -1, -1);
 		actionMenu.hideActionMenu();
 	}
@@ -151,53 +155,53 @@ class ActiveGame extends Sprite {
 		game.lockin(Globals.PLAYER_TWO);
 		while(game.gamestate != Globals.GAME_DISPLAY_ROUND){}
 		_action_list = game.getSortedActions();
-		sequence();
+		_sequencing = true;
 	}
 
 	private function sequence() {
-		if (_sequenceCount < _action_list.length){
-			var action = _action_list[_sequenceCount];
+		trace("entered sequence");
+		if (_sequenceCount < _action_list.length){ // while there are still actions to execute
+			trace("more actions to process");
+
+			var action = _action_list[_sequenceCount]; // get the current action
 			var character = (action.getSelectedPlayer() == Globals.PLAYER_ONE) ? team1[action.getSelectedCharacter()] : team2[action.getSelectedCharacter()];
 			var target_character = (action.getTargetPlayer() == Globals.PLAYER_ONE) ? team1[action.getTargetCharacter()] : team2[action.getTargetCharacter()];
 
 			if (action.getAction() == Globals.ACTION_ATTACK) {
-				// attack animation
-				character.setAnimationWithCallBack("attack", "action"+_sequenceCount);
-				addEventListener("action"+_sequenceCount, nextSequence);
-				// reaciton animation
-				target_character.setAnimationWithCallBack("take_damage", "reaction"+_sequenceCount);
-				addEventListener("reaction"+_sequenceCount, reactionSequence);
+				character.setAnimation("attack");
+				character.setAnimation("idle");
+
+				target_character.setAnimation("take_damage");
+				if (action.report.died_this_turn) {
+					target_character.setAnimation("pre_dead");
+					target_character.setAnimation("dead");
+				}
+				_sequenceList.push(character);
+				_sequenceList.push(target_character);
 				target_character.update(action.report.damage_dealt);
 			
-			} else if (action.getAction() == Globals.ACTION_DEFEND) {
-				_sequenceCount++;
-				sequence();
-			}
+			} else if (action.getAction() == Globals.ACTION_DEFEND) {}
+
+			trace("actions processed");
+			_sequenceCount++;
+		
 		} else{
 			// reset everything and start the new round
 			for (char in team1){
-				char.setAnimation("idle");
+				if (char.getCurrentAnimation() != "dead"){
+					char.setAnimation("idle");
+				}
 			}
 			for(char in team2){
-				char.setAnimation("idle");	
+				if (char.getCurrentAnimation() != "dead"){
+					char.setAnimation("idle");
+				}
 			}
+			trace("finished visuals");
+			_sequenceCount = 0;
+			_sequencing = false;
 			game.newTurn();
 		}
-	}
-
-	private function nextSequence(e:Event) {
-		e.target.setAnimation("idle");
-		removeEventListener("action"+_sequenceCount, nextSequence);
-		_sequenceCount++;
-		sequence();
-	}
-
-	// for events that dont increment the sequencer such as taking damage
-	private function reactionSequence(e:Event){
-		var player = game.getPlayerById((e.target.getDirection() == Globals.LEFT) ? Globals.PLAYER_ONE : Globals.PLAYER_TWO);
-		e.target.setAnimation("idle");
-
-		removeEventListener("reaction"+_sequenceCount, reactionSequence);
 	}
 
 	private function enterFrame(e:Event){
@@ -219,6 +223,24 @@ class ActiveGame extends Sprite {
 		}
 		for (char in team2) {
 			char.render();
+		}
+
+		// this runs at the end of each turn. it displayes the actions of each player seprately
+		if (_sequencing) {
+			var list = new Array<Int>();
+			for (i in 0..._sequenceList.length){
+				if (_sequenceList[i].getQueueCount() == 0){
+					list.push(i);
+				}
+			}
+
+			list.reverse();
+			for (pos in list) {
+				_sequenceList.remove(_sequenceList[pos]);
+			}
+
+			trace("Sequence List Count " + _sequenceList.length);
+			if (_sequenceList.length == 0) sequence();
 		}
 	}
 }
