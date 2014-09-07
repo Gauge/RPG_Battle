@@ -53,6 +53,7 @@ class Main extends Sprite {
 
 		var thing = new TextAnimation("yayayaya", 100, 100);
 		addChild(thing);
+		thing.move(100, 100);
 	}
 	
 }
