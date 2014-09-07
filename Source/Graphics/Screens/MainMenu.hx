@@ -69,7 +69,7 @@ class MainMenu extends Sprite
 		menu_loop = Assets.getSound('assets/Sounds/menu_split.ogg');
 
 		volumeControl = new SoundTransform(1);
-		soundPlaying = menu_sound.play(0, 1, volumeControl);
+		soundPlaying = menu_sound.play(0, 0, volumeControl);
 		
 		soundPlaying.addEventListener(Event.SOUND_COMPLETE, restart_music);
 		
