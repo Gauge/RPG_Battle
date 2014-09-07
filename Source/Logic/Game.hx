@@ -184,7 +184,8 @@ class Game {
 		} else {
 			gamestate = Globals.GAME_OVER;
 			var dispatch = new EventDispatcher();
-			dispatch.dispatchEvent(new Event("game_over", true));
+			Lib.stage.dispatchEvent(new Event("game_over", true));
+
 			trace("Game over on turn: " + turn + "|" + dispatch);
 		}
 	}
