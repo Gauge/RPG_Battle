@@ -1,4 +1,4 @@
-package graphics.uicomponents;
+package graphics.uicomponents.character;
 import openfl.display.Tilesheet;
 import openfl.Assets;
 import flash.display.Graphics;
@@ -6,34 +6,27 @@ import flash.geom.Point;
 import flash.display.Sprite;
 import flash.geom.Rectangle;
 import flash.Lib;
-import flash.filters.GlowFilter;
-import flash.filters.BitmapFilterQuality;
 import graphics.util.DarkFunctionTileSheet;
 import flash.events.MouseEvent;
 import flash.events.Event;
-import motion.Actuate;
 
 class CharacterSprite extends Sprite {
 
 	var _tilesheet:DarkFunctionTileSheet;
-	var _direction:Int;
 	var _characterNumber:Int;
-	var _characterScale:Float;
+	var _direction:Int;
 	var _hpBar:HpBar;
 	var _callback:String;
 
-
 	public function new(direction:Int, characterNumber:Int, tile:Dynamic, style:Dynamic) {
 		super();
+		
 		_tilesheet = new DarkFunctionTileSheet(tile, style);
-		_direction = direction;
 		_characterNumber = characterNumber+1;
-		_characterScale = 1;
+		_direction = direction;
 		_callback = "";
+
 		this.addEventListener(MouseEvent.CLICK, onClick);
-		this.addEventListener(MouseEvent.ROLL_OVER, onMouseOver);
-		this.addEventListener(MouseEvent.ROLL_OUT, onMouseOut);
-		// setGlowFilter();
 	}
 
 	public function _init_(maxVit:Int, vit:Int):Void {
@@ -66,39 +59,36 @@ class CharacterSprite extends Sprite {
 		_callback = callback;
 	}
 
-	public function setGlowFilter() {
-		var gfilter = new GlowFilter(0xFFFFFF, 1, 0, 0, 1, BitmapFilterQuality.LOW, false, false);
-		filters = [gfilter];
-	}
-
 	public function recalculateSize():Void {
-		var tile = _tilesheet.getTileRect(0);
+		render();
+		// get character number
+		var charnum = ((_direction == Globals.LEFT) ? _characterNumber : (Math.abs(_characterNumber-4)+1));
+
 		var stageWidth = Lib.current.stage.stageWidth;
 		var stageHeight = Lib.current.stage.stageHeight;
 		var startingHeight = stageHeight/3;
 		var groundHeight = (stageHeight-startingHeight);
 
-		// set scale
-		var charnum = ((_direction == Globals.LEFT) ? _characterNumber : (Math.abs(_characterNumber-4)+1));
-		_characterScale = ((groundHeight)/(tile.height*4)) - (charnum*0.05); // TODO
-
 		// set padding
 		var widthPadding = stageWidth/14;
-		var hightPadding = groundHeight/6;
+		var heightPadding = groundHeight/6;
 
+		var characterHeight = groundHeight/6;
+		var characterWidth = characterHeight*22/37;
 
-
-		this.x = (_direction == Globals.LEFT) ? ((stageWidth-tile.width)-widthPadding)-((charnum*50)/3) : 
-												(widthPadding+Globals.BASE_SCREEN_OFFSET) + ((charnum*50)/3);
+		this.x = (_direction == Globals.LEFT) ? ((stageWidth-characterWidth)-widthPadding)-((charnum*characterWidth)/3) : 
+												(widthPadding+Globals.BASE_SCREEN_OFFSET) + ((charnum*characterWidth)/3);
 		
-		this.y = (_direction == Globals.LEFT) ? (startingHeight+(hightPadding*(Math.abs(_characterNumber-4)+1) )) : 
-												(startingHeight+(hightPadding*_characterNumber));
+		this.y = (_direction == Globals.LEFT) ? (startingHeight+(heightPadding*(Math.abs(_characterNumber-4)+1) )) : 
+												(startingHeight+(heightPadding*_characterNumber));
+		this.height = characterHeight;
+		this.width = characterWidth;
 
 		// calculate health position and size
-		_hpBar.x = (((_direction == Globals.LEFT)? 50 : -65)*_characterScale);
+		_hpBar.x = (((_direction == Globals.LEFT)? 0: -5));
 		_hpBar.y = 0;
-		_hpBar.width = (12*_characterScale);
-		_hpBar.height = (35*_characterScale);
+		_hpBar.width = characterWidth/3;
+		_hpBar.height = characterHeight;
 	}
 
 	public function update(damage:Int):Void {
@@ -112,24 +102,8 @@ class CharacterSprite extends Sprite {
 			this.dispatchEvent(new Event(_callback, true));
 			_callback = "";
 		}
-		_tilesheet.drawTiles(this.graphics, [((_direction*-1)*frame.xOffset), frame.yOffset, frame.index, _direction*_characterScale, 0, 0, _characterScale], Tilesheet.TILE_TRANS_2x2); 
+		_tilesheet.drawTiles(this.graphics, [((_direction*-1)*frame.xOffset), frame.yOffset, frame.index, _direction, 0, 0, 1], Tilesheet.TILE_TRANS_2x2); 
 		_hpBar.render();
-		var bounds = getRect(this);
-		graphics.lineStyle(1, 0xFFFFFF, 0);
-		graphics.drawRect(bounds.x*(-3), bounds.y*(-3), bounds.width*3, bounds.height*3);
-		graphics.endFill();
-	}
-
-	private function onMouseOver(e:MouseEvent) {
-		// add some cool effect
-		// Actuate.stop(this);
-		// Actuate.effects(this, .5).filter(GlowFilter, {blurX:20, blurY:20});
-	}
-
-	private function onMouseOut(e:MouseEvent) {
-		// kill the cool effect
-		// Actuate.stop(this);
-		// Actuate.effects(this, .5).filter(GlowFilter, {blurX:0, blurY:0});
 	}
 
 	private function onClick(e:MouseEvent) {

@@ -1,4 +1,4 @@
-package graphics.uicomponents;
+package graphics.uicomponents.character;
 
 import flash.display.Sprite;
 import flash.display.Bitmap;

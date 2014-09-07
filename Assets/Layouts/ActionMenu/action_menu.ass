@@ -9,25 +9,31 @@
 		{
 			"name": "Attack",
 			"frames": [
-				{"index":1, "x":0, "y":0, "z":0}
+				{"index":3, "x":0, "y":0, "z":0}
 			]
 		},
 		{
 			"name": "Defend",
 			"frames": [
-				{"index":2, "x":0, "y":0, "z":0}
+				{"index":1, "x":0, "y":0, "z":0}
 			]
 		},
 		{
 			"name": "Ability",
 			"frames": [
-				{"index":3, "x":0, "y":0, "z":0}
+				{"index":4, "x":0, "y":0, "z":0}
 			]
 		},
 		{
 			"name": "Nothing",
 			"frames": [
-				{"index":4, "x":0, "y":0, "z":0}
+				{"index":2, "x":0, "y":0, "z":0}
+			]
+		},
+		{
+			"name": "Lockin",
+			"frames": [
+				{"index":5, "x":0, "y":0, "z":0}
 			]
 		}
 
