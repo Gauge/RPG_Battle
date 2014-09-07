@@ -40,7 +40,7 @@ class Globals {
 	public static var CHARACTER_4 = 4;
 
 	// game speed
-	public static var FRAME_RATE = 50;
+	public static var FRAME_RATE = 1000/10; // 30 frames a second
 
 	// character config 
 	public static var BASE_SCREEN_OFFSET = 45;
