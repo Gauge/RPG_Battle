@@ -1,3 +1,6 @@
+package graphics.util;
+
+/*
 package graphics;
 
 import flash.display.Sprite;
@@ -45,3 +48,4 @@ class TextAnimation extends Sprite {
 
 	}
 }
+*/

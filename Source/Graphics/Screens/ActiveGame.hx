@@ -3,6 +3,7 @@ package graphics.screens;
 import openfl.Assets;
 
 import logic.Game;
+import actions.Action;
 
 import flash.Lib;
 import flash.events.Event;
@@ -28,6 +29,7 @@ class ActiveGame extends Sprite {
 	var team2:Array<CharacterSprite>;
 	var _selectedCharacter:Int;
 	var _sequenceCount:Int;
+	var _action_list:Array<Action>;
 	
 	// render data
 	var delta:Float;
@@ -37,7 +39,7 @@ class ActiveGame extends Sprite {
 		super();
 		alpha = 0;
 		delta = 0;
-		lastTick = 0;
+		lastTick = -1;
 
 		team1 = new Array<CharacterSprite>();
 		team2 = new Array<CharacterSprite>();
@@ -74,25 +76,23 @@ class ActiveGame extends Sprite {
 		// create team 1
 		for (i in 0...4) {
 
-			var char = Loader.loadSprite("bc_waiting", Globals.LEFT, i);
+			var char = Loader.loadSprite('Characters/test', Globals.LEFT, i);
 			this.addChild(char);
 			var player = game.getPlayerById(Globals.PLAYER_ONE);
 			var max = player.team[i].getMaxVitality();
 			var vit = player.team[i].getVitality();
 			char._init_(max, vit);
-			char.recalculateSize();
 			team1.push(char);
 		}
 
 		for (i in 0...4) {
 
-			var char = Loader.loadSprite("bc_waiting", Globals.RIGHT, i);
+			var char = Loader.loadSprite('Characters/test', Globals.RIGHT, i);
 			this.addChild(char);
 			var player = game.getPlayerById(Globals.PLAYER_TWO);
 			var max = player.team[i].getMaxVitality();
 			var vit = player.team[i].getVitality();
 			char._init_(max, vit);
-			char.recalculateSize();
 			team2.push(char);
 		}
 	}
@@ -150,59 +150,74 @@ class ActiveGame extends Sprite {
 		game.lockin(Globals.PLAYER_ONE);
 		game.lockin(Globals.PLAYER_TWO);
 		while(game.gamestate != Globals.GAME_DISPLAY_ROUND){}
+		_action_list = game.getSortedActions();
 		sequence();
 	}
 
 	private function sequence() {
-		var action_list = game.getSortedActions();
-		if (_sequenceCount < action_list.length){
-			var action = action_list[_sequenceCount];
+		if (_sequenceCount < _action_list.length){
+			var action = _action_list[_sequenceCount];
 			var character = (action.getSelectedPlayer() == Globals.PLAYER_ONE) ? team1[action.getSelectedCharacter()] : team2[action.getSelectedCharacter()];
+			var target_character = (action.getTargetPlayer() == Globals.PLAYER_ONE) ? team1[action.getTargetCharacter()] : team2[action.getTargetCharacter()];
+
 			if (action.getAction() == Globals.ACTION_ATTACK) {
+				// attack animation
 				character.setAnimationWithCallBack("attack", "action"+_sequenceCount);
 				addEventListener("action"+_sequenceCount, nextSequence);
+				// reaciton animation
+				target_character.setAnimationWithCallBack("take_damage", "reaction"+_sequenceCount);
+				addEventListener("reaction"+_sequenceCount, reactionSequence);
+				target_character.update(action.report.damage_dealt);
 			
 			} else if (action.getAction() == Globals.ACTION_DEFEND) {
 				_sequenceCount++;
 				sequence();
 			}
 		} else{
+			// reset everything and start the new round
 			for (char in team1){
-				if (char.getCurrentAnimation() != "spin") char.setAnimation("spin");
+				char.setAnimation("idle");
 			}
 			for(char in team2){
-				if (char.getCurrentAnimation() != "spin") char.setAnimation("spin");	
+				char.setAnimation("idle");	
 			}
 			game.newTurn();
 		}
 	}
 
 	private function nextSequence(e:Event) {
-		e.target.setAnimation("spin");
+		e.target.setAnimation("idle");
 		removeEventListener("action"+_sequenceCount, nextSequence);
 		_sequenceCount++;
 		sequence();
 	}
 
+	// for events that dont increment the sequencer such as taking damage
+	private function reactionSequence(e:Event){
+		var player = game.getPlayerById((e.target.getDirection() == Globals.LEFT) ? Globals.PLAYER_ONE : Globals.PLAYER_TWO);
+		e.target.setAnimation("idle");
+
+		removeEventListener("reaction"+_sequenceCount, reactionSequence);
+	}
+
 	private function enterFrame(e:Event){
 		// controls the number of updates are ran every second
-		delta = delta + (Lib.getTimer() - lastTick);
+		var time = Lib.getTimer();
+		if (lastTick == -1) lastTick = time;
+		delta = delta + (time - lastTick);
 		if (delta >= Globals.FRAME_RATE) {
 			delta = delta - Globals.FRAME_RATE;
 			render();
 		}
-		lastTick = Lib.getTimer();
+		lastTick = time;
 	}
 
 	private function render() {
 		actionMenu.render();
 		for (char in team1) { 
 			char.render();
-			char.update(1);
 		}
-
 		for (char in team2) {
-			char.update(1);
 			char.render();
 		}
 	}

@@ -34,7 +34,7 @@ class ActionMenu extends Sprite {
 		this.addEventListener(MouseEvent.MOUSE_UP, onClick);
 		render();
 		recalculateSize();
-	}
+	} 
 
 
 	private function setActive(e:MouseEvent) {
@@ -67,9 +67,11 @@ class ActionMenu extends Sprite {
 	private function onClick(e:Event) {
 		if (_selected == LOCKIN){
 			this.dispatchEvent(new Event("lockin", true));
+			hideActionMenu();
 
 		} else if (_selected == ATTACK) {
 			this.dispatchEvent(new Event("attack", true));
+			hideActionMenu();
 
 		} else if (_selected == DEFEND) {
 			this.dispatchEvent(new Event("defend", true));
@@ -96,8 +98,9 @@ class ActionMenu extends Sprite {
 	}
 
 	public function hideActionMenu():Void {
+		_abilityPanelToggle = false;
 		_tilesheet.setAnimation("Inactive");
-		Actuate.tween(this, .25, {x:-this.width}).ease(Quad.easeIn);
+		Actuate.tween(this, .25, {x:-(this.width-(this.width*(53/147)))}).ease(Quad.easeIn);
 	}
 
 	private function showAbilityPanel():Void {
@@ -105,6 +108,7 @@ class ActionMenu extends Sprite {
 	}
 
 	private function hideAbilityPanel():Void {
+		_abilityPanelToggle = false;
 		_tilesheet.setAnimation("Inactive");
 		Actuate.tween(this, .25, {x:-(this.width/150*63)}).ease(Quad.easeIn);
 	}
@@ -112,10 +116,10 @@ class ActionMenu extends Sprite {
 	public function recalculateSize() {
 
 		// set height to a third of the screen
-		this.height = (Lib.current.stage.stageHeight/3);
+		this.height = (Lib.current.stage.stageHeight/5*2);
 		// 150x102 is the menus dimentions
 		this.width = (this.height*150/102);
-		this.x = -this.width;
+		this.x = -(this.width-(this.width*(53/147)));
 
 	}
 

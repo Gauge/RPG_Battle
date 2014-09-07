@@ -32,6 +32,9 @@ class CharacterSprite extends Sprite {
 	public function _init_(maxVit:Int, vit:Int):Void {
 		_hpBar = new HpBar(maxVit, vit);
 		this.addChild(_hpBar);
+		this.update(0); // this initializes the color for the hp bar
+		this.recalculateSize();
+		this.setAnimation("idle");
 	}
 
 	public function getDirection():Int {
@@ -84,11 +87,14 @@ class CharacterSprite extends Sprite {
 		this.height = characterHeight;
 		this.width = characterWidth;
 
+		var hpBarWidth = characterWidth/4;
+		var hpBarHeight = characterHeight/2;
+
 		// calculate health position and size
-		_hpBar.x = (((_direction == Globals.LEFT)? 0: -5));
+		_hpBar.x = (((_direction == Globals.LEFT)? 0: -hpBarWidth));
 		_hpBar.y = 0;
-		_hpBar.width = characterWidth/3;
-		_hpBar.height = characterHeight;
+		_hpBar.width = hpBarWidth;
+		_hpBar.height = hpBarHeight;
 	}
 
 	public function update(damage:Int):Void {
@@ -102,6 +108,7 @@ class CharacterSprite extends Sprite {
 			this.dispatchEvent(new Event(_callback, true));
 			_callback = "";
 		}
+		//                                                 v--- this can be removed if the character sheet gets fliped
 		_tilesheet.drawTiles(this.graphics, [((_direction*-1)*frame.xOffset), frame.yOffset, frame.index, _direction, 0, 0, 1], Tilesheet.TILE_TRANS_2x2); 
 		_hpBar.render();
 	}
