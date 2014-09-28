@@ -3,7 +3,7 @@ package graphics.screens;
 import openfl.Assets;
 
 import logic.Game;
-import actions.Action;
+import logic.actions.Action;
 
 import flash.Lib;
 import flash.events.Event;
@@ -107,6 +107,18 @@ class ActiveGame extends Sprite {
 		addChild(actionMenu);
 	}
 
+	private function startGlow() {
+		for (char in team2) {
+			char.setGlow(0xffff00);
+		}
+	}
+
+	private function stopGlow() {
+		for (char in team2) {
+			char.removeGlow();
+		}
+	}
+
 	private function onScreenResize(e:Event) {
 		background.setSize(new Rectangle(0, 0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight));
 		actionMenu.recalculateSize();
@@ -134,12 +146,14 @@ class ActiveGame extends Sprite {
 		var character = Math.round(e.target.getCharacterNumber()-1);
 		game.selectAction(Globals.PLAYER_ONE, Globals.ACTION_ATTACK, player, character);
 		team1[_selectedCharacter].hardSetAnimation("pre_attack");
+		this.stopGlow();
 
 		this.removeEventListener("character_select", onCharacterActionSelect);
 		this.addEventListener("character_select", onCharacterSelect);
 	}
 
 	private function onAttack(e:Event) {
+		this.startGlow();
 		this.removeEventListener("character_select", onCharacterSelect);
 		this.addEventListener("character_select", onCharacterActionSelect);
 	}
@@ -159,22 +173,22 @@ class ActiveGame extends Sprite {
 	}
 
 	private function sequence() {
-		trace("entered sequence");
 		if (_sequenceCount < _action_list.length){ // while there are still actions to execute
-			trace("more actions to process");
 
 			var action = _action_list[_sequenceCount]; // get the current action
 			var character = (action.getSelectedPlayer() == Globals.PLAYER_ONE) ? team1[action.getSelectedCharacter()] : team2[action.getSelectedCharacter()];
 			var target_character = (action.getTargetPlayer() == Globals.PLAYER_ONE) ? team1[action.getTargetCharacter()] : team2[action.getTargetCharacter()];
 
 			if (action.getAction() == Globals.ACTION_ATTACK) {
-				character.setAnimation("attack");
+				character.hardSetAnimation("attack");
 				character.setAnimation("idle");
 
-				target_character.setAnimation("take_damage");
+				target_character.hardSetAnimation("take_damage");
 				if (action.report.died_this_turn) {
 					target_character.setAnimation("pre_dead");
 					target_character.setAnimation("dead");
+				} else {
+					target_character.setAnimation("idle");
 				}
 				_sequenceList.push(character);
 				_sequenceList.push(target_character);
@@ -182,7 +196,6 @@ class ActiveGame extends Sprite {
 			
 			} else if (action.getAction() == Globals.ACTION_DEFEND) {}
 
-			trace("actions processed");
 			_sequenceCount++;
 		
 		} else{
@@ -197,7 +210,6 @@ class ActiveGame extends Sprite {
 					char.setAnimation("idle");
 				}
 			}
-			trace("finished visuals");
 			_sequenceCount = 0;
 			_sequencing = false;
 			game.newTurn();
@@ -234,12 +246,11 @@ class ActiveGame extends Sprite {
 				}
 			}
 
-			list.reverse();
+			list.reverse(); // getting an error with this. I would like to fix later.
 			for (pos in list) {
 				_sequenceList.remove(_sequenceList[pos]);
 			}
 
-			trace("Sequence List Count " + _sequenceList.length);
 			if (_sequenceList.length == 0) sequence();
 		}
 	}

@@ -1,6 +1,6 @@
 package logic;
 
-import actions.Action;
+import logic.actions.Action;
 import flash.Lib;
 import flash.events.Event;
 import flash.events.EventDispatcher;
@@ -15,7 +15,7 @@ class Game {
 
 	public function new() {
 		gamestate = Globals.GAME_INIT;
-		trace("Initalizing game...");
+		Sys.println("Initalizing game...");
 		
 		turn = 0;
 		player1 = Loader.loadPlayer(Globals.PLAYER_ONE, "player1");
@@ -33,7 +33,7 @@ class Game {
 
 		var player = getPlayerById(p);
 		player.toggleLockedIn();
-		trace(player.isLockedIn() ? "player " + p + " locked in" : "player " + p + " unlocked");
+		Sys.println(player.isLockedIn() ? "player " + p + " locked in" : "player " + p + " unlocked");
 
 		if (player1.isLockedIn() && player2.isLockedIn()) {
 			updateGame();
@@ -46,7 +46,7 @@ class Game {
 
 		var player = getPlayerById(p);
 		player.setSelected(characterID);
-		trace("player " + (p+1) + " selected character " + (player.getSelected()+1));
+		Sys.println("player " + (p+1) + " selected character " + (player.getSelected()+1));
 	}
 
 	// sets an action for the currently selected character
@@ -55,7 +55,7 @@ class Game {
 
 		var player = getPlayerById(selectedPlayer);
 		player.setAction(action, targetPlayer, targetCharacter);
-		trace("player " + (selectedPlayer+1) + " selected: " + (action == Globals.ACTION_ATTACK ? "ATTACK" : (action == Globals.ACTION_DEFEND ? "DEFEND" : "OTHER")) + 
+		Sys.println("player " + (selectedPlayer+1) + " selected: " + (action == Globals.ACTION_ATTACK ? "ATTACK" : (action == Globals.ACTION_DEFEND ? "DEFEND" : "OTHER")) + 
 			" for Character " + (player.getSelected() == -1 ? "UNSELECTED" : (player.getSelected()+1)+""));
 	}
 
@@ -64,7 +64,7 @@ class Game {
 	// and all the after math will be updated
 	private function updateGame():Void {
 		gamestate = Globals.GAME_UPDATE;
-		trace("processing unit moves");
+		Sys.println("Processing unit actions...");
 		var actions = getSortedActions();
 		for (i in 0...actions.length){
 			var action = actions[i];
@@ -99,11 +99,12 @@ class Game {
 
 		for (i in 0...actions.length){
 			if (actions[i].getAction() != Globals.ACTION_DEFEND){
-				trace("player " + (actions[i].getSelectedPlayer()+1) + " character " + (actions[i].getSelectedCharacter()+1) + 
+				Sys.println("player " + (actions[i].getSelectedPlayer()+1) + " character " + (actions[i].getSelectedCharacter()+1) + 
 					"\'s attack did " + actions[i].report.damage_dealt + " damage to player " + (actions[i].getTargetPlayer()+1)+ 
 					" character " + (actions[i].getTargetCharacter()+1));
 			}
 		}
+		Sys.println("Finished processing actions");
 		gamestate = Globals.GAME_DISPLAY_ROUND;
 	}
 
@@ -171,22 +172,23 @@ class Game {
 		turn++;
 		if (!isGameover()) {
 			gamestate = Globals.GAME_TURN;
-			trace("\n-------------------------------Turn " + turn +"--------------------------------------");
+			Sys.println("\n------------------ Turn " + turn +" ------------------");
 			// list players
-			trace("player 1");
+			Sys.println("Player 1");
 			for(i in 0...player1.team.length){
-				trace("Character " + (i+1) + " Vitality " + player1.team[i].getVitality() + (player1.team[i].isDead() ? " DEAD" : " ALIVE"));
+				Sys.println("\tCharacter " + (i+1) + " Vitality " + player1.team[i].getVitality() + (player1.team[i].isDead() ? " DEAD" : " ALIVE"));
 			}
 
-			trace("player 2");
+			Sys.println("Player 2");
 			for(i in 0...player2.team.length){
-				trace("Character " + (i+1) + " Vitality " + player2.team[i].getVitality() + (player2.team[i].isDead() ? " DEAD" : " ALIVE"));
+				Sys.println("\tCharacter " + (i+1) + " Vitality " + player2.team[i].getVitality() + (player2.team[i].isDead() ? " DEAD" : " ALIVE"));
 			}
 		} else {
 			gamestate = Globals.GAME_OVER;
 			var dispatch = new EventDispatcher();
 			dispatch.dispatchEvent(new Event("game_over", true));
-			trace("Game over on turn: " + turn + "|" + dispatch);
+			Sys.println("Game over on turn: " + turn + "|" + dispatch);
 		}
+		Sys.println("");
 	}
 }

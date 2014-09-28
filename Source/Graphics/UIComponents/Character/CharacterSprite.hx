@@ -1,14 +1,16 @@
 package graphics.uicomponents.character;
 import openfl.display.Tilesheet;
 import openfl.Assets;
-import flash.display.Graphics;
-import flash.geom.Point;
 import flash.display.Sprite;
+import flash.display.Graphics;
+import flash.filters.GlowFilter;
+import flash.filters.BitmapFilterQuality;
+import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.Lib;
-import graphics.util.DarkFunctionTileSheet;
-import flash.events.MouseEvent;
 import flash.events.Event;
+import flash.events.MouseEvent;
+import graphics.util.DarkFunctionTileSheet;
 
 class CharacterSprite extends Sprite {
 
@@ -25,7 +27,8 @@ class CharacterSprite extends Sprite {
 		_characterNumber = characterNumber+1;
 		_direction = direction;
 
-		this.addEventListener(MouseEvent.CLICK, onClick);
+		this.addEventListener(MouseEvent.MOUSE_DOWN, changeGlow);
+		this.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 	}
 
 	public function _init_(maxVit:Int, vit:Int):Void {
@@ -60,12 +63,20 @@ class CharacterSprite extends Sprite {
 		return _tilesheet.getQueueCount();
 	}
 
-	public function setAnimation(name:String) {
+	public function setAnimation(name:String):Void {
 		_tilesheet.setAnimation(name);
 	}
 
-	public function hardSetAnimation(name:String){
+	public function hardSetAnimation(name:String):Void {
 		_tilesheet.hardSetAnimation(name);
+	}
+
+	public function setGlow(color:Int):Void {
+		this.filters = [new GlowFilter(color, 0.35, 16, 16, 2, BitmapFilterQuality.LOW, false, false)];
+	}
+
+	public function removeGlow():Void {
+		this.filters = [];
 	}
 
 	public function recalculateSize():Void {
@@ -110,12 +121,15 @@ class CharacterSprite extends Sprite {
 	public function render():Void {
 		this.graphics.clear();
 		var frame = _tilesheet.nextFrame();
-		//                                                 v--- this can be removed if the character sheet gets fliped
-		_tilesheet.drawTiles(this.graphics, [((_direction*-1)*frame.xOffset), frame.yOffset, frame.index, _direction, 0, 0, 1], Tilesheet.TILE_TRANS_2x2); 
+		_tilesheet.drawTiles(this.graphics, [(_direction*frame.xOffset), (_direction*frame.yOffset), frame.index, _direction, 0, 0, 1], Tilesheet.TILE_TRANS_2x2); 
 		_hpBar.render();
 	}
 
-	private function onClick(e:MouseEvent) {
+	private function changeGlow(e:MouseEvent) {
+		if (this.filters.length > 0) setGlow(0x00ff00);
+	}
+
+	private function onMouseUp(e:MouseEvent) {
 		this.dispatchEvent(new Event("character_select", true));
 	}
 }

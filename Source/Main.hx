@@ -7,17 +7,103 @@ import flash.system.System;
 import graphics.screens.ActiveGame;
 import graphics.screens.MainMenu;
 import graphics.screens.SplashRunner;
+import logic.Game;
 
 
 class Main extends Sprite {
 
+	// textual interface
+	var textual:Bool = true;
+	var version:String = "1.0";
+	var game:Game = null;
+
+	// visual interface
 	var main_menu:MainMenu;
 	var activeGame:ActiveGame;
 
 	public function new () {
 		super();
-		runSplashes();
+		if (textual){
+			runTextual();
+		} else {
+			runSplashes();
+		}
 	}
+
+	private function runTextual() {
+		this.visible = false; // makes the blank display vanish :D
+		var message = "Welcome to RPG_Battle's textual interface v" + version + 
+						"\nType \"help\" for the full list of commands" +
+						"\nNOTE: this must be ran by a system that can supply input";
+		Sys.println(message);
+		
+		var stdin = Sys.stdin();
+ 		while (true) {
+ 			Sys.print("RPG_Battle> ");
+ 			doCommand(stdin.readLine().toLowerCase());
+ 		}
+
+	}
+
+	private function doCommand(command:String) {
+		switch(command) {
+			case "h", "help":
+				printHelp();
+
+			case "exit":
+				Sys.exit(0);
+			
+			case "new", "new game", "start", "start game":
+				startGame();
+
+			case "end", "end game", "quit", "quit game", "terminate", "terminate game":
+				endGame();
+
+			case "lockin":
+				lockin();
+
+			default:
+				Sys.println("Error: Unrecognized Command");
+		}
+	}
+
+	private function startGame() {
+		game = new Game();
+	}
+
+	private function endGame() { 
+		if (game == null){
+			Sys.println("No game to terminate");
+		} else {
+			Sys.println("Game terminated");
+			game = null;
+		}
+	}
+
+	private function lockin() { 
+		if (game != null) {
+			game.lockin(Globals.PLAYER_ONE);
+			game.lockin(Globals.PLAYER_TWO);
+			game.newTurn();
+		} else {
+			Sys.println("Error: no active game");
+		}
+	}
+
+	private function printHelp(){
+		var message = 
+		"\nGeneral Commands:" +
+		"\n\texit\t- Terminates RPG_Battle" +
+		"\n\thelp\t- Displays a list of command" +
+		"\n\tnew\t- Creates a new game" +
+		"\n\tend\t- Terminates the active game" +
+		"\n\nGame Commands:" +
+		"\n\tlockin\t- Processes moves and starts the new turn\n";
+		Sys.println(message);
+	}
+
+
+// ############## VISUAL INTERFACE ##############
 
 	private function runSplashes() {
 		var splashes = new SplashRunner(['GGsplash.png','ABsplash.png','RPGsplash.png']); // add any splashscreen filenames to this list to auto add them to the splashscreen loop
@@ -47,6 +133,5 @@ class Main extends Sprite {
 		activeGame = new ActiveGame(); 
 		addChildAt(activeGame, 1);
 		//animate
-	}
-	
+	}	
 }

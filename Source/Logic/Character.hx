@@ -1,6 +1,7 @@
 package logic;
 
-import actions.Action;
+import logic.actions.Action;
+import logic.actions.StatusEffect;
 
 class Character {
 
@@ -9,6 +10,7 @@ class Character {
 	private var name:String;
 
 	private var equipment:Array <Item>;
+	private var statusEffects:Array<StatusEffect>;
 
 	private var action:Action;
 	

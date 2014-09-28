@@ -1,6 +1,6 @@
 package logic;
 
-import actions.Action;
+import logic.actions.Action;
 
 class Player {
 
