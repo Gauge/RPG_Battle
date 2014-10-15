@@ -1,4 +1,5 @@
 {
+	"name": "Steel Legs",
 	"type": 3,
 	"vitality": 400,
 	"attackPower": 0,

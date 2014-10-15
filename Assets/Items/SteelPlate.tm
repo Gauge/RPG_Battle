@@ -1,4 +1,5 @@
 {
+	"name": "Steel Plate",
 	"type": 1,
 	"vitality": 1500,
 	"attackPower": 0,

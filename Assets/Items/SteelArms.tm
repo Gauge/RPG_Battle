@@ -1,4 +1,5 @@
 {
+	"name": "Steel Arms",
 	"type": 2,
 	"vitality": 230,
 	"attackPower": 0,

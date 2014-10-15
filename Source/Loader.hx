@@ -24,7 +24,8 @@ class Loader {
 	public static function loadItem(itemName:String):Item {
 		var json = getParsedJSON("assets/Items/" + itemName + ".tm");
 		return (json != null) ? 
-			new Item(json.type, json.vitality, json.attackPower, json.magicPower, json.physicalRes, json.magicRes, json.attackSpeed) : null;
+			new Item(json.name, json.type, json.vitality, json.attackPower, json.magicPower, 
+						json.physicalRes, json.magicRes, json.attackSpeed) : null;
 		
 	}
 

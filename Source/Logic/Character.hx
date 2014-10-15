@@ -1,29 +1,30 @@
 package logic;
 
 import logic.actions.Action;
-import logic.actions.StatusEffect;
+import logic.statuseffects.StatusEffect;
 
 class Character {
 
-	private var vitality:Int;
+	private var vit:Int;
 	private var isdead:Bool;
 	private var name:String;
 
 	private var equipment:Array <Item>;
-	private var statusEffects:Array<StatusEffect>;
+	private var statusEffects:Array <StatusEffect>;
 
 	private var action:Action;
 	
 	// set up a new character
 	public function new(?name:String, ?equipment:Array <String>):Void {
-		this.name = (name != null) ? name : "Mr. Sir";
+		this.name = (name != null) ? name : "I DONT HAVE A NAME!!!";
 		this.equipment = [null, null, null, null, null, null];
+		this.statusEffects = [];
 		if (equipment != null) {
 			for (e in equipment){
 				equipItem(Loader.loadItem(e));
 			}
 		}
-		vitality = getMaxVitality();
+		vit = getMaxVit();
 		action = null;
 		isdead = false;
 	}
@@ -36,67 +37,67 @@ class Character {
 		return isdead;
 	}
 
-	public function getVitality():Int {
-		return vitality;
+	public function getVit():Int {
+		return vit;
 	}
 
 	// looks through all the items the character has equipped and returns the accumulated vitality number
-	public function getMaxVitality():Int {
+	public function getMaxVit():Int {
 		var vit = 1;
 
 		for (i in 0...equipment.length) {
-			vit += (equipment[i] != null) ? equipment[i].getVitality() : 0;
+			vit += (equipment[i] != null) ? equipment[i].getVit() : 0;
 		}
 		return vit;
 	}
 
 	// looks through all the items the character has equipped and returns the accumulated attack power from all the items.
-	public function getAttackPower():Int {
-		var attack_power = 0;
+	public function getAttack():Int {
+		var attack = 0;
 
 		for (i in 0...equipment.length){
-			attack_power += (equipment[i] != null) ? equipment[i].getAttackPower() : 0;
+			attack += (equipment[i] != null) ? equipment[i].getAttack() : 0;
 		}
-		return attack_power;
+		return attack;
 	}
 
 	// looks through all the items the character has equipped and returns the accumulated magic power.
-	public function getMagicPower():Int {
-		var magic_power = 0;
+	public function getMagic():Int {
+		var magic = 0;
 
 		for (i in 0...equipment.length){
-			magic_power += (equipment[i] != null) ? equipment[i].getMagicPower() : 0;
+			magic += (equipment[i] != null) ? equipment[i].getMagic() : 0;
 		}
-		return magic_power;
+		return magic;
 	}
 
 	// looks through all the items the character has equipped and returns the accumulated Physical Resist.
-	public function getPhysicalRes():Int {
-		var physical_res = 0;
+	public function getArmor():Int {
+		var armor = 0;
 
 		for (i in 0...equipment.length){
-			physical_res += (equipment[i] != null) ? equipment[i].getPhysicalRes() : 0;
+			armor += (equipment[i] != null) ? equipment[i].getArmor() : 0;
 		}
-		return physical_res;
+		return armor;
 	}
 
 	// looks through all the items the character has equipped and returns the accumulated Magic Resist.
-	public function getMagicRes():Int {
-		var magic_res = 0;
+	public function getResist():Int {
+		var resist = 0;
 
 		for (i in 0...equipment.length){
-			magic_res += (equipment[i] != null) ? equipment[i].getMagicRes() : 0;
+			resist += (equipment[i] != null) ? equipment[i].getResist() : 0;
 		}
-		return magic_res;
+		return resist;
 	}
 
-	public function getAttackSpeed():Int {
-		var attack_speed = 0;
+	public function getSpeed():Int {
+		var speed = 0;
 
 		for (i in 0...equipment.length){
-			attack_speed += (equipment[i] != null) ? equipment[i].getAttackSpeed() : 0;
+			speed += (equipment[i] != null) ? equipment[i].getSpeed() : 0;
 		}
-		return attack_speed;	
+		return speed;
 	}
 
 
@@ -141,6 +142,10 @@ class Character {
 		equipment[type] == null;
 	}
 
+	public function getStatusEffects(): Array <StatusEffect> {
+		return statusEffects;
+	}
+
 	// this is used when a new turn happens
 	public function resetAction():Void {
 		action = null;
@@ -151,7 +156,7 @@ class Character {
 	public function setAction(a:Action):Void {
 		action = a;
 
-		action.report.attack_speed = getAttackSpeed();
+		action.report.speed = getSpeed();
 	}
 
 	public function getAction():Action {
@@ -159,7 +164,7 @@ class Character {
 	}
 
 	public function attack():Int {
-		var damageToDo = getAttackPower();
+		var damageToDo = getAttack();
 		damageToDo = action.attack(damageToDo);
 		return damageToDo;
 	} 
@@ -167,19 +172,24 @@ class Character {
 	// applies damage to this character and returns
 	public function defend(physicalDamage:Int):Int {
 		
-		var damageDealt = (physicalDamage-getPhysicalRes() < 0) ? 0 : physicalDamage-getPhysicalRes();
+		var damageDealt = (physicalDamage-getArmor() < 0) ? 0 : physicalDamage-getArmor();
 		if (action != null){
 			damageDealt = action.defend(damageDealt);
 		}
 		
-		if (vitality <= damageDealt){
-			vitality = 0;
+		if (vit <= damageDealt){
+			vit = 0;
 			isdead = true;
 			
 		} else {
-			vitality -= damageDealt;
+			vit -= damageDealt;
 		}
 
 		return damageDealt;
+	}
+
+	public function ability(id:Int) {
+		var sf = StatusEffect.create(id);
+		statusEffects.push(sf);
 	}
 }

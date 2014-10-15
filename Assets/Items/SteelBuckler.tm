@@ -1,4 +1,5 @@
 {
+	"name": "Steel Buckler",
 	"type": 5,
 	"vitality": 0,
 	"attackPower": 0,

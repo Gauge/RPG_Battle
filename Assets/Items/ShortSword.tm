@@ -1,4 +1,5 @@
 {
+	"name": "Short Sword",
 	"type": 4,
 	"vitality": 0,
 	"attackPower": 250,

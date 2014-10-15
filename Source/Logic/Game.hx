@@ -7,11 +7,11 @@ import flash.events.EventDispatcher;
 
 class Game {
 
-	var turn:Int;
+	private var turn:Int;
 	public var gamestate:Int;
 
-	var player1:Player;
-	var player2:Player;
+	private var player1:Player;
+	private var player2:Player;
 
 	public function new() {
 		gamestate = Globals.GAME_INIT;
@@ -134,7 +134,7 @@ class Game {
 			var flag = false;
 			for (i2 in 0...actions.length) {
 				
-				if (list[i].report.attack_speed < actions[i2].report.attack_speed){
+				if (list[i].report.speed < actions[i2].report.speed){
 					actions.insert(i2, list[i]);
 					flag = true;
 					break;
@@ -176,12 +176,12 @@ class Game {
 			// list players
 			Sys.println("Player 1");
 			for(i in 0...player1.team.length){
-				Sys.println("\tCharacter " + (i+1) + " Vitality " + player1.team[i].getVitality() + (player1.team[i].isDead() ? " DEAD" : " ALIVE"));
+				Sys.println("\tCharacter " + (i+1) + " Vitality " + player1.team[i].getVit() + (player1.team[i].isDead() ? " DEAD" : " ALIVE"));
 			}
 
 			Sys.println("Player 2");
 			for(i in 0...player2.team.length){
-				Sys.println("\tCharacter " + (i+1) + " Vitality " + player2.team[i].getVitality() + (player2.team[i].isDead() ? " DEAD" : " ALIVE"));
+				Sys.println("\tCharacter " + (i+1) + " Vitality " + player2.team[i].getVit() + (player2.team[i].isDead() ? " DEAD" : " ALIVE"));
 			}
 		} else {
 			gamestate = Globals.GAME_OVER;

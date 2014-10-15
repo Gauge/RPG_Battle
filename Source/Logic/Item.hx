@@ -2,6 +2,7 @@ package logic;
 
 class Item {
 	
+	private var name:String;
 	private var type:Int;
 	private var vitality:Int;
 	private var attackPower:Int;
@@ -13,7 +14,8 @@ class Item {
 	//var statusEffects:Array <StatusEffect>;
 
 
-	public function new(t:Int, vit:Int, attpow:Int, magpow:Int, phyres:Int, magres:Int, attspd:Int) {
+	public function new(n:String, t:Int, vit:Int, attpow:Int, magpow:Int, phyres:Int, magres:Int, attspd:Int) {
+		name = n;
 		type = t;
 		vitality = vit;
 		attackPower = attpow;
@@ -23,31 +25,35 @@ class Item {
 		attackSpeed = attspd;
 	}
 
+	public function getName():String {
+		return name;
+	}
+
 	public function getType():Int {
 		return type;
 	}
 
-	public function getVitality():Int {
+	public function getVit():Int {
 		return vitality;
 	}
 
-	public function getAttackPower():Int {
+	public function getAttack():Int {
 		return attackPower;
 	}
 
-	public function getMagicPower():Int {
+	public function getMagic():Int {
 		return magicPower;
 	}
 
-	public function getPhysicalRes():Int {
+	public function getArmor():Int {
 		return physicalRes;
 	}
 
-	public function getMagicRes():Int {
+	public function getResist():Int {
 		return magicRes;
 	}
 
-	public function getAttackSpeed():Int {
+	public function getSpeed():Int {
 		return attackSpeed;
 	}
 }

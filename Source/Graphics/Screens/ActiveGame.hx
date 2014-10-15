@@ -83,8 +83,8 @@ class ActiveGame extends Sprite {
 			var char = Loader.loadSprite('Characters/test', Globals.LEFT, i);
 			this.addChild(char);
 			var player = game.getPlayerById(Globals.PLAYER_ONE);
-			var max = player.team[i].getMaxVitality();
-			var vit = player.team[i].getVitality();
+			var max = player.team[i].getMaxVit();
+			var vit = player.team[i].getVit();
 			char._init_(max, vit);
 			team1.push(char);
 		}
@@ -94,8 +94,8 @@ class ActiveGame extends Sprite {
 			var char = Loader.loadSprite('Characters/test', Globals.RIGHT, i);
 			this.addChild(char);
 			var player = game.getPlayerById(Globals.PLAYER_TWO);
-			var max = player.team[i].getMaxVitality();
-			var vit = player.team[i].getVitality();
+			var max = player.team[i].getMaxVit();
+			var vit = player.team[i].getVit();
 			char._init_(max, vit);
 			team2.push(char);
 		}

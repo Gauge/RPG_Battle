@@ -1,4 +1,5 @@
 {
+	"name": "Steel Helm",
 	"type": 0,
 	"vitality": 300,
 	"attackPower": 0,
