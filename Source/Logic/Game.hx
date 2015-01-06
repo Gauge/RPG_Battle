@@ -27,9 +27,7 @@ class Game {
 	// toggles the locked in state of the player that calls it
 	// it also proforms the check to move to the next turn
 	public function lockin(p:Int):Void {
-		if (gamestate != Globals.GAME_TURN) {
-			return;
-		}
+		if (gamestate != Globals.GAME_TURN) return;
 
 		var player = getPlayerById(p);
 		player.toggleLockedIn();
@@ -86,7 +84,7 @@ class Game {
 				}
 				
 				if (schar.isDead() == false){
-					schar.getAction().report.damage_dealt = tchar.defend(schar.attack());
+					schar.getAction().report.damage_dealt = tchar.defend(schar.attack(), 0);
 					schar.getAction().report.died_this_turn = tchar.isDead();
 				} else {
 					schar.resetAction();
@@ -104,6 +102,26 @@ class Game {
 					" character " + (actions[i].getTargetCharacter()+1));
 			}
 		}
+
+		// process status effects
+		for (i in 0...player1.team.length) {
+			var c = player1.team[i];
+			for (effect in c.getStatusEffects()){
+				var damage = c.defend(0, effect.getMagic());
+				Sys.println("player 1 character" + (i+1) + " took "+ damage + " from " + effect.getType());
+				effect.update();
+			}
+		}
+
+		for (i in 0...player2.team.length) {
+			var c = player2.team[i];
+			for (effect in c.getStatusEffects()){
+				var damage = c.defend(0, effect.getMagic());
+				Sys.println("player 2 character" + (i+1) + " took "+ damage + " from " + effect.getType());
+				effect.update();
+			}
+		}
+
 		Sys.println("Finished processing actions");
 		gamestate = Globals.GAME_DISPLAY_ROUND;
 	}

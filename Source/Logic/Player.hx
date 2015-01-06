@@ -5,6 +5,7 @@ import logic.actions.Action;
 class Player {
 
 	private var playerID:Int;
+	// signals the end of the players turn
 	private var islockedin:Bool;
 	// this is the index of the currently selected character
 	// nagative one stands for nothing selected
@@ -23,7 +24,7 @@ class Player {
 		newTurn();
 	}
 
-	public function newTurn():Void {
+	public function newTurn():Void { // run this action on new turn
 		selected = -1;
 		islockedin = false;
 		for (i in 0...team.length) {
@@ -31,11 +32,11 @@ class Player {
 		}
 	}
 
-	public function getPlayerID():Int {
+	public function getPlayerID():Int { // returns an integer value for the player
 		return playerID;
 	}
 
-	public function toggleLockedIn():Void {
+	public function toggleLockedIn():Void { // turns on or off the lockin flag
 		islockedin = !islockedin;
 		selected = (islockedin) ? -1 : selected;
 	}

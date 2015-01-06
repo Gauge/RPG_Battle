@@ -88,9 +88,6 @@ class Main extends Sprite {
 	}
 
 	private function testStuff():Void {
-		var thing = game.getPlayerById(Globals.PLAYER_ONE).team[0];
-		thing.ability(0); // id for ageianate
-		Sys.println(thing.getStatusEffects());
 	}
 
 	private function isActiveGame():Bool{
@@ -212,7 +209,7 @@ class Main extends Sprite {
 			"\nAction Selected:\t" + actionName +
 			"\nVitality:\t\t" + character.getVit() + " of " + character.getMaxVit() +
 			"\nAttack Speed:\t\t" + character.getSpeed() +
-			"\nAttack Damage:\t\t" + character.getAttack() +
+			"\nAttack Damage:\t\t" + character.getDamage() +
 			"\nAbility Power:\t\t" + character.getMagic() +
 			"\nArmor:\t\t\t" + character.getArmor() +
 			"\nMagic Resist:\t\t" + character.getResist() + "\n" +
@@ -243,7 +240,7 @@ class Main extends Sprite {
 							type = ""; // this should never happen. i do it cause its fun
 					}
 					vit = formatStatusTableText(""+item.getVit());
-					ad = formatStatusTableText(""+item.getAttack());
+					ad = formatStatusTableText(""+item.getDamage());
 					ap = formatStatusTableText(""+item.getMagic());
 					armor = formatStatusTableText(""+item.getArmor());
 					resist = formatStatusTableText(""+item.getMagic());
@@ -253,6 +250,13 @@ class Main extends Sprite {
 						"|" + ap + "|" + armor + "|" + resist + "|" + speed + "|\n" +
 						table_splitter;
 				}
+			}
+
+			message += "\n| Status Effects |";
+			for (effect in character.getStatusEffects()) {
+				message += "\nType: " + effect.getType();
+				message += "\nTicks: " + effect.getTicks();
+				message += "\nMagic Damage: " + effect.getMagic();
 			}
 
 			Sys.println(message);

@@ -4,25 +4,25 @@ class Item {
 	
 	private var name:String;
 	private var type:Int;
-	private var vitality:Int;
-	private var attackPower:Int;
-	private var magicPower:Int;
-	private var physicalRes:Int;
-	private var magicRes:Int;
-	private var attackSpeed:Int;
+	private var vit:Int;
+	private var damage:Int;
+	private var magic:Int;
+	private var armor:Int;
+	private var resist:Int;
+	private var speed:Int;
 
 	//var statusEffects:Array <StatusEffect>;
 
 
-	public function new(n:String, t:Int, vit:Int, attpow:Int, magpow:Int, phyres:Int, magres:Int, attspd:Int) {
-		name = n;
-		type = t;
-		vitality = vit;
-		attackPower = attpow;
-		magicPower = magpow;
-		physicalRes = phyres;
-		magicRes = magres;
-		attackSpeed = attspd;
+	public function new(name:String, type:Int, vit:Int, damage:Int, magic:Int, armor:Int, resist:Int, speed:Int) {
+		this.name = name;
+		this.type = type;
+		this.vit = vit;
+		this.damage = damage;
+		this.magic = magic;
+		this.armor = armor;
+		this.resist = resist;
+		this.speed = speed;
 	}
 
 	public function getName():String {
@@ -34,26 +34,26 @@ class Item {
 	}
 
 	public function getVit():Int {
-		return vitality;
+		return vit;
 	}
 
-	public function getAttack():Int {
-		return attackPower;
+	public function getDamage():Int {
+		return damage;
 	}
 
 	public function getMagic():Int {
-		return magicPower;
+		return magic;
 	}
 
 	public function getArmor():Int {
-		return physicalRes;
+		return armor;
 	}
 
 	public function getResist():Int {
-		return magicRes;
+		return resist;
 	}
 
 	public function getSpeed():Int {
-		return attackSpeed;
+		return speed;
 	}
 }
